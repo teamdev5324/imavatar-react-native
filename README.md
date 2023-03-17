@@ -1,1 +1,1 @@
-# imavatar react native 2.1
+# imavatar react native 2.2
