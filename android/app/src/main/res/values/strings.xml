@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Imavatar Partner</string>
+    <string name="facebook_app_id">580802680613372</string>
+      <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDSbvUw4Y3_YyxUPU5hszt4l64_MFjgixk</string>
+</resources>
