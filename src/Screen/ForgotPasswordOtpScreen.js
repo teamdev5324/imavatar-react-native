@@ -155,7 +155,12 @@ export class ForgotPasswordOtpScreen extends Component {
             />
           </View>
 
-          <Text>Code expires in 00:{this.state.timeLeft}</Text>
+          <Text>
+            Code expires in 00:
+            {this.state.timeLeft > 9
+              ? this.state.timeLeft
+              : `0${this.state.timeLeft}`}
+          </Text>
 
           <TouchableOpacity
             onPress={() => {

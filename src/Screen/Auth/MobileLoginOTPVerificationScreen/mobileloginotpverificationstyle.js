@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     borderColor: '#FF6658',
     borderRadius: 4,
     padding: 10,
+    color: '#000000',
   },
 
   inputmarginright: {

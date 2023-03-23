@@ -59,6 +59,12 @@ captures/
 .externalNativeBuild
 .cxx/
 
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
 # Google Services (e.g. APIs or Firebase)
 # google-services.json
 
@@ -83,4 +89,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-node_modules

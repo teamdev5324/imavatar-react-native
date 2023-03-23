@@ -31,6 +31,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import RNFetchBlob from 'rn-fetch-blob';
 // import {MaterialCommunityIcons} from '@expo/vector-icons';
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -92,6 +93,7 @@ export class Profile extends Component {
       pincode: '',
       pincode_index: '',
       pincode_pickerOptions: [],
+      profileEdit: false,
 
       county: '',
       county_pickerOptions: [],
@@ -106,22 +108,26 @@ export class Profile extends Component {
       state_code: '',
 
       country: '',
+      editBus: false,
       account_holder_name: '',
       account_number_confirm: '',
       documentId: 'DDMS0018',
       bank_name: '',
       ifsc_code: '',
       can_cheq_pic: '',
+      editBank: false,
       gstin: '',
       gstinemail: '',
       gstinmobileNumber: '',
       pan: '',
       registeredBusinessName: 'String',
+      editGst: false,
       whatsappNumber: '',
       password: '',
       c_password: '',
       c_r_password: '',
       branch_name: '',
+      termsData: [],
     };
   }
 
@@ -335,9 +341,17 @@ export class Profile extends Component {
       )
       .then(Response => {
         console.log('Response12', Response.data.results.bank);
+        const data = Response.data.results.aggreements;
+
+        const temData = data.map(item => ({
+          term: item.term.termName,
+          termId: item.term.id,
+          isAccepted: item.accepted,
+        }));
         this.setState({
           account_holder_name: Response.data.results.bank.accountHolderName,
           account_number: Response.data.results.bank.accountNumber,
+          account_number_confirm: Response.data.results.bank.accountNumber,
           bank_name: Response.data.results.bank.bankName,
           ifsc_code: Response.data.results.bank.ifscCode,
           branch_name: Response.data.results.bank.branchName,
@@ -349,14 +363,65 @@ export class Profile extends Component {
 
           businessname: Response.data.results.businessInfo.businessName,
           city: Response.data.results.businessInfo.city,
+          pincode: Response.data.results.businessInfo.pincode,
           state: Response.data.results.businessInfo.state,
           country: Response.data.results.businessInfo.country,
           state_code: Response.data.results.businessInfo.stateCode,
           address_line: Response.data.results.businessInfo.addressLine,
+          termsData: temData,
         });
       });
   }
+
+  onDownlaodClick(id) {
+    const headers = {
+      Authorization: 'Bearer ' + this.props.login_tokenn,
+      'Content-Type': 'application/json',
+    };
+    axios
+      .get('http://18.234.206.45:8085/api/v1/files/download/DDMS0024', {
+        headers,
+      })
+      .then(res => {
+        console.log('imf res was.......', res.data.results);
+        const data = res.data.results;
+
+        let options = null;
+        if (Platform.OS == 'ios') {
+          options = {
+            fileCache: true,
+            path: `${RNFetchBlob.fs.dirs.DownloadDir}/avatarImg/${data.filename}`,
+          };
+        } else {
+          options = {
+            fileCache: true,
+
+            addAndroidDownloads: {
+              useDownloadManager: true,
+              notification: false,
+              path: `${RNFetchBlob.fs.dirs.DownloadDir}/avatarImg/${data.filename}`,
+            },
+          };
+        }
+        RNFetchBlob.config(options)
+          .fetch(
+            'GET',
+            'http://18.234.206.45:8085/api/v1/files/download/DDMS0024',
+            {Authorization: 'Bearer ' + this.props.login_tokenn},
+          )
+          .then(res => {
+            console.log('res posen wa///////////', res);
+            alert('Download Complete');
+          })
+          .catch(err => {
+            console.log('download File error was,,,,,,,,,,,,,,', err);
+          });
+      })
+      .catch(err => console.log('api error wasz.......', err));
+  }
+
   render() {
+    const {termsData} = this.state;
     return (
       <>
         <ScrollView>
@@ -397,6 +462,7 @@ export class Profile extends Component {
                       <Text style={styles.personaldetailtext}>
                         Personal Details
                       </Text>
+
                       {/* 
                       {editpersonaldetails ? (
                         <TouchableOpacity
@@ -433,6 +499,7 @@ export class Profile extends Component {
                           first_name: filteredText,
                         });
                       }}
+
                       // //onChangeName={setFirstName}
                     />
 
@@ -446,6 +513,7 @@ export class Profile extends Component {
                           last_name: filteredText,
                         });
                       }}
+
                       // //onChangeName={setLastName}
                     />
 
@@ -459,6 +527,7 @@ export class Profile extends Component {
                           email_id: data,
                         });
                       }}
+
                       //onChangeName={setEmail}
                     />
 
@@ -472,6 +541,7 @@ export class Profile extends Component {
                           mobile_number: data,
                         });
                       }}
+
                       //onChangeName={setMobileNumber}
                     />
 
@@ -528,6 +598,9 @@ export class Profile extends Component {
                             console.log('Respo', Response.data);
                             console.log('====================================');
                             alert('SUCCESS');
+                            this.setState({
+                              profileEdit: false,
+                            });
 
                             this._getUserData();
                           });
@@ -549,21 +622,33 @@ export class Profile extends Component {
                   </TouchableOpacity>
 
                   <View style={styles.personaldetail}>
-                    <Text style={styles.personaldetailtext}>
-                      Business Address
-                    </Text>
-
+                    <View style={styles.personaldetailtextbox}>
+                      <Text style={styles.personaldetailtext}>
+                        Business Address
+                      </Text>
+                      {/* <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({editBus: true})}>
+                        <Image
+                          source={require('../assets/Icons/edit.png')}
+                          style={styles.editIcon}
+                        />
+                      </TouchableOpacity> */}
+                    </View>
                     <InputUI
                       label="Name of Business"
                       placeholder="Eg. Ambe bhandar"
                       onChangeName={data => {
                         //const filteredText = data.replace(/\s/g, '');
-                        const filteredText = data.replace(/[^a-zA-Z]/g, '');
+
+                        // const filteredText = data.replace(/^a-zA-Z0-9 ]/g, '');
+                        const string = data.replace(/[^\w\s\][^,]/gi, '');
                         this.setState({
-                          businessname: filteredText,
+                          businessname: string,
                         });
                       }}
                       value={this.state.businessname}
+
                       //onChangeName={setBusinessName}
                     />
 
@@ -572,11 +657,13 @@ export class Profile extends Component {
                       placeholder="Eg. 23-B, Vidyapith colony"
                       value={this.state.address_line}
                       onChangeName={data => {
-                        const filteredText = data.replace(/\s/g, '');
+                        // const filteredText = data.replace(/\s/g, '');
+                        const string = data.replace(/[^\w\s\][^,]/gi, '');
                         this.setState({
-                          address_line: filteredText,
+                          address_line: string,
                         });
                       }}
+
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1163,6 +1250,7 @@ export class Profile extends Component {
                         }
                       }}
                       max={6}
+
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1176,6 +1264,7 @@ export class Profile extends Component {
                           city: data,
                         });
                       }}
+
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1189,6 +1278,7 @@ export class Profile extends Component {
                           state: data,
                         });
                       }}
+
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1202,6 +1292,7 @@ export class Profile extends Component {
                           address_line: data,
                         });
                       }}
+
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1266,6 +1357,7 @@ export class Profile extends Component {
                               this.setState({
                                 personalshow: false,
                                 bankshow: true,
+                                editBus: false,
                               });
 
                               this._getUserData();
@@ -1326,10 +1418,14 @@ export class Profile extends Component {
                       <Text style={styles.personaldetailtext}>
                         Bank Details
                       </Text>
-                      <Image
-                        style={styles.editIcon}
-                        source={require('../assets/Icons/edit.png')}
-                      />
+                      {/* <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({editBank: true})}>
+                        <Image
+                          style={styles.editIcon}
+                          source={require('../assets/Icons/edit.png')}
+                        />
+                      </TouchableOpacity> */}
                     </View>
 
                     <InputUI
@@ -1511,6 +1607,7 @@ export class Profile extends Component {
                               this.setState({
                                 gstinshow: true,
                                 bankshow: false,
+                                editBank: false,
                               });
                             });
                         }
@@ -1553,10 +1650,14 @@ export class Profile extends Component {
                       <Text style={styles.personaldetailtext}>
                         GSTN Details
                       </Text>
-                      <Image
-                        style={styles.editIcon}
-                        source={require('../assets/Icons/edit.png')}
-                      />
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({editGst: true})}>
+                        <Image
+                          style={styles.editIcon}
+                          source={require('../assets/Icons/edit.png')}
+                        />
+                      </TouchableOpacity>
                     </View>
 
                     <InputUI
@@ -1581,6 +1682,7 @@ export class Profile extends Component {
                           gstinmobileNumber: data,
                         });
                       }}
+
                       //value={gstinmobileNumber}
                       //onChangeName={setGSTINMobileNumber}
                     />
@@ -1594,6 +1696,7 @@ export class Profile extends Component {
                           gstinemail: data,
                         });
                       }}
+
                       //value={gstinemail}
                       //onChangeName={setGSTINEmail}
                     />
@@ -1627,10 +1730,20 @@ export class Profile extends Component {
                       onPress={() => {
                         if (this.state.gstin == '') {
                           alert('Enter gst number');
+                        } else if (
+                          !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
+                            this.state.gstin,
+                          )
+                        ) {
+                          alert('Enter valid GSTIN Number');
                         } else if (this.state.gstinmobileNumber == '') {
                           alert('Enter gst mobile number');
                         } else if (this.state.gstinmobileNumber.length != 10) {
                           alert('Enter enter valid mobile number');
+                        } else if (
+                          !/^[789]\d{9}$/.test(this.state.gstinmobileNumber)
+                        ) {
+                          alert('enter valid GSTIN Mobile number');
                         } else if (this.state.gstinemail == '') {
                           alert('Enter gst email');
                         } else if (
@@ -1641,6 +1754,10 @@ export class Profile extends Component {
                           alert('Enter valid email');
                         } else if (this.state.pan == '') {
                           alert('Enter pan number');
+                        } else if (
+                          !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(this.state.pan)
+                        ) {
+                          alert('Enter valid PAN');
                         } else {
                           const param = {
                             gstin: this.state.gstin,
@@ -1674,6 +1791,7 @@ export class Profile extends Component {
                               this.setState({
                                 gstinshow: false,
                                 legaltermsshow: true,
+                                editGst: false,
                               });
                             });
                         }
@@ -1961,12 +2079,19 @@ export class Profile extends Component {
                       </Text>
                     </View>
 
-                    <LegalTermTextBox maintext="Partner Agreement" />
-                    <LegalTermTextBox maintext="Privacy Policy" />
-                    <LegalTermTextBox maintext="Terms and Condition" />
-                    <LegalTermTextBox maintext="Partner Deactivation Policy" />
-                    <LegalTermTextBox maintext="Prohibited and Restricted Product List" />
-                    <LegalTermTextBox maintext="Delivery & Return Policy" />
+                    {termsData?.map(
+                      item => {
+                        return (
+                          <LegalTermTextBox
+                            maintext={item.term}
+                            onDownloadPress={() =>
+                              this.onDownlaodClick(item.termId)
+                            }
+                          />
+                        );
+                      },
+                      // <LegalTermTextBox maintext={item.term} />
+                    )}
                   </View>
                 </View>
               )}

@@ -2,18 +2,26 @@ import {View, Text, Image} from 'react-native';
 
 import BarBox from '../Components/BarBox/BarBox';
 import styles from '../Screen/Shop/PartnerMenu/partnermenustyle';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
     console.log('====================================');
     console.log('this', this.props.login_tokenn);
     console.log('this', this.props.user_idd);
     console.log('====================================');
   }
+
+  onLogOutPress() {}
+
   render() {
     return (
       <View style={styles.container}>
@@ -52,25 +60,25 @@ export class Dashboard extends Component {
         />
 
         <BarBox
-          //HandlePress={() => navigation.navigate('Orders')}
+          HandlePress={() => this.props.navigation.navigate('Orders')}
           title="Orders"
           Imagesource={require('../assets/Icons/order.png')}
         />
 
         <BarBox
-          //HandlePress={() => navigation.navigate('Return/RTO')}
+          HandlePress={() => this.props.navigation.navigate('Return/RTO')}
           title="Return/RTO"
           Imagesource={require('../assets/Icons/return-rto.png')}
         />
 
         <BarBox
-          //HandlePress={() => navigation.navigate('Inventory')}
+          HandlePress={() => this.props.navigation.navigate('Inventory')}
           title="Inventory"
           Imagesource={require('../assets/Icons/inventory.png')}
         />
 
         <BarBox
-          //HandlePress={() => navigation.navigate('Payments')}
+          HandlePress={() => this.props.navigation.navigate('Payments')}
           title="Payments"
           Imagesource={require('../assets/Icons/payment.png')}
         />
@@ -82,8 +90,21 @@ export class Dashboard extends Component {
         />
 
         <BarBox
-          //HandlePress={() => navigation.navigate('Reports')}
+          HandlePress={() => this.props.navigation.navigate('Reports')}
           title="Reports"
+          Imagesource={require('../assets/Icons/report.png')}
+        />
+        <BarBox
+          HandlePress={() => {
+            AsyncStorage.clear();
+            this.props.navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{name: 'LoginScreen'}],
+              }),
+            );
+          }}
+          title="Logout"
           Imagesource={require('../assets/Icons/report.png')}
         />
       </View>

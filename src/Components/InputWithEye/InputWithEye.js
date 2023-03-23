@@ -11,6 +11,7 @@ const InputWithEye = ({label, placeholder, value, onChangeName}) => {
           style={styles.changepassinput}
           placeholder={placeholder}
           value={value}
+          placeholderTextColor={'#AEAEAE'}
           onChangeText={onChangeName}
         />
         <Image

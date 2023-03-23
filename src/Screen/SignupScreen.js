@@ -81,7 +81,10 @@ export class SignupScreen extends Component {
       alert('Enter valid email');
     } else if (this.state.mobile == '') {
       alert('Enter mobile number');
-    } else if (this.state.mobile.length != 10) {
+    } else if (
+      this.state.mobile.length != 10 &&
+      this.state.mobile.match(/^[789]\d{9}$/)
+    ) {
       alert('Enter 10 digit moible number ');
     } else if (this.state.password == '') {
       alert('Enter Password');
@@ -175,6 +178,7 @@ export class SignupScreen extends Component {
               ) : null}
 
               <TextInput
+                placeholderTextColor={'#707070'}
                 style={[styles.input, styles.inputmargin]}
                 placeholder="First Name*"
                 onFocus={() => {
@@ -212,6 +216,7 @@ export class SignupScreen extends Component {
                 </Text>
               ) : null}
               <TextInput
+                placeholderTextColor={'#707070'}
                 style={[styles.input, styles.inputmargin]}
                 placeholder="Last Name*"
                 onFocus={() => {
@@ -253,6 +258,7 @@ export class SignupScreen extends Component {
                 </Text>
               ) : null}
               <TextInput
+                placeholderTextColor={'#707070'}
                 style={[styles.input, styles.inputmargin]}
                 placeholder="Email*"
                 onFocus={() => {
@@ -299,6 +305,7 @@ export class SignupScreen extends Component {
                 </Text>
               ) : null}
               <TextInput
+                placeholderTextColor={'#707070'}
                 style={[styles.input, styles.inputmargin]}
                 placeholder="Mobile Number*"
                 onFocus={() => {
@@ -352,6 +359,7 @@ export class SignupScreen extends Component {
                   ) : null}
 
                   <TextInput
+                    placeholderTextColor={'#707070'}
                     style={[styles.input, styles.inputmargin]}
                     placeholder="Password*"
                     // onChangeText={setPassword}
@@ -431,6 +439,7 @@ export class SignupScreen extends Component {
                   ) : null}
 
                   <TextInput
+                    placeholderTextColor={'#707070'}
                     style={styles.input}
                     placeholder="Confirm Password*"
                     secureTextEntry={!this.state.pass_visible_c}

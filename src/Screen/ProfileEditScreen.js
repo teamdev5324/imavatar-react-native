@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Picker,
+  Platform,
 } from 'react-native';
 import CryptoJS from 'crypto-js';
 
@@ -31,6 +32,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import RNFetchBlob from 'rn-fetch-blob';
 // import {MaterialCommunityIcons} from '@expo/vector-icons';
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -83,6 +85,11 @@ export class ProfileEditScreen extends Component {
       changepasswordshow: false,
       legaltermsshow: false,
       whatsappnotificationshow: false,
+      profileEdit: false,
+      editBus: false,
+      editBank: false,
+      editGst: false,
+      editUser: false,
       first_name: '',
       last_name: '',
       email_id: '',
@@ -107,6 +114,7 @@ export class ProfileEditScreen extends Component {
 
       country: '',
       account_holder_name: '',
+      account_number: '',
       account_number_confirm: '',
       documentId: 'DDMS0018',
       bank_name: '',
@@ -122,6 +130,8 @@ export class ProfileEditScreen extends Component {
       c_password: '',
       c_r_password: '',
       branch_name: '',
+      termsData: [],
+      _terms: {data: []},
     };
   }
 
@@ -316,6 +326,7 @@ export class ProfileEditScreen extends Component {
   };
 
   _getOtherdata() {
+    const {termsData, _terms} = this.state;
     const headers = {
       Authorization: 'Bearer ' + this.props.login_tokenn,
       'Content-Type': 'application/json',
@@ -330,10 +341,28 @@ export class ProfileEditScreen extends Component {
         {headers},
       )
       .then(Response => {
-        console.log('Response12', Response.data.results.bank);
+        console.log('Response12******', Response.data.results.aggreements);
+        const data = Response.data.results.aggreements;
+        let newData = [];
+        const temData = data.map(item => ({
+          term: item.term.termName,
+          termId: item.term.id,
+          isAccepted: item.accepted,
+        }));
+
+        // data.forEach((item, index) => {
+        //   _terms.data[index] = {termId: item.term.id, isAccepted: true};
+        //   this.setState({
+        //     termsData: terms => ({
+        //       ...terms,
+        //       ..._terms,
+        //     }),
+        //   });
+        // });
         this.setState({
           account_holder_name: Response.data.results.bank.accountHolderName,
           account_number: Response.data.results.bank.accountNumber,
+          account_number_confirm: Response.data.results.bank.accountNumber,
           bank_name: Response.data.results.bank.bankName,
           ifsc_code: Response.data.results.bank.ifscCode,
           branch_name: Response.data.results.bank.branchName,
@@ -342,17 +371,68 @@ export class ProfileEditScreen extends Component {
           gstinmobileNumber: Response.data.results.gst.mobile,
           pan: Response.data.results.gst.panNumber,
           whatsappNumber: Response.data.results.whatsappInfo.whatsappNumber,
-
+          pincode: Response.data.results.businessInfo.pincode,
           businessname: Response.data.results.businessInfo.businessName,
           city: Response.data.results.businessInfo.city,
           state: Response.data.results.businessInfo.state,
           country: Response.data.results.businessInfo.country,
           state_code: Response.data.results.businessInfo.stateCode,
           address_line: Response.data.results.businessInfo.addressLine,
+          termsData: temData,
         });
       });
   }
+
+  onDownlaodClick(id) {
+    const headers = {
+      Authorization: 'Bearer ' + this.props.login_tokenn,
+      'Content-Type': 'application/json',
+    };
+    axios
+      .get('http://18.234.206.45:8085/api/v1/files/download/DDMS0024', {
+        headers,
+      })
+      .then(res => {
+        console.log('imf res was.......', res.data.results);
+        const data = res.data.results;
+
+        let options = null;
+        if (Platform.OS == 'ios') {
+          options = {
+            fileCache: true,
+            path: `${RNFetchBlob.fs.dirs.DownloadDir}/avatarImg/${data.filename}`,
+          };
+        } else {
+          options = {
+            fileCache: true,
+
+            addAndroidDownloads: {
+              useDownloadManager: true,
+              notification: false,
+              path: `${RNFetchBlob.fs.dirs.DownloadDir}/avatarImg/${data.filename}`,
+            },
+          };
+        }
+        RNFetchBlob.config(options)
+          .fetch(
+            'GET',
+            'http://18.234.206.45:8085/api/v1/files/download/DDMS0024',
+            {Authorization: 'Bearer ' + this.props.login_tokenn},
+          )
+          .then(res => {
+            console.log('res posen wa///////////', res);
+            alert('Download Complete');
+          })
+          .catch(err => {
+            console.log('download File error was,,,,,,,,,,,,,,', err);
+          });
+      })
+      .catch(err => console.log('api error wasz.......', err));
+  }
+
   render() {
+    const {profileEdit, editBus, editBank, editGst, editUser, termsData} =
+      this.state;
     return (
       <>
         <ScrollView>
@@ -397,6 +477,14 @@ export class ProfileEditScreen extends Component {
                       <Text style={styles.personaldetailtext}>
                         Personal Details
                       </Text>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({profileEdit: true})}>
+                        <Image
+                          source={require('../assets/Icons/edit.png')}
+                          style={styles.editIcon}
+                        />
+                      </TouchableOpacity>
                       {/* 
                       {editpersonaldetails ? (
                         <TouchableOpacity
@@ -425,7 +513,6 @@ export class ProfileEditScreen extends Component {
 
                     <InputUI
                       label="First Name"
-                      editable={false}
                       placeholder="Eg. Prashant"
                       value={this.state.first_name}
                       onChangeName={data => {
@@ -434,13 +521,14 @@ export class ProfileEditScreen extends Component {
                           first_name: filteredText,
                         });
                       }}
+                      editable={profileEdit}
                       // //onChangeName={setFirstName}
                     />
 
                     <InputUI
                       label="Last Name"
                       placeholder="Eg. Thakare"
-                      editable={false}
+                      editable={profileEdit}
                       value={this.state.last_name}
                       onChangeName={data => {
                         const filteredText = data.replace(/[^a-zA-Z]/g, '');
@@ -448,6 +536,7 @@ export class ProfileEditScreen extends Component {
                           last_name: filteredText,
                         });
                       }}
+
                       // //onChangeName={setLastName}
                     />
 
@@ -529,6 +618,9 @@ export class ProfileEditScreen extends Component {
                             console.log('====================================');
                             console.log('Respo', Response.data);
                             console.log('====================================');
+                            this.setState({
+                              editProfile: false,
+                            });
                             alert('SUCCESS');
 
                             this._getUserData();
@@ -551,20 +643,30 @@ export class ProfileEditScreen extends Component {
                   </TouchableOpacity>
 
                   <View style={styles.personaldetail}>
-                    <Text style={styles.personaldetailtext}>
-                      Business Address
-                    </Text>
-
+                    <View style={styles.personaldetailtextbox}>
+                      <Text style={styles.personaldetailtext}>
+                        Business Address
+                      </Text>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({editBus: true})}>
+                        <Image
+                          source={require('../assets/Icons/edit.png')}
+                          style={styles.editIcon}
+                        />
+                      </TouchableOpacity>
+                    </View>
                     <InputUI
                       label="Name of Business"
                       placeholder="Eg. Ambe bhandar"
                       onChangeName={data => {
                         //const filteredText = data.replace(/\s/g, '');
-                        const filteredText = data.replace(/[^a-zA-Z]/g, '');
+                        const string = data.replace(/[^\w\s\][^,]/gi, '');
                         this.setState({
-                          businessname: filteredText,
+                          businessname: string,
                         });
                       }}
+                      editable={editBus}
                       value={this.state.businessname}
                       //onChangeName={setBusinessName}
                     />
@@ -574,11 +676,12 @@ export class ProfileEditScreen extends Component {
                       placeholder="Eg. 23-B, Vidyapith colony"
                       value={this.state.address_line}
                       onChangeName={data => {
-                        const filteredText = data.replace(/\s/g, '');
+                        const string = data.replace(/[^\w\s\][^,]/gi, '');
                         this.setState({
-                          address_line: filteredText,
+                          address_line: string,
                         });
                       }}
+                      editable={editBus}
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1165,6 +1268,7 @@ export class ProfileEditScreen extends Component {
                         }
                       }}
                       max={6}
+                      editable={editBus}
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1178,6 +1282,7 @@ export class ProfileEditScreen extends Component {
                           city: data,
                         });
                       }}
+                      editable={editBus}
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1191,6 +1296,7 @@ export class ProfileEditScreen extends Component {
                           state: data,
                         });
                       }}
+                      editable={editBus}
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1204,6 +1310,7 @@ export class ProfileEditScreen extends Component {
                           address_line: data,
                         });
                       }}
+                      editable={editBus}
                       //value={address}
                       //onChangeName={setAddress}
                     />
@@ -1267,6 +1374,7 @@ export class ProfileEditScreen extends Component {
                               this.setState({
                                 personalshow: false,
                                 bankshow: true,
+                                editBus: false,
                               });
 
                               this._getUserData();
@@ -1331,10 +1439,14 @@ export class ProfileEditScreen extends Component {
                       <Text style={styles.personaldetailtext}>
                         Bank Details
                       </Text>
-                      <Image
-                        style={styles.editIcon}
-                        source={require('../assets/Icons/edit.png')}
-                      />
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({editBank: true})}>
+                        <Image
+                          style={styles.editIcon}
+                          source={require('../assets/Icons/edit.png')}
+                        />
+                      </TouchableOpacity>
                     </View>
 
                     <InputUI
@@ -1342,11 +1454,12 @@ export class ProfileEditScreen extends Component {
                       placeholder="Eg. Prashant"
                       value={this.state.account_holder_name}
                       onChangeName={data => {
-                        const filteredText = data.replace(/[^a-zA-Z]/g, '');
+                        const filteredText = data.replace(/^[a-zA-Z ]*$/);
                         this.setState({
                           account_holder_name: filteredText,
                         });
                       }}
+                      editable={editBank}
                     />
 
                     <InputUI
@@ -1360,10 +1473,13 @@ export class ProfileEditScreen extends Component {
                           account_number: filteredText,
                         });
                       }}
+                      max={18}
+                      editable={editBank}
                     />
 
                     <InputUI
                       label="Confirm Account Number"
+                      max={18}
                       placeholder="Eg. ******************"
                       value={this.state.account_number_confirm}
                       keyboard={'number-pad'}
@@ -1374,6 +1490,7 @@ export class ProfileEditScreen extends Component {
                           account_number_confirm: filteredText,
                         });
                       }}
+                      editable={editBank}
                     />
 
                     <InputUI
@@ -1406,6 +1523,7 @@ export class ProfileEditScreen extends Component {
                             });
                         }
                       }}
+                      editable={editBank}
                     />
 
                     <InputUI
@@ -1417,6 +1535,7 @@ export class ProfileEditScreen extends Component {
                           bank_name: data,
                         });
                       }}
+                      editable={editBank}
                     />
 
                     <InputUI
@@ -1428,9 +1547,11 @@ export class ProfileEditScreen extends Component {
                           branch_name: data,
                         });
                       }}
+                      editable={editBank}
                     />
 
                     <TouchableOpacity
+                      disabled={!editBank}
                       onPress={() => {
                         this._getFile();
                       }}>
@@ -1469,6 +1590,11 @@ export class ProfileEditScreen extends Component {
                           alert('Enter account holder name');
                         } else if (this.state.account_number == '') {
                           alert('Enter account number');
+                        } else if (
+                          this.state.account_number < 9 ||
+                          this.state.account_number < 15
+                        ) {
+                          alert('Enter valid bank account number');
                         } else if (this.state.account_number_confirm == '') {
                           alert('Enter confirm account number');
                         } else if (
@@ -1497,16 +1623,11 @@ export class ProfileEditScreen extends Component {
                             'Content-Type': 'application/json',
                           };
 
-                          const queryParams = {
-                            includeDeleted: true,
-                            sortBy: 'createdAt',
-                          };
-
                           axios
                             .put(
                               'http://18.234.206.45:8085/api/v1/partner/profile/bank',
                               param,
-                              {params: queryParams, headers},
+                              {headers},
                             )
                             .then(Response => {
                               console.log('Response', Response.data);
@@ -1561,10 +1682,14 @@ export class ProfileEditScreen extends Component {
                       <Text style={styles.personaldetailtext}>
                         GSTN Details
                       </Text>
-                      <Image
-                        style={styles.editIcon}
-                        source={require('../assets/Icons/edit.png')}
-                      />
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => this.setState({editGst: true})}>
+                        <Image
+                          style={styles.editIcon}
+                          source={require('../assets/Icons/edit.png')}
+                        />
+                      </TouchableOpacity>
                     </View>
 
                     <InputUI
@@ -1576,6 +1701,7 @@ export class ProfileEditScreen extends Component {
                           gstin: data,
                         });
                       }}
+                      editable={editGst}
                     />
 
                     <InputUI
@@ -1589,6 +1715,7 @@ export class ProfileEditScreen extends Component {
                           gstinmobileNumber: data,
                         });
                       }}
+                      editable={editGst}
                       //value={gstinmobileNumber}
                       //onChangeName={setGSTINMobileNumber}
                     />
@@ -1602,6 +1729,7 @@ export class ProfileEditScreen extends Component {
                           gstinemail: data,
                         });
                       }}
+                      editable={editGst}
                       //value={gstinemail}
                       //onChangeName={setGSTINEmail}
                     />
@@ -1619,6 +1747,7 @@ export class ProfileEditScreen extends Component {
                         //   pan: data,
                         // });
                       }}
+                      editable={editGst}
                     />
 
                     <TouchableOpacity
@@ -1635,10 +1764,20 @@ export class ProfileEditScreen extends Component {
                       onPress={() => {
                         if (this.state.gstin == '') {
                           alert('Enter gst number');
+                        } else if (
+                          !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
+                            this.state.gstin,
+                          )
+                        ) {
+                          alert('Enter valid GSTIN Number');
                         } else if (this.state.gstinmobileNumber == '') {
                           alert('Enter gst mobile number');
                         } else if (this.state.gstinmobileNumber.length != 10) {
                           alert('Enter enter valid mobile number');
+                        } else if (
+                          !/^[789]\d{9}$/.test(this.state.gstinmobileNumber)
+                        ) {
+                          alert('enter valid GSTIN Mobile number');
                         } else if (this.state.gstinemail == '') {
                           alert('Enter gst email');
                         } else if (
@@ -1649,6 +1788,10 @@ export class ProfileEditScreen extends Component {
                           alert('Enter valid email');
                         } else if (this.state.pan == '') {
                           alert('Enter pan number');
+                        } else if (
+                          !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(this.state.pan)
+                        ) {
+                          alert('Enter valid PAN');
                         } else {
                           const param = {
                             gstin: this.state.gstin,
@@ -1681,6 +1824,7 @@ export class ProfileEditScreen extends Component {
                               this.setState({
                                 gstinshow: false,
                                 legaltermsshow: true,
+                                editGst: false,
                               });
                             });
                         }
@@ -1738,10 +1882,13 @@ export class ProfileEditScreen extends Component {
 
                     <View style={styles.manageuserbox}>
                       <View style={styles.manageusericonbox}>
-                        <Image
-                          style={styles.manageusereditIcon}
-                          source={require('../assets/Icons/edit.png')}
-                        />
+                        <TouchableOpacity
+                          onPress={() => this.setState({editUser: true})}>
+                          <Image
+                            style={styles.manageusereditIcon}
+                            source={require('../assets/Icons/edit.png')}
+                          />
+                        </TouchableOpacity>
                         <TouchableOpacity
                         // onPress={() => setDeleteModelShow(!deletemodelshow)}
                         >
@@ -1985,12 +2132,25 @@ export class ProfileEditScreen extends Component {
                       </Text>
                     </View>
 
-                    <LegalTermTextBox maintext="Partner Agreement" />
+                    {termsData?.map(
+                      item => {
+                        return (
+                          <LegalTermTextBox
+                            maintext={item.term}
+                            onDownloadPress={() =>
+                              this.onDownlaodClick(item.termId)
+                            }
+                          />
+                        );
+                      },
+                      // <LegalTermTextBox maintext={item.term} />
+                    )}
+                    {/* <LegalTermTextBox maintext="Partner Agreement" />
                     <LegalTermTextBox maintext="Privacy Policy" />
                     <LegalTermTextBox maintext="Terms and Condition" />
                     <LegalTermTextBox maintext="Partner Deactivation Policy" />
                     <LegalTermTextBox maintext="Prohibited and Restricted Product List" />
-                    <LegalTermTextBox maintext="Delivery & Return Policy" />
+                    <LegalTermTextBox maintext="Delivery & Return Policy" /> */}
                   </View>
                 </View>
               )}
@@ -2007,7 +2167,7 @@ export class ProfileEditScreen extends Component {
                   : this.setState({
                       whatsappnotificationshow: true,
 
-                      changepasswordshow: true,
+                      changepasswordshow: false,
                       personalshow: false,
                       bankshow: false,
                       gstinshow: false,

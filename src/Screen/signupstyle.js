@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#D9D9D9',
     padding: 10,
+    color: '#000000',
   },
 
   inputmargin: {

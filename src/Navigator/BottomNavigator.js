@@ -47,6 +47,13 @@ import ForgotPasswordOtpScreen from '../Screen/ForgotPasswordOtpScreen';
 import ResetPasswordNew from '../Screen/ResetPasswordNew';
 import Splashscreen from '../Screen/Splashscreen';
 import ProfileEditScreen from '../Screen/ProfileEditScreen';
+import {Payment} from '@material-ui/icons';
+import AsyncStorage from '@react-native-community/async-storage';
+import PersonalDetails from '../Screen/PersonalDetails';
+import BankDetails from '../Screen/BankDetails';
+import GSTINDetails from '../Screen/GSTINDetails';
+import PartnerLegal from '../Screen/PartnerLegal';
+import Congratulations from '../Screen/Congratulations';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -59,34 +66,80 @@ export default function TabNavigation() {
     <NavigationContainer>
       <StatusBar barStyle="dark-content" backgroundColor={'white'} hideen />
 
-      <Stack.Navigator initialRouteName="Splashscreen">
+      <Stack.Navigator initialRouteName={'Splashscreen'}>
         <Stack.Screen
           name="Splashscreen"
           component={Splashscreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="CatalogUpload"
           component={CatalogUpload}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="ProfileEditScreen"
           component={ProfileEditScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
           options={{headerShown: false}}
         />
-
+        <Stack.Screen
+          name="Orders"
+          component={Orders}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Return/RTO"
+          component={ReturnRTO}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Inventory"
+          component={Inventory}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Payments"
+          component={Payments}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Reports"
+          component={Reports}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PersonalDetails"
+          component={PersonalDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BankDetails"
+          component={BankDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="GSTINDetails"
+          component={GSTINDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PartnerLegal"
+          component={PartnerLegal}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Congratulations"
+          component={Congratulations}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -104,61 +157,51 @@ export default function TabNavigation() {
           component={LoginWithMobile}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="EmailOTPVerificationScreen"
           component={EmailOTPVerificationScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="Profile"
           component={Profile}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="MobileOTPVerificationScreen"
           component={MobileOTPVerificationScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="EmailOTPVerifiedScreen"
           component={EmailOTPVerifiedScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="EmailLoginOTPVerificationScreen"
           component={EmailLoginOTPVerificationScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="MobileOTPVerifiedScreen"
           component={MobileOTPVerifiedScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="MobileLoginOTPVerificationScreen"
           component={MobileLoginOTPVerificationScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="ResetPasswordNew"
           component={ResetPasswordNew}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="ForgotPasswordOtpScreen"
           component={ForgotPasswordOtpScreen}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
           name="ForgotPasswordMobileNumber"
           component={ForgotPasswordMobileNumber}

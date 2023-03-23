@@ -141,6 +141,7 @@ export class LoginWithMobile extends Component {
               keyboardType={'number-pad'}
               maxLength={10}
               placeholder="Enter mobile number"
+              placeholderTextColor={'#707070'}
               onChangeText={data => {
                 const filteredText = data.replace(/[^0-9]/g, '');
                 this.setState({

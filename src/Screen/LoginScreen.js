@@ -15,6 +15,7 @@ import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import qs from 'qs';
 import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
 
@@ -35,8 +36,11 @@ export class LoginScreen extends Component {
   }
 
   _validation() {
+    const rightVal = this.validate(this.state.email);
     if (this.state.email == '') {
       alert('Enter email');
+    } else if (!rightVal) {
+      alert('Enter valid email or mobile number');
     } else if (this.state.password == '') {
       alert('Enter password');
     } else if (!passwordPattern.test(this.state.password)) {
@@ -108,9 +112,22 @@ export class LoginScreen extends Component {
                 console.log('Res', Response.data);
                 console.log('====================================');
                 this.props.addUserId(Response.data.data.id);
-                this.props.navigation.navigate('Profile', {
-                  userid: Response.data.data.id,
-                  token: dem,
+                AsyncStorage.setItem(
+                  'userData',
+                  JSON.stringify({
+                    email: this.state.email,
+                    pwd: this.state.password,
+                  }),
+                ).then(res => {
+                  console.log(
+                    '🚀 ~ file: LoginScreen.js:122 ~ LoginScreen ~ _api ~ res:',
+                    res,
+                  );
+                  this.props.navigation.navigate('PersonalDetails', {
+                    userid: Response.data.data.id,
+                    token: dem,
+                    data: Response.data,
+                  });
                 });
               });
           } else if (
@@ -203,6 +220,18 @@ export class LoginScreen extends Component {
       });
   }
 
+  validate = value => {
+    let res;
+    !isNaN(value)
+      ? (res = /^[789]\d{9}$/.test(value))
+      : (res =
+          /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/.test(
+            value,
+          ));
+
+    return res;
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -231,6 +260,7 @@ export class LoginScreen extends Component {
               style={[styles.input, styles.inputmargin]}
               ref={this.input1}
               placeholder="Enter Email/Mobile number"
+              placeholderTextColor={'#707070'}
               onChangeText={data => {
                 this.setState({
                   email: data,
@@ -238,12 +268,15 @@ export class LoginScreen extends Component {
                 });
               }}
               onBlur={() => {
-                if (this.state.showError == true) {
-                  if (this.state.email == '') {
-                    alert('Enter Email/Mobile number');
-                    this.input1.current.focus();
-                  }
+                // if (this.state.showError == true) {
+                if (this.state.email == '') {
+                  alert('Enter Email/Mobile number');
+                  this.input1.current.focus();
+                } else {
+                  const rightVal = this.validate(this.state.email);
+                  rightVal ? null : alert('Enter valid email or mobile number');
                 }
+                // }
                 // this.state.showError == true
                 //   ? this.state.f_name == ''
                 //     ? alert('Enter firstname')
@@ -273,6 +306,7 @@ export class LoginScreen extends Component {
                   style={styles.input}
                   ref={this.input2}
                   placeholder="Enter Password"
+                  placeholderTextColor={'#707070'}
                   onChangeText={data => {
                     this.setState({
                       password: data,

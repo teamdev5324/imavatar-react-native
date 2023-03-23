@@ -2,7 +2,6 @@
   <library name="Gradle: com.facebook.fresco:memory-type-java:2.6.0@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b55c2f1021e2e8d319d571a0ee2baa32/jetified-memory-type-java-2.6.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b55c2f1021e2e8d319d571a0ee2baa32/jetified-memory-type-java-2.6.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b55c2f1021e2e8d319d571a0ee2baa32/jetified-memory-type-java-2.6.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

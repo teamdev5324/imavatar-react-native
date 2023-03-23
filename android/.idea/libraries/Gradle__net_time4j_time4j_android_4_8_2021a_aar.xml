@@ -2,7 +2,6 @@
   <library name="Gradle: net.time4j:time4j-android:4.8-2021a@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce305b232de6533417cb27ca722db433/jetified-time4j-android-4.8-2021a/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce305b232de6533417cb27ca722db433/jetified-time4j-android-4.8-2021a/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce305b232de6533417cb27ca722db433/jetified-time4j-android-4.8-2021a/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

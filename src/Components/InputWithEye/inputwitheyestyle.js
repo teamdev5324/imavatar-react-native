@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 
   changepassinput: {
     width: '85%',
+    color: '#010101',
   },
 
   eyeIcon: {

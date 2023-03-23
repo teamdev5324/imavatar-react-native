@@ -19,12 +19,13 @@ const InputUI = ({
       <TextInput
         value={value}
         onChangeText={onChangeName}
-        style={styles.input}
+        style={[styles.input, {color: editable ? '#010101' : '#AEAEAE'}]}
         placeholder={placeholder}
         keyboardType={keyboard}
         maxLength={max}
         autoCapitalize={auto}
         editable={editable}
+        placeholderTextColor={'#AEAEAE'}
         secureTextEntry={secureTextEntry}
       />
     </View>

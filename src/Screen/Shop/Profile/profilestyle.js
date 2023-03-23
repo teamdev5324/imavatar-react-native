@@ -144,6 +144,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#FFFFFF',
   },
+  editIcon: {
+    width: 15,
+    height: 15,
+  },
 
   manageuserbox: {
     shadowColor: '#000000',
@@ -294,6 +298,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 9,
     marginTop: 25,
+    color: '#010101',
   },
 
   subbutton: {
