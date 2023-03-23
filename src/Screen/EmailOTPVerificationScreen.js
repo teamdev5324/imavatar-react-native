@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -40,7 +40,7 @@ export class EmailOTPVerificationScreen extends Component {
           otp4: '',
         });
       } else {
-        this.setState(prevState => ({timeLeft: prevState.timeLeft - 1}));
+        this.setState(prevState => ({ timeLeft: prevState.timeLeft - 1 }));
         console.log('timeLeft', this.state.timeLeft);
       }
     }, 1000);
@@ -87,8 +87,7 @@ export class EmailOTPVerificationScreen extends Component {
       alert('Please enter OTP');
     } else {
       console.log(
-        `http://35.170.79.161:8080/api/user/userVerification/email/${
-          this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4
+        `http://35.170.79.161:8080/api/user/userVerification/email/${this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4
         }/${this.state.user_id}`,
       );
 
@@ -96,18 +95,17 @@ export class EmailOTPVerificationScreen extends Component {
         this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4;
       axios
         .get(
-          `http://35.170.79.161:8080/api/user/userVerification/email/${
-            this.state.otp1 +
-            this.state.otp2 +
-            this.state.otp3 +
-            this.state.otp4
+          `http://35.170.79.161:8080/api/user/userVerification/email/${this.state.otp1 +
+          this.state.otp2 +
+          this.state.otp3 +
+          this.state.otp4
           }/${this.state.user_id}`,
         )
         .then(Response => {
           if (Response.data.statusCode == '200') {
             const param = {
               user_id: this.props.route.params.userid,
-              emailVerified: 'false',
+              emailVerified: 'true',
               phoneVerified: 'true',
             };
 
@@ -148,7 +146,7 @@ export class EmailOTPVerificationScreen extends Component {
   }
 
   render() {
-    const {timeLeft} = this.state;
+    const { timeLeft } = this.state;
     const seconds = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
 
     return (
@@ -179,7 +177,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
+                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -198,7 +196,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
+                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -217,7 +215,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
+                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -235,7 +233,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
+                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
