@@ -347,7 +347,7 @@ export class LoginScreen extends Component {
                   }}>
                   <Image
                     source={
-                      this.state.pass_visible == true
+                      this.state.pass_visible == false
                         ? require('../assets/open_eye.png')
                         : require('../assets/close_eye.png')
                     }
