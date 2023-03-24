@@ -46,6 +46,7 @@ const PersonalDetails = (props) => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
+  const [nameOfBusiness, setNameOfBusiness] = useState('');
 
   useEffect(async () => {
     getData();
@@ -61,6 +62,7 @@ const PersonalDetails = (props) => {
     setCity(data.businessInfo.city);
     setState(data.businessInfo.state);
     setCountry(data.businessInfo.country);
+    setNameOfBusiness(data.businessInfo.businessName);
   };
 
   const getUserData = () => {
@@ -99,6 +101,8 @@ const PersonalDetails = (props) => {
       country == ''
     ) {
       alert('Enter address');
+    } else if (!nameOfBusiness.match(/^[\w ]*[^\W_][\w ]*$/)) {
+      alert('Enter valid name of business')
     } else {
       const param = {
         active: 'true',
@@ -120,7 +124,7 @@ const PersonalDetails = (props) => {
 
           const _data = JSON.stringify({
             addressLine: addressLine,
-            businessDisplayName: '',
+            businessDisplayName: nameOfBusiness,
             city: city,
             cityCode: "CBS",
             country: country,
@@ -206,6 +210,14 @@ const PersonalDetails = (props) => {
         keyboardType="numeric"
         maxLength={10}
         editable={false}
+      />
+      <OnboardingInput
+        label="Name Of Business"
+        isCompulsory
+        placeholder="e.g Ambe bhandar"
+        onValueChange={setNameOfBusiness}
+        value={nameOfBusiness}
+        containerStyle={{ marginTop: 30 }}
       />
       <OnboardingInput
         label="Pincode"
