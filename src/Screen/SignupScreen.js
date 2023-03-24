@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import styles from './signupstyle';
 import randombytes from 'react-native-randombytes';
-import {toastConfig} from '../../style';
-import {useNavigation} from '@react-navigation/native';
+import { toastConfig } from '../../style';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import qs from 'qs';
 // import {
@@ -172,7 +172,7 @@ export class SignupScreen extends Component {
 
             <View style={styles.signupinputbox}>
               {this.state.showError == true ? (
-                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
+                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
                   Enter First Name
                 </Text>
               ) : null}
@@ -211,7 +211,7 @@ export class SignupScreen extends Component {
               />
 
               {this.state.showError1 == true ? (
-                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
+                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
                   Enter Last Name
                 </Text>
               ) : null}
@@ -253,7 +253,7 @@ export class SignupScreen extends Component {
               />
 
               {this.state.showError2 == true ? (
-                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
+                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
                   Enter Valid Email
                 </Text>
               ) : null}
@@ -300,7 +300,7 @@ export class SignupScreen extends Component {
                 value={this.state.email}
               />
               {this.state.showError3 == true ? (
-                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
+                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
                   Enter 10 Digit Mobile Number
                 </Text>
               ) : null}
@@ -350,10 +350,10 @@ export class SignupScreen extends Component {
                 maxLength={10}
               />
 
-              <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
                   {this.state.showError4 == true ? (
-                    <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
+                    <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
                       Enter password
                     </Text>
                   ) : null}
@@ -402,20 +402,20 @@ export class SignupScreen extends Component {
                   />
                 </View>
 
-                <View style={{flex: 0.1}}>
+                <View style={{ flex: 0.1 }}>
                   <TouchableOpacity
                     onPress={() => {
                       this.state.pass_visible == true
                         ? this.setState({
-                            pass_visible: false,
-                          })
+                          pass_visible: false,
+                        })
                         : this.setState({
-                            pass_visible: true,
-                          });
+                          pass_visible: true,
+                        });
                     }}>
                     <Image
                       source={
-                        this.state.pass_visible == true
+                        this.state.pass_visible == false
                           ? require('../assets/open_eye.png')
                           : require('../assets/close_eye.png')
                       }
@@ -430,10 +430,10 @@ export class SignupScreen extends Component {
                 </View>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
                   {this.state.showError5 == true ? (
-                    <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
+                    <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
                       Enter confirm password
                     </Text>
                   ) : null}
@@ -476,20 +476,20 @@ export class SignupScreen extends Component {
                     value={this.state.confirm_password}
                   />
                 </View>
-                <View style={{flex: 0.1}}>
+                <View style={{ flex: 0.1 }}>
                   <TouchableOpacity
                     onPress={() => {
                       this.state.pass_visible_c == true
                         ? this.setState({
-                            pass_visible_c: false,
-                          })
+                          pass_visible_c: false,
+                        })
                         : this.setState({
-                            pass_visible_c: true,
-                          });
+                          pass_visible_c: true,
+                        });
                     }}>
                     <Image
                       source={
-                        this.state.pass_visible_c == true
+                        this.state.pass_visible_c == false
                           ? require('../assets/open_eye.png')
                           : require('../assets/close_eye.png')
                       }
