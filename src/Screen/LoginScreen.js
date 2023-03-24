@@ -16,6 +16,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import profileStatus from '../profileStatus';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
 
@@ -121,16 +122,27 @@ export class LoginScreen extends Component {
                     email: this.state.email,
                     pwd: this.state.password,
                   }),
-                ).then(res => {
+                ).then(async res => {
                   console.log(
                     '🚀 ~ file: LoginScreen.js:122 ~ LoginScreen ~ _api ~ res:',
                     res,
                   );
-                  this.props.navigation.navigate('PersonalDetails', {
-                    userid: Response.data.data.id,
-                    token: dem,
-                    data: Response.data,
-                  });
+
+                  const { verificationStatus } = await profileStatus(dem);
+
+                  if (verificationStatus === 'WIP') {
+                    this.props.navigation.navigate('Congratulations', {
+                      userid: Response.data.data.id,
+                      token: dem,
+                      data: Response.data,
+                    })
+                  } else {
+                    this.props.navigation.navigate('PersonalDetails', {
+                      userid: Response.data.data.id,
+                      token: dem,
+                      data: Response.data,
+                    });
+                  }
                 });
               });
           } else if (
