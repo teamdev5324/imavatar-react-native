@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import React from 'react';
 
 const OnboardingInput = ({
@@ -12,9 +12,9 @@ const OnboardingInput = ({
 }) => {
   return (
     <View style={containerStyle}>
-      <View style={{flexDirection: 'row', marginBottom: 8}}>
-        <Text style={{color: '#333'}}>{label}</Text>
-        {isCompulsory && <Text style={{color: '#FF0000'}}>*</Text>}
+      <View style={{ flexDirection: 'row', marginBottom: 8 }}>
+        <Text style={{ color: '#333' }}>{label}</Text>
+        {isCompulsory && <Text style={{ color: '#FF0000' }}>*</Text>}
       </View>
       <TextInput
         placeholder={placeholder}

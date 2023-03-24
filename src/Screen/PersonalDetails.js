@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 
 export const getAllData = async token => {
@@ -14,7 +14,7 @@ export const getAllData = async token => {
     const res = await axios.get(
       'http://18.234.206.45:8085/api/v1/partner/profile',
 
-      {headers},
+      { headers },
     );
 
     return res;
@@ -28,7 +28,7 @@ export const getAllData = async token => {
   }
 };
 
-const PersonalDetails = () => {
+const PersonalDetails = (props) => {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -68,7 +68,7 @@ const PersonalDetails = () => {
       .get(`http://35.170.79.161:8080/api/user/noAuth/getUserInfo/${userId}`)
       .then(Response => {
         console.log('Response', Response.data);
-        const {firstName, lastName, emailId, phoneNumber} = Response.data.data;
+        const { firstName, lastName, emailId, phoneNumber } = Response.data.data;
 
         setFirstName(firstName);
         setLastName(lastName);
@@ -113,12 +113,43 @@ const PersonalDetails = () => {
 
       axios
         .post('http://35.170.79.161:8080/api/user/noAuth/updateUser', param)
-        .then(Response => {
+        .then(async Response => {
           console.log('Response', Response.data);
 
           getUserData();
 
-          navigation.navigate('BankDetails', route.params);
+          const _data = JSON.stringify({
+            addressLine: addressLine,
+            businessDisplayName: '',
+            city: city,
+            cityCode: "CBS",
+            country: country,
+            countryCode: "IN",
+            pincode: pincode,
+            state: state,
+            stateCode: "GJ",
+          });
+
+          const headers = {
+            'Authorization': 'Bearer ' + route.params.token,
+            'Content-Type': 'application/json'
+          };
+
+          const config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: 'http://18.234.206.45:8085/api/v1/partner/profile/businessInfo',
+            headers,
+            data: _data
+          };
+
+          const { data } = await axios(config);
+
+          if (data.status === 'SUCCESS') {
+            navigation.navigate('BankDetails', route.params);
+          } else {
+            alert('Detail not saved');
+          }
         })
         .catch(err => {
           console.log('err', err);
@@ -152,27 +183,29 @@ const PersonalDetails = () => {
           setLastName(filteredText);
         }}
         value={lastName}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
       />
       <OnboardingInput
         label="Email Id"
         isCompulsory
         placeholder="e.g name@email.com"
-        onValueChange={setEmailId}
+        // onValueChange={setEmailId}
         value={emailId}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
+        editable={false}
       />
       <OnboardingInput
         label="Mobile Number"
         isCompulsory
         placeholder="e.g 1832543461"
-        onValueChange={text => {
-          if (text.length <= 10) setMobileNumber(text.replace(/[^0-9]/g, ''));
-        }}
+        // onValueChange={text => {
+        //   if (text.length <= 10) setMobileNumber(text.replace(/[^0-9]/g, ''));
+        // }}
         value={mobileNumber}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
         keyboardType="numeric"
         maxLength={10}
+        editable={false}
       />
       <OnboardingInput
         label="Pincode"
@@ -194,7 +227,7 @@ const PersonalDetails = () => {
           }
         }}
         value={pincode}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
         keyboardType="numeric"
         maxLength={6}
       />
@@ -204,7 +237,7 @@ const PersonalDetails = () => {
         placeholder="e.g H-123, ABC colony"
         onValueChange={setAddressLine}
         value={addressLine}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
       />
       <OnboardingInput
         label="City"
@@ -212,7 +245,7 @@ const PersonalDetails = () => {
         placeholder="e.g Ahmedabad"
         onValueChange={setCity}
         value={city}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
         editable={false}
       />
       <OnboardingInput
@@ -221,7 +254,7 @@ const PersonalDetails = () => {
         placeholder="e.g Gujarat"
         onValueChange={setState}
         value={state}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
         editable={false}
       />
       <OnboardingInput
@@ -230,7 +263,7 @@ const PersonalDetails = () => {
         placeholder="e.g India"
         onValueChange={setCountry}
         value={country}
-        containerStyle={{marginTop: 30}}
+        containerStyle={{ marginTop: 30 }}
         editable={false}
       />
     </OnboardingContainer>

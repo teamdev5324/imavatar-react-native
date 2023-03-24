@@ -23,6 +23,7 @@ const GSTINDetails = () => {
     setBusinessName(data.businessName);
     setGstinMobileNumber(data.mobile);
     setGstinEmailId(data.email);
+    setPan(data.panNumber);
     console.log('🚀 ~ file: GSTINDetails.js:22 ~ getData ~ data:', data);
   };
 
