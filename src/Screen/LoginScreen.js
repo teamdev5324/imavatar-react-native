@@ -78,11 +78,7 @@ export class LoginScreen extends Component {
     console.log('====================================');
 
     axios
-      .post('http://35.170.79.161:8080/api/user/MP/noAuth/login', param, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post('http://35.170.79.161:8080/api/user/MP/noAuth/login', param)
       .then(Response => {
         console.clear();
         console.log(Response.data.data.isPhoneVerified);
@@ -232,6 +228,8 @@ export class LoginScreen extends Component {
       })
       .catch(error => {
         alert('Something went wrong !');
+        console.clear();
+        console.log(error);
       });
   }
 

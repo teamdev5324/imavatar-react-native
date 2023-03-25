@@ -1,8 +1,11 @@
-import {View, Text, Image, TextInput} from 'react-native';
-import React from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import styles from './inputwitheyestyle';
 
-const InputWithEye = ({label, placeholder, value, onChangeName}) => {
+const InputWithEye = ({ label, placeholder, value, onChangeName }) => {
+
+  const [show, setShow] = useState(true);
+
   return (
     <View style={styles.changepassinputfull}>
       <Text style={styles.changepassinputlabel}>{label}</Text>
@@ -13,11 +16,14 @@ const InputWithEye = ({label, placeholder, value, onChangeName}) => {
           value={value}
           placeholderTextColor={'#AEAEAE'}
           onChangeText={onChangeName}
+          secureTextEntry={show}
         />
-        <Image
-          style={styles.eyeIcon}
-          source={require('../../assets/Icons/eye.png')}
-        />
+        <TouchableOpacity onPress={() => (show ? setShow(false) : setShow(true))}>
+          <Image
+            style={styles.eyeIcon}
+            source={show ? require('../../assets/open_eye.png') : require('../../assets/close_eye.png')}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
