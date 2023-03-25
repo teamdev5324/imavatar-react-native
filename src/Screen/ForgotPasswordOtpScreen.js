@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import styles from '../Screen/Auth/MobileLoginOTPVerificationScreen/mobileloginotpverificationstyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
+import BackgroundTimer from 'react-native-background-timer';
 
 export class ForgotPasswordOtpScreen extends Component {
   constructor(props) {
@@ -23,14 +24,14 @@ export class ForgotPasswordOtpScreen extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    BackgroundTimer.clearInterval(this.interval);
     console.log(
       'this.props.route.params.local_pass',
       this.props.route.params.local_pass,
     );
   }
   componentDidMount() {
-    this.interval = setInterval(() => {
+    this.interval = BackgroundTimer.setInterval(() => {
       if (this.state.timeLeft == 0) {
         this.setState({
           otp1: '',
@@ -193,7 +194,13 @@ export class ForgotPasswordOtpScreen extends Component {
                 alert('Otp sent on above mobile number please wait.');
               }
             }}>
-            <Text style={styles.otprequest}>Resend OTP</Text>
+            <Text
+              style={[
+                styles.otprequest,
+                {color: this.state.timeLeft == 0 ? '#FF6557' : '#000'},
+              ]}>
+              Resend OTP
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity

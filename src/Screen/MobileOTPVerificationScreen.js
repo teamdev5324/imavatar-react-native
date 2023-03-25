@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
 
 import styles from '../Screen/Auth/MobileOTPVerificationScreen/mobileotpverificationstyle';
 
@@ -33,7 +34,7 @@ export class MobileOTPVerificationScreen extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    BackgroundTimer.clearInterval(this.interval);
     console.log(
       'this.props.route.params.local_pass',
       this.props.route.params.local_pass,
@@ -64,7 +65,7 @@ export class MobileOTPVerificationScreen extends Component {
         }
       });
 
-    this.interval = setInterval(() => {
+    this.interval = BackgroundTimer.setInterval(() => {
       if (this.state.timeLeft == 0) {
         this.setState({
           otp1: '',
@@ -270,7 +271,13 @@ export class MobileOTPVerificationScreen extends Component {
                 alert('Otp sent on above mobile number please wait.');
               }
             }}>
-            <Text style={styles.otprequest}>Resend OTP</Text>
+            <Text
+              style={[
+                styles.otprequest,
+                {color: this.state.timeLeft == 0 ? '#FF6557' : '#000'},
+              ]}>
+              Resend OTP
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.signupbutton}

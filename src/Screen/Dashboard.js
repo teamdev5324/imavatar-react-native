@@ -11,13 +11,30 @@ import AsyncStorage from '@react-native-community/async-storage';
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      userToken: '',
+    };
   }
 
   componentDidMount() {
     console.log('====================================');
-    console.log('this', this.props.login_tokenn);
+    console.log('this is login  token', this.props.login_tokenn);
     console.log('this', this.props.user_idd);
+    console.log('this', this.props);
     console.log('====================================');
+
+    // AsyncStorage.getItem('userToken').then(res => {
+    //   console.log(JSON.parse(res).token, 'res');
+    //   let token = JSON.parse(res).token;
+    //   console.log('====================================');
+    //   console.log(token, 'token');
+    //   console.log('====================================');
+    //   this.setState({
+    //     userToken: `${token}`,
+    //   });
+    // });
+
+    console.log(this.state, 'usertOKEN');
   }
 
   onLogOutPress() {}

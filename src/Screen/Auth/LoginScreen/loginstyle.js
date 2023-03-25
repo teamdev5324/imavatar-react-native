@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   logotext: {
     marginTop: 5,
     color: '#000000',
+    fontSize: 18,
   },
 
   logininputbox: {

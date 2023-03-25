@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   },
 
   logotext: {
+    fontSize: 18,
     marginTop: 5,
   },
 

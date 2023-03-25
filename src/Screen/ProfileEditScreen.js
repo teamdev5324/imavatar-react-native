@@ -37,7 +37,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-var items = [
+let items = [
   {
     id: 1,
     name: 'JavaScript',
@@ -2048,14 +2048,14 @@ export class ProfileEditScreen extends Component {
                             'New password and confirm password dose not match',
                           );
                         } else {
-                          var key = 'imavatar';
-                          var iv = 'mHGFxENnZLbienLyANoi.e';
+                          let key = 'imavatar';
+                          let iv = 'mHGFxENnZLbienLyANoi.e';
 
                           key = CryptoJS.enc.Base64.parse(key);
 
                           iv = CryptoJS.enc.Base64.parse(iv);
 
-                          var local_pass = CryptoJS.AES.encrypt(
+                          let local_pass = CryptoJS.AES.encrypt(
                             this.state.password,
                             key,
                             {
@@ -2063,7 +2063,7 @@ export class ProfileEditScreen extends Component {
                             },
                           ).toString();
 
-                          var new_pass = CryptoJS.AES.encrypt(
+                          let new_pass = CryptoJS.AES.encrypt(
                             this.state.c_password,
                             key,
                             {
@@ -2071,21 +2071,50 @@ export class ProfileEditScreen extends Component {
                             },
                           ).toString();
 
-                          const param = {
-                            newPassword: new_pass,
-                            oldPassword: local_pass,
+                          let data = JSON.stringify({
+                            newPassword: this.state.c_password,
+                            oldPassword: this.state.password,
                             userId: this.state.user_id,
+                          });
+
+                          console.log(data, 'data');
+                          let config = {
+                            method: 'post',
+                            maxBodyLength: Infinity,
+                            url: 'http://35.170.79.161:8080/api/user/MP/noAuth/userPwdChange',
+                            headers: {
+                              Authorization: 'Bearer' + this.props.login_tokenn,
+                              'Content-Type': 'application/json',
+                            },
+                            data: data,
                           };
 
                           axios
-                            .post(
-                              'http://35.170.79.161:8080/api/user/noAuth/userPwdChange',
-                              param,
-                            )
-                            .then(Response => {
-                              console.log('Response', Response.data);
-                              alert(Response.data.status);
+                            .request(config)
+                            .then(response => {
+                              console.log(response);
+                              alert(response.data.status);
+                            })
+                            .catch(error => {
+                              console.log(error);
+                              alert('Something went wrong');
                             });
+
+                          // const param = {
+                          //   newPassword: new_pass,
+                          //   oldPassword: local_pass,
+                          //   userId: this.state.user_id,
+                          // };
+
+                          // axios
+                          //   .post(
+                          //     'http://35.170.79.161:8080/api/user/noAuth/userPwdChange',
+                          //     param,
+                          //   )
+                          //   .then(Response => {
+                          //     console.log('Response', Response.data);
+                          //     alert(Response.data.status);
+                          //   });
                         }
                       }}>
                       <Text style={styles.verifiedboxbtntext}>
@@ -2232,33 +2261,65 @@ export class ProfileEditScreen extends Component {
                         } else if (this.state.whatsappNumber.length != 10) {
                           alert('Enter enter valid whatsapp number');
                         } else {
-                          const param = {
+                          let data = JSON.stringify({
                             activateNumber: true,
                             notifyOnWhatsapp: true,
                             whatsappNumber: this.state.whatsappNumber,
-                          };
+                          });
 
-                          const headers = {
-                            Authorization:
-                              'Bearer ' + this.props.route.params.token,
-                            'Content-Type': 'application/json',
-                          };
-
-                          const queryParams = {
-                            includeDeleted: true,
-                            sortBy: 'createdAt',
+                          let config = {
+                            method: 'put',
+                            maxBodyLength: Infinity,
+                            url: 'http://18.234.206.45:8085/api/v1/partner/profile/whatsappInfo',
+                            headers: {
+                              Authorization:
+                                'Bearer ' + this.props.login_tokenn,
+                              'Content-Type': 'application/json',
+                            },
+                            data: data,
                           };
 
                           axios
-                            .put(
-                              'http://18.234.206.45:8085/api/v1/partner/profile/whatsappInfo',
-                              param,
-                              {params: queryParams, headers},
-                            )
-                            .then(Response => {
-                              console.log('Response', Response.data);
-                              alert(Response.data.status);
+                            .request(config)
+                            .then(function (res) {
+                              console.log(res, 'res');
+                              if (res.data.status === 'SUCCESS') {
+                                alert('Subscribed successfully');
+                              } else {
+                                alert('Something went wrong');
+                              }
+                            })
+                            .catch(function (error) {
+                              console.log(error, 'error');
+                              alert('Something went wrong');
                             });
+                          // const param = {
+                          //   activateNumber: true,
+                          //   notifyOnWhatsapp: true,
+                          //   whatsappNumber: this.state.whatsappNumber,
+                          // };
+
+                          // const headers = {
+                          //   Authorization:
+                          //     'Bearer ' + this.props.route.params.token,
+                          //   'Content-Type': 'application/json',
+                          // };
+
+                          // const queryParams = {
+                          //   includeDeleted: true,
+                          //   sortBy: 'createdAt',
+                          // };
+
+                          // axios
+                          //   .put(
+                          //     'http://18.234.206.45:8085/api/v1/partner/profile/whatsappInfo',
+                          //     param,
+                          //     {params: queryParams, headers},
+                          //   )
+                          //   .then(Response => {
+                          //     console.log('Response', Response.data);
+                          //     alert(Response.data.status);
+                          //   });
                         }
                       }}>
                       <Text style={styles.verifiedboxbtntext}>Continue</Text>

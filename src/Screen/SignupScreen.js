@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Text,
   View,
@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import styles from './signupstyle';
 import randombytes from 'react-native-randombytes';
-import { toastConfig } from '../../style';
-import { useNavigation } from '@react-navigation/native';
+import {toastConfig} from '../../style';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import qs from 'qs';
 // import {
@@ -38,7 +38,7 @@ const myEvents = [
 ];
 
 const passwordPattern =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,16}$/;
 
 export class SignupScreen extends Component {
   constructor(props) {
@@ -172,7 +172,7 @@ export class SignupScreen extends Component {
 
             <View style={styles.signupinputbox}>
               {this.state.showError == true ? (
-                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                   Enter First Name
                 </Text>
               ) : null}
@@ -191,7 +191,7 @@ export class SignupScreen extends Component {
                   if (this.state.showError == true) {
                     if (this.state.f_name == '') {
                       alert('Enter First Name');
-                      this.input1.current.focus();
+                      // this.input1.current.focus();
                     }
                   }
                   // this.state.showError == true
@@ -211,7 +211,7 @@ export class SignupScreen extends Component {
               />
 
               {this.state.showError1 == true ? (
-                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                   Enter Last Name
                 </Text>
               ) : null}
@@ -221,7 +221,7 @@ export class SignupScreen extends Component {
                 placeholder="Last Name*"
                 onFocus={() => {
                   if (this.state.f_name == '') {
-                    this.input1.current.focus();
+                    // this.input1.current.focus();
                   } else {
                     this.setState({
                       showError1: true,
@@ -233,7 +233,7 @@ export class SignupScreen extends Component {
                   if (this.state.showError1 == true) {
                     if (this.state.l_name == '') {
                       alert('Enter lastname');
-                      this.input2.current.focus();
+                      // this.input2.current.focus();
                     }
                   }
                   // this.state.showError1 == true
@@ -253,7 +253,7 @@ export class SignupScreen extends Component {
               />
 
               {this.state.showError2 == true ? (
-                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                   Enter Valid Email
                 </Text>
               ) : null}
@@ -264,7 +264,7 @@ export class SignupScreen extends Component {
                 onFocus={() => {
                   if (this.state.l_name == '') {
                     //alert('Enter lastname first');
-                    this.input2.current.focus();
+                    // this.input2.current.focus();
                   } else {
                     this.setState({
                       showError2: true,
@@ -276,7 +276,7 @@ export class SignupScreen extends Component {
                   if (this.state.showError2 == true) {
                     if (this.state.email == '') {
                       alert('Enter email');
-                      this.input3.current.focus();
+                      // this.input3.current.focus();
                     } else if (
                       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                         this.state.email,
@@ -300,7 +300,7 @@ export class SignupScreen extends Component {
                 value={this.state.email}
               />
               {this.state.showError3 == true ? (
-                <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                   Enter 10 Digit Mobile Number
                 </Text>
               ) : null}
@@ -310,13 +310,13 @@ export class SignupScreen extends Component {
                 placeholder="Mobile Number*"
                 onFocus={() => {
                   if (this.state.email == '') {
-                    this.input3.current.focus();
+                    // this.input3.current.focus();
                   } else if (
                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                       this.state.email,
                     )
                   ) {
-                    this.input3.current.focus();
+                    // this.input3.current.focus();
                   } else {
                     this.setState({
                       showError3: true,
@@ -328,7 +328,7 @@ export class SignupScreen extends Component {
                   if (this.state.showError3 == true) {
                     if (this.state.mobile == '') {
                       alert('Enter mobile number');
-                      this.input4.current.focus();
+                      // this.input4.current.focus();
                     }
                   }
                   // this.state.showError3 == true
@@ -350,10 +350,10 @@ export class SignupScreen extends Component {
                 maxLength={10}
               />
 
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 1}}>
                   {this.state.showError4 == true ? (
-                    <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                    <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                       Enter password
                     </Text>
                   ) : null}
@@ -368,10 +368,10 @@ export class SignupScreen extends Component {
                     onFocus={() => {
                       if (this.state.mobile == '') {
                         //alert('Enter mobile number first');
-                        this.input4.current.focus();
+                        // this.input4.current.focus();
                       } else if (this.state.mobile.length != 10) {
                         //alert('Enter mobile number first');
-                        this.input4.current.focus();
+                        // this.input4.current.focus();
                       } else {
                         this.setState({
                           showError4: true,
@@ -382,7 +382,7 @@ export class SignupScreen extends Component {
                       if (this.state.showError4 == true) {
                         if (this.state.password == '') {
                           alert('Enter password');
-                          this.input5.current.focus();
+                          // this.input5.current.focus();
                         }
                       }
                       // this.state.showError4 == true
@@ -402,16 +402,16 @@ export class SignupScreen extends Component {
                   />
                 </View>
 
-                <View style={{ flex: 0.1 }}>
+                <View style={{flex: 0.1}}>
                   <TouchableOpacity
                     onPress={() => {
                       this.state.pass_visible == true
                         ? this.setState({
-                          pass_visible: false,
-                        })
+                            pass_visible: false,
+                          })
                         : this.setState({
-                          pass_visible: true,
-                        });
+                            pass_visible: true,
+                          });
                     }}>
                     <Image
                       source={
@@ -430,10 +430,10 @@ export class SignupScreen extends Component {
                 </View>
               </View>
 
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 1}}>
                   {this.state.showError5 == true ? (
-                    <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+                    <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                       Enter confirm password
                     </Text>
                   ) : null}
@@ -446,7 +446,7 @@ export class SignupScreen extends Component {
                     onFocus={() => {
                       if (this.state.password == '') {
                         alert('Enter password first');
-                        this.input5.current.focus();
+                        // this.input5.current.focus();
                       } else {
                         this.setState({
                           showError5: true,
@@ -458,7 +458,7 @@ export class SignupScreen extends Component {
                       if (this.state.showError5 == true) {
                         if (this.state.confirm_password == '') {
                           alert('Enter confirm password');
-                          this.input6.current.focus();
+                          // this.input6.current.focus();
                         }
                       }
                       // this.state.showError5 == true
@@ -476,16 +476,16 @@ export class SignupScreen extends Component {
                     value={this.state.confirm_password}
                   />
                 </View>
-                <View style={{ flex: 0.1 }}>
+                <View style={{flex: 0.1}}>
                   <TouchableOpacity
                     onPress={() => {
                       this.state.pass_visible_c == true
                         ? this.setState({
-                          pass_visible_c: false,
-                        })
+                            pass_visible_c: false,
+                          })
                         : this.setState({
-                          pass_visible_c: true,
-                        });
+                            pass_visible_c: true,
+                          });
                     }}>
                     <Image
                       source={

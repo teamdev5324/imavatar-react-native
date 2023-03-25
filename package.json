@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint",
-    "android:build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd ./android && ./gradlew app:assembleDebug",
+    "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "android:debug": "cd ./android && ./gradlew app:assembleDebug",
     "clean:android": "cd android && ./gradlew clean"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.64.4",
     "react-native-autocomplete-dropdown": "^2.1.0",
+    "react-native-background-timer": "^2.4.1",
     "react-native-btr": "^2.2.0",
     "react-native-chart-kit": "^6.12.0",
     "react-native-credit-card-input": "^0.4.1",

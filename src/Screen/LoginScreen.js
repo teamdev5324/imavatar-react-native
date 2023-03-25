@@ -7,14 +7,14 @@ import {
   Pressable,
 } from 'react-native';
 import styles from './Auth/LoginScreen/loginstyle';
-import { useNavigation } from '@react-navigation/native';
-import { addLoginToken, addUserId } from '../reducers/UserReducer/user_actions';
+import {useNavigation} from '@react-navigation/native';
+import {addLoginToken, addUserId} from '../reducers/UserReducer/user_actions';
 import Toast from 'react-native-toast-message';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import qs from 'qs';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import profileStatus from '../profileStatus';
 const token =
@@ -128,16 +128,24 @@ export class LoginScreen extends Component {
                     res,
                   );
 
-                  const { verificationStatus } = await profileStatus(dem);
+                  AsyncStorage.setItem('isUserLogin', 'true');
+                  AsyncStorage.setItem(
+                    'userToken',
+                    JSON.stringify({
+                      token: dem,
+                    }),
+                  );
+
+                  const {verificationStatus} = await profileStatus(dem);
 
                   if (verificationStatus === 'WIP') {
-                    this.props.navigation.navigate('Congratulations', {
+                    this.props.navigation.replace('Congratulations', {
                       userid: Response.data.data.id,
                       token: dem,
                       data: Response.data,
-                    })
+                    });
                   } else {
-                    this.props.navigation.navigate('PersonalDetails', {
+                    this.props.navigation.replace('PersonalDetails', {
                       userid: Response.data.data.id,
                       token: dem,
                       data: Response.data,
@@ -240,9 +248,9 @@ export class LoginScreen extends Component {
     !isNaN(value)
       ? (res = /^[789]\d{9}$/.test(value))
       : (res =
-        /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/.test(
-          value,
-        ));
+          /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/.test(
+            value,
+          ));
 
     return res;
   };
@@ -267,7 +275,7 @@ export class LoginScreen extends Component {
 
           <View style={styles.logininputbox}>
             {this.state.showError == true ? (
-              <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+              <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
                 Enter Email/Mobile number
               </Text>
             ) : null}
@@ -286,7 +294,7 @@ export class LoginScreen extends Component {
                 // if (this.state.showError == true) {
                 if (this.state.email == '') {
                   alert('Enter Email/Mobile number');
-                  this.input1.current.focus();
+                  // this.input1.current.focus();
                 } else {
                   const rightVal = this.validate(this.state.email);
                   rightVal ? null : alert('Enter valid email or mobile number');
@@ -299,12 +307,12 @@ export class LoginScreen extends Component {
                 //   : null;
               }}
               value={this.state.email}
-            // onChangeText={setUserName}
-            //value={userName}
+              // onChangeText={setUserName}
+              //value={userName}
             />
 
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
+            <View style={{flexDirection: 'row'}}>
+              <View style={{flex: 1}}>
                 <TextInput
                   onFocus={() => {
                     if (this.state.email == '') {
@@ -329,21 +337,21 @@ export class LoginScreen extends Component {
                   }}
                   value={this.state.password}
                   secureTextEntry={!this.state.pass_visible}
-                // onChangeText={setPassword}
-                //value={password}
+                  // onChangeText={setPassword}
+                  //value={password}
                 />
               </View>
 
-              <View style={{ flex: 0.1 }}>
+              <View style={{flex: 0.1}}>
                 <TouchableOpacity
                   onPress={() => {
                     this.state.pass_visible == true
                       ? this.setState({
-                        pass_visible: false,
-                      })
+                          pass_visible: false,
+                        })
                       : this.setState({
-                        pass_visible: true,
-                      });
+                          pass_visible: true,
+                        });
                   }}>
                   <Image
                     source={
@@ -417,11 +425,11 @@ export class LoginScreen extends Component {
               <Text style={styles.otptext}>Login with OTP</Text>
             </TouchableOpacity>
 
-            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
               <Text style={styles.accounttext}>New to ImAvatar? </Text>
 
               <TouchableOpacity
-                style={{ marginTop: 20 }}
+                style={{marginTop: 20}}
                 onPress={() => {
                   this.props.navigation.goBack();
                 }}>

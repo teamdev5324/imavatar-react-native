@@ -1,8 +1,9 @@
-import { TextInput, Text, View, Image, Pressable } from 'react-native';
-import React, { Component } from 'react';
+import {TextInput, Text, View, Image, Pressable} from 'react-native';
+import React, {Component} from 'react';
 import styles from '../Screen/Auth/MobileLoginOTPVerificationScreen/mobileloginotpverificationstyle';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
+import BackgroundTimer from 'react-native-background-timer';
 
 export class MobileLoginOTPVerificationScreen extends Component {
   constructor(props) {
@@ -23,14 +24,14 @@ export class MobileLoginOTPVerificationScreen extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    BackgroundTimer.clearInterval(this.interval);
     console.log(
       'this.props.route.params.local_pass',
       this.props.route.params.local_pass,
     );
   }
   componentDidMount() {
-    this.interval = setInterval(() => {
+    this.interval = BackgroundTimer.setInterval(() => {
       if (this.state.timeLeft == 0) {
         this.setState({
           otp1: '',
@@ -39,7 +40,7 @@ export class MobileLoginOTPVerificationScreen extends Component {
           otp4: '',
         });
       } else {
-        this.setState(prevState => ({ timeLeft: prevState.timeLeft - 1 }));
+        this.setState(prevState => ({timeLeft: prevState.timeLeft - 1}));
         console.log('timeLeft', this.state.timeLeft);
       }
     }, 1000);
@@ -71,7 +72,7 @@ export class MobileLoginOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               textAlign={'center'}
               maxLength={1}
@@ -85,15 +86,15 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 this.input2.current.focus();
               }}
               value={this.state.otp1}
-            // onChangeText={setfirstValue}
-            // value={firstvalue}
+              // onChangeText={setfirstValue}
+              // value={firstvalue}
             />
 
             <TextInput
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               textAlign={'center'}
               maxLength={1}
@@ -107,15 +108,15 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 this.input3.current.focus();
               }}
               value={this.state.otp2}
-            // onChangeText={setsecondValue}
-            // value={secondvalue}
+              // onChangeText={setsecondValue}
+              // value={secondvalue}
             />
 
             <TextInput
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               maxLength={1}
               keyboardType={'number-pad'}
@@ -129,14 +130,14 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 this.input4.current.focus();
               }}
               value={this.state.otp3}
-            // onChangeText={setthirdValue}
-            // value={thirdvalue}
+              // onChangeText={setthirdValue}
+              // value={thirdvalue}
             />
 
             <TextInput
               style={[
                 styles.input,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               maxLength={1}
               keyboardType={'number-pad'}
@@ -149,8 +150,8 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 });
               }}
               value={this.state.otp4}
-            // onChangeText={setfourthValue}
-            // value={fourthvalue}
+              // onChangeText={setfourthValue}
+              // value={fourthvalue}
             />
           </View>
 
@@ -185,7 +186,7 @@ export class MobileLoginOTPVerificationScreen extends Component {
                     });
                     alert(
                       'OTP sent successfully on ' +
-                      this.props.route.params.email,
+                        this.props.route.params.email,
                     );
                     //alert(Response.data.statusMessage);
                   });
@@ -193,7 +194,13 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 alert('Otp sent on above mobile number please wait.');
               }
             }}>
-            <Text style={styles.otprequest}>Resend OTP</Text>
+            <Text
+              style={[
+                styles.otprequest,
+                {color: this.state.timeLeft == 0 ? '#FF6557' : '#000'},
+              ]}>
+              Resend OTP
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity

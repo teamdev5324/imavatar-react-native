@@ -1,19 +1,18 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, Image, TouchableOpacity, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Congratulations = ({ navigation, route }) => {
-
+const Congratulations = ({navigation, route}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Dashboard', route.params)
-    }, 5000)
+      navigation.navigate('Dashboard', route.params);
+    }, 5000);
   }, []);
 
   return (
     <LinearGradient
       colors={['#FD7E4D', '#F8A939']}
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Image source={require('../assets/Images/congratulations.png')} />
       <View>
         <Text
@@ -48,12 +47,12 @@ const Congratulations = ({ navigation, route }) => {
           paddingVertical: 12,
           marginTop: 20,
           width: 150,
-          alignItems: 'center'
+          alignItems: 'center',
         }}
         onPress={() => {
           navigation.navigate('PersonalDetails', route.params);
         }}>
-        <Text style={{ color: '#fff', fontSize: 14 }}>Edit</Text>
+        <Text style={{color: '#fff', fontSize: 14}}>Edit</Text>
       </TouchableOpacity>
     </LinearGradient>
   );

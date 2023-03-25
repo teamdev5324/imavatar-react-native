@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
-import { getAllData } from './PersonalDetails';
+import {getAllData} from './PersonalDetails';
 
 const GSTINDetails = () => {
   const navigation = useNavigation();
@@ -117,7 +117,7 @@ const GSTINDetails = () => {
       description="Share your GSTIN information with us for tax compliance"
       img={require('../assets/Images/gstInDetails.png')}>
       <OnboardingInput
-        label="GST Identification Number"
+        label="GSTIN Identification Number"
         isCompulsory
         placeholder="e.g 22AAAAAOOOOA1Z5"
         onValueChange={setGstIdNumber}
@@ -130,7 +130,7 @@ const GSTINDetails = () => {
         placeholder="e.g ABC Store"
         onValueChange={setBusinessName}
         value={businessName}
-        containerStyle={{ marginTop: 30 }}
+        containerStyle={{marginTop: 30}}
       />
       <OnboardingInput
         label="GSTIN Mobile Number"
@@ -141,7 +141,7 @@ const GSTINDetails = () => {
             setGstinMobileNumber(text.replace(/[^0-9]/g, ''));
         }}
         value={gstinMobileNumber}
-        containerStyle={{ marginTop: 30 }}
+        containerStyle={{marginTop: 30}}
         keyboardType="number-pad"
         maxLength={10}
       />
@@ -151,7 +151,7 @@ const GSTINDetails = () => {
         placeholder="e.g name@email.com"
         onValueChange={setGstinEmailId}
         value={gstinEmailId}
-        containerStyle={{ marginTop: 30 }}
+        containerStyle={{marginTop: 30}}
       />
       <OnboardingInput
         label="PAN"
@@ -159,7 +159,7 @@ const GSTINDetails = () => {
         placeholder="e.g AVHPI7820T"
         onValueChange={setPan}
         value={pan}
-        containerStyle={{ marginTop: 30 }}
+        containerStyle={{marginTop: 30}}
       />
     </OnboardingContainer>
   );

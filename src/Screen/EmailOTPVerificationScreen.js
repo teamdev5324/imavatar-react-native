@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Text,
   View,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import styles from '../Screen/Auth/EmailOTPVerificationScreen/emailotpverificationstyle';
 import axios from 'axios';
+import BackgroundTimer from 'react-native-background-timer';
 export class EmailOTPVerificationScreen extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +32,7 @@ export class EmailOTPVerificationScreen extends Component {
 
   componentDidMount() {
     this._resendOtp();
-    this.interval = setInterval(() => {
+    this.interval = BackgroundTimer.setInterval(() => {
       if (this.state.timeLeft == 0) {
         this.setState({
           otp1: '',
@@ -40,14 +41,14 @@ export class EmailOTPVerificationScreen extends Component {
           otp4: '',
         });
       } else {
-        this.setState(prevState => ({ timeLeft: prevState.timeLeft - 1 }));
+        this.setState(prevState => ({timeLeft: prevState.timeLeft - 1}));
         console.log('timeLeft', this.state.timeLeft);
       }
     }, 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    BackgroundTimer.clearInterval(this.interval);
     console.log(
       'this.props.route.params.local_pass',
       this.props.route.params.local_pass,
@@ -87,7 +88,8 @@ export class EmailOTPVerificationScreen extends Component {
       alert('Please enter OTP');
     } else {
       console.log(
-        `http://35.170.79.161:8080/api/user/userVerification/email/${this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4
+        `http://35.170.79.161:8080/api/user/userVerification/email/${
+          this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4
         }/${this.state.user_id}`,
       );
 
@@ -95,10 +97,11 @@ export class EmailOTPVerificationScreen extends Component {
         this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4;
       axios
         .get(
-          `http://35.170.79.161:8080/api/user/userVerification/email/${this.state.otp1 +
-          this.state.otp2 +
-          this.state.otp3 +
-          this.state.otp4
+          `http://35.170.79.161:8080/api/user/userVerification/email/${
+            this.state.otp1 +
+            this.state.otp2 +
+            this.state.otp3 +
+            this.state.otp4
           }/${this.state.user_id}`,
         )
         .then(Response => {
@@ -146,7 +149,7 @@ export class EmailOTPVerificationScreen extends Component {
   }
 
   render() {
-    const { timeLeft } = this.state;
+    const {timeLeft} = this.state;
     const seconds = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
 
     return (
@@ -177,7 +180,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -196,7 +199,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -215,7 +218,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -233,7 +236,7 @@ export class EmailOTPVerificationScreen extends Component {
               style={[
                 styles.input,
                 styles.inputmarginright,
-                { backgroundColor: this.state.timeLeft == 0 ? 'gray' : null },
+                {backgroundColor: this.state.timeLeft == 0 ? 'gray' : null},
               ]}
               keyboardType={'number-pad'}
               maxLength={1}
@@ -256,7 +259,13 @@ export class EmailOTPVerificationScreen extends Component {
                 alert('Otp sent on above email please wait.');
               }
             }}>
-            <Text style={styles.otprequest}>Resend OTP</Text>
+            <Text
+              style={[
+                styles.otprequest,
+                {color: this.state.timeLeft == 0 ? '#FF6557' : '#000'},
+              ]}>
+              Resend OTP
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity

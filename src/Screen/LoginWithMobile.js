@@ -153,7 +153,7 @@ export class LoginWithMobile extends Component {
                 if (this.state.showError == true) {
                   if (this.state.email == '') {
                     alert('Enter Email/Mobile number');
-                    this.input1.current.focus();
+                    // this.input1.current.focus();
                   }
                 }
                 // this.state.showError == true

@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
   logotext: {
     marginTop: 5,
+    fontSize: 18,
   },
 
   forgotpasstext: {
