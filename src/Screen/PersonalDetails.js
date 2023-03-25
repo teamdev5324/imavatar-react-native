@@ -92,6 +92,8 @@ const PersonalDetails = props => {
       alert('Enter mobile number');
     } else if (mobileNumber.length != 10) {
       alert('Enter 10 digit mobile number');
+    } else if (mobileNumber.match(/^[789]\d{9}$/) === null) {
+      alert('Enter 10 digit mobile number');
     } else if (pincode == '') {
       alert('Enter pincode');
     } else if (

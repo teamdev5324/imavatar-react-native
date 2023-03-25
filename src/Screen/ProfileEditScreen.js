@@ -597,6 +597,10 @@ export class ProfileEditScreen extends Component {
                         alert('Enter mobile number');
                       } else if (this.state.mobile_number.length != 10) {
                         alert('Enter 10 digit mobile number');
+                      } else if (
+                        this.state.mobile_number.match(/^[789]\d{9}$/) === null
+                      ) {
+                        alert('Enter valid mobile number');
                       } else {
                         const param = {
                           active: 'true',

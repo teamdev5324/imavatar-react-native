@@ -71,19 +71,19 @@ export class ForgotPasswordMobileNumber extends Component {
                   showError: false,
                 });
               }}
-              onBlur={() => {
-                if (this.state.showError == true) {
-                  if (this.state.email == '') {
-                    alert('Enter Email/Mobile number');
-                    this.input1.current.focus();
-                  }
-                }
-                // this.state.showError == true
-                //   ? this.state.f_name == ''
-                //     ? alert('Enter firstname')
-                //     : null
-                //   : null;
-              }}
+              // onBlur={() => {
+              //   if (this.state.showError == true) {
+              //     if (this.state.email == '') {
+              //       alert('Enter Email/Mobile number');
+              //       this.input1.current.focus();
+              //     }
+              //   }
+              //   // this.state.showError == true
+              //   //   ? this.state.f_name == ''
+              //   //     ? alert('Enter firstname')
+              //   //     : null
+              //   //   : null;
+              // }}
               value={this.state.email}
               // onChangeText={setUserName}
               //value={userName}
@@ -112,15 +112,14 @@ export class ForgotPasswordMobileNumber extends Component {
                 if (this.state.email == '') {
                   alert('Enter mobile number');
                 } else {
-                  if (this.state.email == '') {
-                    alert('Enter Email/Mobile number');
+                  if (this.state.email.match(/^[789]\d{9}$/) === null) {
+                    alert('Enter Valid Mobile number');
                   } else {
                     const param = {
                       partnerType: 'admin',
                       userName: this.state.email,
                       userType: '6',
                     };
-                    console.log('====================================');
                     console.log('param', param);
                     console.log('====================================');
                     //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin

@@ -576,6 +576,10 @@ export class Profile extends Component {
                         alert('Enter mobile number');
                       } else if (this.state.mobile_number.length != 10) {
                         alert('Enter 10 digit mobile number');
+                      } else if (
+                        this.state.mobile_number.match(/^[789]\d{9}$/) === null
+                      ) {
+                        alert('Enter 10 digit mobile number');
                       } else {
                         const param = {
                           active: 'true',
@@ -1739,6 +1743,11 @@ export class Profile extends Component {
                         } else if (this.state.gstinmobileNumber == '') {
                           alert('Enter gst mobile number');
                         } else if (this.state.gstinmobileNumber.length != 10) {
+                          alert('Enter enter valid mobile number');
+                        } else if (
+                          this.state.gstinmobileNumber.match(/^[789]\d{9}$/) ===
+                          null
+                        ) {
                           alert('Enter enter valid mobile number');
                         } else if (
                           !/^[789]\d{9}$/.test(this.state.gstinmobileNumber)

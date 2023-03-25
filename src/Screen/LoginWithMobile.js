@@ -14,6 +14,7 @@ import React, {Component} from 'react';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import qs from 'qs';
+import AsyncStorage from '@react-native-community/async-storage';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
 
@@ -190,8 +191,8 @@ export class LoginWithMobile extends Component {
                 if (this.state.email == '') {
                   alert('Enter mobile number');
                 } else {
-                  if (this.state.email == '') {
-                    alert('Enter Email/Mobile number');
+                  if (this.state.email.match(/^[789]\d{9}$/) === null) {
+                    alert('Enter Valid Mobile number');
                   } else {
                     const param = {
                       partnerType: 'admin',
@@ -210,6 +211,7 @@ export class LoginWithMobile extends Component {
                       .then(Response => {
                         console.log('Response', Response.data);
                         if (Response.data.statusCode == '200') {
+                          AsyncStorage.setItem('isUserLogin', 'true');
                           this.props.navigation.navigate(
                             'MobileLoginOTPVerificationScreen',
                             {

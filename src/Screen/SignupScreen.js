@@ -81,10 +81,9 @@ export class SignupScreen extends Component {
       alert('Enter valid email');
     } else if (this.state.mobile == '') {
       alert('Enter mobile number');
-    } else if (
-      this.state.mobile.length != 10 &&
-      this.state.mobile.match(/^[789]\d{9}$/)
-    ) {
+    } else if (this.state.mobile.length != 10) {
+      alert('Enter 10 digit moible number ');
+    } else if (this.state.mobile.match(/^[789]\d{9}$/) === null) {
       alert('Enter 10 digit moible number ');
     } else if (this.state.password == '') {
       alert('Enter Password');
@@ -324,19 +323,19 @@ export class SignupScreen extends Component {
                   }
                 }}
                 ref={this.input4}
-                onBlur={() => {
-                  if (this.state.showError3 == true) {
-                    if (this.state.mobile == '') {
-                      alert('Enter mobile number');
-                      // this.input4.current.focus();
-                    }
-                  }
-                  // this.state.showError3 == true
-                  //   ? this.state.mobile == ''
-                  //     ? alert('Enter mobile number')
-                  //     : null
-                  //   : null;
-                }}
+                // onBlur={() => {
+                //   if (this.state.showError3 == true) {
+                //     if (this.state.mobile == '') {
+                //       alert('Enter mobile number');
+                //       // this.input4.current.focus();
+                //     }
+                //   }
+                //   // this.state.showError3 == true
+                //   //   ? this.state.mobile == ''
+                //   //     ? alert('Enter mobile number')
+                //   //     : null
+                //   //   : null;
+                // }}
                 onChangeText={data => {
                   const filteredText = data.replace(/[^0-9]/g, '');
 
