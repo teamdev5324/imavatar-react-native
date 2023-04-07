@@ -67,3 +67,26 @@ export const add_cart_type = payload => ({
   type: user_types.CART_TYPE,
   payload,
 });
+
+export const category_subCategory = payload => {
+  console.log(payload, 'payload');
+  return {
+    type: user_types.CATEGORY_SUBCATEGORY,
+    payload: payload,
+  };
+};
+
+export const productInformation = payload => {
+  console.log(payload, 'payload');
+  return {
+    type: user_types.PRODUCT_INFO,
+    payload: payload,
+  };
+};
+export const editProductInfoAction = payload => {
+  console.log(payload, 'payload');
+  return {
+    type: user_types.EDIT_PRODUCT_INFO,
+    payload: payload,
+  };
+};

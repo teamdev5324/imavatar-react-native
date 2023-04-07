@@ -174,10 +174,10 @@ export class ForgotPasswordOtpScreen extends Component {
                 console.log('====================================');
                 console.log('param', param);
                 console.log('====================================');
-                //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin
+                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 axios
                   .post(
-                    'http://35.170.79.161:8080/api/user/noAuth/forgetPswd',
+                    'http://52.90.60.5:8080/api/user/noAuth/forgetPswd',
                     param,
                   )
                   .then(Response => {
@@ -233,13 +233,13 @@ export class ForgotPasswordOtpScreen extends Component {
                 console.log('====================================');
                 console.log(
                   'param',
-                  `http://35.170.79.161:8080/api/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
+                  `http://52.90.60.5:8080/api/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
                 );
                 console.log('====================================');
-                //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin
+                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 axios
                   .get(
-                    `http://35.170.79.161:8080/api/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
+                    `http://52.90.60.5:8080/api/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
                     param,
                   )
                   .then(Response => {

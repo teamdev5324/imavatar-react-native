@@ -132,7 +132,7 @@ export class SignupScreen extends Component {
     };
 
     axios
-      .post('http://35.170.79.161:8080/api/user/noAuth/addUser', param, {
+      .post('http://52.90.60.5:8080/api/user/noAuth/addUser', param, {
         headers,
       })
       .then(Response => {

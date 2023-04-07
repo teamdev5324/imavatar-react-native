@@ -67,7 +67,7 @@ const PersonalDetails = props => {
 
   const getUserData = () => {
     axios
-      .get(`http://35.170.79.161:8080/api/user/noAuth/getUserInfo/${userId}`)
+      .get(`http://52.90.60.5:8080/api/user/noAuth/getUserInfo/${userId}`)
       .then(Response => {
         console.log('Response', Response.data);
         const {firstName, lastName, emailId, phoneNumber} = Response.data.data;
@@ -118,7 +118,7 @@ const PersonalDetails = props => {
       console.log('param', param);
 
       axios
-        .post('http://35.170.79.161:8080/api/user/noAuth/updateUser', param)
+        .post('http://52.90.60.5:8080/api/user/noAuth/updateUser', param)
         .then(async Response => {
           console.log('Response', Response.data);
 

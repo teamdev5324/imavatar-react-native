@@ -78,7 +78,7 @@ export class LoginScreen extends Component {
     console.log('====================================');
 
     axios
-      .post('http://35.170.79.161:8080/api/user/MP/noAuth/login', param)
+      .post('http://52.90.60.5:8080/api/user/MP/noAuth/login', param)
       .then(Response => {
         console.clear();
         console.log(Response.data.data.isPhoneVerified);
@@ -101,7 +101,7 @@ export class LoginScreen extends Component {
 
             axios
               .post(
-                'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                 {},
                 {
                   headers,
@@ -165,7 +165,7 @@ export class LoginScreen extends Component {
 
             axios
               .post(
-                'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                 {},
                 {
                   headers,
@@ -201,7 +201,7 @@ export class LoginScreen extends Component {
 
             axios
               .post(
-                'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                 {},
                 {
                   headers,
@@ -401,10 +401,10 @@ export class LoginScreen extends Component {
                 //   console.log('====================================');
                 //   console.log('param', param);
                 //   console.log('====================================');
-                //   //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin
+                //   //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 //   axios
                 //     .post(
-                //       'http://35.170.79.161:8080/api/user/MP/noAuth/sendOTP/login',
+                //       'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/login',
                 //       param,
                 //     )
                 //     .then(Response => {

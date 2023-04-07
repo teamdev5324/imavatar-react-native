@@ -2,7 +2,7 @@ import {View, Text, Image} from 'react-native';
 import React from 'react';
 import styles from './singleuploadstyle';
 
-const SingleUploads = () => {
+const SingleUploads = ({item, index}) => {
   return (
     <View style={styles.returnboxhead}>
       <View style={styles.returnboxfirst}>
@@ -25,7 +25,7 @@ const SingleUploads = () => {
 
       <View style={styles.creditboxsec}>
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontcolorgray}>1</Text>
+          <Text style={styles.fontcolorgray}>{index + 1}</Text>
         </View>
 
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
@@ -33,11 +33,11 @@ const SingleUploads = () => {
         </View>
 
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontcolorgray}>Rudraksha</Text>
+          <Text style={styles.fontcolorgray}>{item?.category}</Text>
         </View>
 
         <View style={styles.returnfirstbox}>
-          <Text style={styles.fontcolorgray}>1234</Text>
+          <Text style={styles.fontcolorgray}>{item?.fileId}</Text>
         </View>
       </View>
 
@@ -61,15 +61,15 @@ const SingleUploads = () => {
 
       <View style={styles.creditboxsec}>
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontcolorgray}>31 July 2022 | 4.30 PM</Text>
+          <Text style={styles.fontcolorgray}>{item?.updatedDate}</Text>
         </View>
 
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontcolorgray}>1</Text>
+          <Text style={styles.fontcolorgray}>{item?.puid}</Text>
         </View>
 
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontcolorgray}>In Progress</Text>
+          <Text style={styles.fontcolorgray}>{item?.qcstatus}</Text>
         </View>
 
         <View style={styles.returnfirstbox}>

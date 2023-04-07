@@ -54,6 +54,19 @@ import BankDetails from '../Screen/BankDetails';
 import GSTINDetails from '../Screen/GSTINDetails';
 import PartnerLegal from '../Screen/PartnerLegal';
 import Congratulations from '../Screen/Congratulations';
+import CreateListing from '../Screen/createListing';
+import AddSingleCatalog from '../Screen/AddSingleCatalog';
+import CatalogAddProductInfo from '../Screen/AddProductInfo';
+import PricingInfo from '../Screen/Pricing';
+import DescriptionInfo from '../Screen/Description.js';
+import VariationsInfo from '../Screen/Variations';
+import CatalogImages from '../Screen/CatalogImages';
+import AddBulkCatalog from '../Screen/AddBulkCatalog';
+import AddBulkProductInfo from '../Screen/AddBulkProductInfo';
+import SelectCategory from '../Components/SelectCategory/SelectCategory';
+import ViewQcStauts from '../Screen/ViewQcStatus';
+import ViewSuccessfulListing from '../Screen/ViewSuccessfulListing';
+import CorrectError from '../Screen/CorrectError';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -205,6 +218,71 @@ export default function TabNavigation() {
         <Stack.Screen
           name="ForgotPasswordMobileNumber"
           component={ForgotPasswordMobileNumber}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CreateListing"
+          component={CreateListing}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddSingleCatalog"
+          component={AddSingleCatalog}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CatalogAddProductInfo"
+          component={CatalogAddProductInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PricingInfo"
+          component={PricingInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="DescriptionInfo"
+          component={DescriptionInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="VariationsInfo"
+          component={VariationsInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CatalogImages"
+          component={CatalogImages}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddBulkCatalog"
+          component={AddBulkCatalog}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddBulkProductInfo"
+          component={AddBulkProductInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SelectCategory"
+          component={SelectCategory}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewQcStauts"
+          component={ViewQcStauts}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ViewSuccessfulListing"
+          component={ViewSuccessfulListing}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CorrectError"
+          component={CorrectError}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -53,10 +53,10 @@ export class MobileOTPVerificationScreen extends Component {
     console.log('====================================');
     console.log('param', param);
     console.log('====================================');
-    //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin
+    //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
     axios
       .post(
-        'http://35.170.79.161:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
+        'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
         param,
       )
       .then(Response => {
@@ -91,7 +91,7 @@ export class MobileOTPVerificationScreen extends Component {
     console.log('====================================');
     axios
       .post(
-        'http://35.170.79.161:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
+        'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
         param,
       )
       .then(Response => {
@@ -115,7 +115,7 @@ export class MobileOTPVerificationScreen extends Component {
         this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4;
       axios
         .get(
-          `http://35.170.79.161:8080/api/user/userVerification/phone/${otp}/${this.state.user_id}`,
+          `http://52.90.60.5:8080/api/user/userVerification/phone/${otp}/${this.state.user_id}`,
         )
         .then(Response => {
           if (Response.data.statusCode == '200') {
@@ -131,7 +131,7 @@ export class MobileOTPVerificationScreen extends Component {
 
             axios
               .post(
-                'http://35.170.79.161:8080/api/user/v2/noAuth/updateUser',
+                'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
                 param,
               )
               .then(Response => {

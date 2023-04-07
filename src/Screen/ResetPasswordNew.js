@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import {
   Text,
@@ -49,13 +49,13 @@ export class ResetPasswordNew extends Component {
 
           <Text style={styles.resetpasstext}>Reset Your Password</Text>
           {this.state.showError == true ? (
-            <Text style={{ color: 'red', marginLeft: 10, fontSize: 10 }}>
+            <Text style={{color: 'red', marginLeft: 10, fontSize: 10}}>
               Enter Password
             </Text>
           ) : null}
 
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 1}}>
               <TextInput
                 style={[styles.input, styles.inputmargin]}
                 placeholder="Enter new password Eg. Testing@1"
@@ -76,20 +76,20 @@ export class ResetPasswordNew extends Component {
                   }
                 }}
                 value={this.state.password}
-                placeholderTextColor='#999'
+                placeholderTextColor="#999"
               />
             </View>
 
-            <View style={{ flex: 0.1 }}>
+            <View style={{flex: 0.1}}>
               <TouchableOpacity
                 onPress={() => {
                   this.state.pass_visible == true
                     ? this.setState({
-                      pass_visible: false,
-                    })
+                        pass_visible: false,
+                      })
                     : this.setState({
-                      pass_visible: true,
-                    });
+                        pass_visible: true,
+                      });
                 }}>
                 <Image
                   source={
@@ -108,8 +108,8 @@ export class ResetPasswordNew extends Component {
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 1}}>
               <TextInput
                 onFocus={() => {
                   if (this.state.password == '') {
@@ -130,20 +130,20 @@ export class ResetPasswordNew extends Component {
                 style={styles.input}
                 placeholder="Enter confirm password Eg. Testing@1*"
                 ref={this.input2}
-                placeholderTextColor='#999'
+                placeholderTextColor="#999"
               />
             </View>
 
-            <View style={{ flex: 0.1 }}>
+            <View style={{flex: 0.1}}>
               <TouchableOpacity
                 onPress={() => {
                   this.state.pass_visible_c == true
                     ? this.setState({
-                      pass_visible_c: false,
-                    })
+                        pass_visible_c: false,
+                      })
                     : this.setState({
-                      pass_visible_c: true,
-                    });
+                        pass_visible_c: true,
+                      });
                 }}>
                 <Image
                   source={
@@ -197,7 +197,7 @@ export class ResetPasswordNew extends Component {
                 console.log('params', param);
                 axios
                   .post(
-                    'http://35.170.79.161:8080/api/user/noAuth/changePassword',
+                    'http://52.90.60.5:8080/api/user/noAuth/changePassword',
                     param,
                   )
                   .then(Response => {

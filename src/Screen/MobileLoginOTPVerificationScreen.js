@@ -173,10 +173,10 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 console.log('====================================');
                 console.log('param', param);
                 console.log('====================================');
-                //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin
+                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 axios
                   .post(
-                    'http://35.170.79.161:8080/api/user/MP/noAuth/sendOTP/login',
+                    'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/login',
                     param,
                   )
                   .then(Response => {
@@ -226,10 +226,10 @@ export class MobileLoginOTPVerificationScreen extends Component {
                 console.log('====================================');
                 console.log('param', param);
                 console.log('====================================');
-                //http://35.170.79.161:8080/api/user/noAuth/sendOTPForLogin
+                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 axios
                   .post(
-                    'http://35.170.79.161:8080/api/user/MP/noAuth/loginByOTP',
+                    'http://52.90.60.5:8080/api/user/MP/noAuth/loginByOTP',
                     param,
                   )
                   .then(Response => {
@@ -248,7 +248,7 @@ export class MobileLoginOTPVerificationScreen extends Component {
 
                         axios
                           .post(
-                            'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                             {},
                             {
                               headers,
@@ -279,7 +279,7 @@ export class MobileLoginOTPVerificationScreen extends Component {
 
                         axios
                           .post(
-                            'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                             {},
                             {
                               headers,
@@ -318,7 +318,7 @@ export class MobileLoginOTPVerificationScreen extends Component {
 
                         axios
                           .post(
-                            'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                             {},
                             {
                               headers,

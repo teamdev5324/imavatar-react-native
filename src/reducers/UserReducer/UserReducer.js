@@ -7,6 +7,7 @@ const initialState = {
   user_name: '',
   email: '',
   add_pushnotification_token: '',
+  categoryDetail: {},
   address: [],
   is_vip: '',
   cart_t: '',
@@ -15,6 +16,8 @@ const initialState = {
   month_time: '',
   month_date: '',
   female_st: '',
+  productInformation: {},
+  editProductInfo: {},
 };
 const UserReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -91,6 +94,26 @@ const UserReducer = (state = initialState, action) => {
       return {
         ...state,
         cart_t: action.payload,
+      };
+
+    case user_types.CATEGORY_SUBCATEGORY:
+      console.log(action.payload, 'action.payload');
+      return {
+        ...state,
+        categoryDetail: action.payload,
+      };
+
+    case user_types.PRODUCT_INFO:
+      console.log(action.payload, 'action.payload');
+      return {
+        ...state,
+        productInformation: action.payload,
+      };
+    case user_types.EDIT_PRODUCT_INFO:
+      console.log(action.payload, 'action.payload');
+      return {
+        ...state,
+        editProductInfo: action.payload,
       };
 
     case user_types.LOGOUT:

@@ -12,6 +12,7 @@ import styles from './cataloguploadstyle';
 import CatalogBox from '../../../Components/CatalogBox/CatalogBox';
 import OverviewBox from '../../../Components/OverviewBox/OverviewBox';
 import SingleUploads from '../../../Components/SingleUploads/SingleUploads';
+import axios from 'axios';
 
 const CatalogUpload = ({navigation}) => {
   const [searchtext, setSearchText] = useState('');
@@ -50,7 +51,7 @@ const CatalogUpload = ({navigation}) => {
               ]}
               placeholder="Search by Gemstones, Rudraksha, Pooja Samagri, Deities"
               value={searchtext}
-              onChangeText={setSearchText}
+              onChangeText={() => {}}
             />
             <Image
               style={styles.searchIcon}

@@ -194,7 +194,7 @@ export class ProfileEditScreen extends Component {
   _getUserData() {
     axios
       .get(
-        `http://35.170.79.161:8080/api/user/noAuth/getUserInfo/${this.state.user_id}`,
+        `http://52.90.60.5:8080/api/user/noAuth/getUserInfo/${this.state.user_id}`,
       )
       .then(Response => {
         console.log('Response', Response.data);
@@ -615,7 +615,7 @@ export class ProfileEditScreen extends Component {
 
                         axios
                           .post(
-                            'http://35.170.79.161:8080/api/user/noAuth/updateUser',
+                            'http://52.90.60.5:8080/api/user/noAuth/updateUser',
                             param,
                           )
                           .then(Response => {
@@ -2085,7 +2085,7 @@ export class ProfileEditScreen extends Component {
                           let config = {
                             method: 'post',
                             maxBodyLength: Infinity,
-                            url: 'http://35.170.79.161:8080/api/user/MP/noAuth/userPwdChange',
+                            url: 'http://52.90.60.5:8080/api/user/MP/noAuth/userPwdChange',
                             headers: {
                               Authorization: 'Bearer' + this.props.login_tokenn,
                               'Content-Type': 'application/json',
@@ -2112,7 +2112,7 @@ export class ProfileEditScreen extends Component {
 
                           // axios
                           //   .post(
-                          //     'http://35.170.79.161:8080/api/user/noAuth/userPwdChange',
+                          //     'http://52.90.60.5:8080/api/user/noAuth/userPwdChange',
                           //     param,
                           //   )
                           //   .then(Response => {

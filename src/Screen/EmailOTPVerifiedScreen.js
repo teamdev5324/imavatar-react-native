@@ -72,15 +72,11 @@ export class EmailOTPVerifiedScreen extends Component {
               console.log('====================================');
 
               axios
-                .post(
-                  'http://35.170.79.161:8080/api/user/noAuth/login',
-                  param,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                    },
+                .post('http://52.90.60.5:8080/api/user/noAuth/login', param, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
                   },
-                )
+                })
                 .then(Response => {
                   console.log('Response', Response.data.data);
                   //alert(Response.data.status);
@@ -93,7 +89,7 @@ export class EmailOTPVerifiedScreen extends Component {
 
                   axios
                     .post(
-                      'http://35.170.79.161:8080/api/user/auth/getUserInfoPartner/6',
+                      'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
                       {},
                       {
                         headers,

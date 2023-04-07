@@ -3,7 +3,7 @@
 // export const userAuthApi = createApi({
 //   reducerPath: 'userAuthApi',
 //   baseQuery: fetchBaseQuery({
-//     baseUrl: 'http://35.170.79.161:8080/api/user/',
+//     baseUrl: 'http://52.90.60.5:8080/api/user/',
 //   }),
 //   endpoints: builder => ({
 //     registerUser: builder.mutation({

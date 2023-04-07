@@ -42,8 +42,10 @@
     "faker": "^6.6.6",
     "firebase-admin": "^9.9.0",
     "firebase-functions": "^3.24.1",
+    "formik": "^2.2.9",
     "geolib": "^3.3.1",
     "link": "^1.5.1",
+    "lodash": "^4.17.21",
     "luxon": "^3.2.1",
     "moment": "^2.29.4",
     "qs": "^6.11.0",
@@ -96,7 +98,8 @@
     "rn-simple-toast": "^1.0.1",
     "rnschedule": "0.0.5",
     "run-ios": "^0.1.0",
-    "warning": "^3.0.0"
+    "warning": "^3.0.0",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "7.14.0",
