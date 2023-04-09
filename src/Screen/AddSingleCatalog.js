@@ -122,27 +122,6 @@ const AddSingleCatalog = props => {
     }
   };
 
-  var items = [
-    {
-      id: 1,
-      name: 'JavaScript',
-    },
-    {
-      id: 2,
-      name: 'Java',
-    },
-    {
-      id: 3,
-      name: 'Ruby',
-    },
-    {
-      id: 4,
-      name: 'React Native',
-    },
-  ];
-
-  console.log(serarchData, 'serarchData');
-
   const [categoryToggle, setCategoryToggle] = useState(false);
   const [subcategoryToggle, setSubCategoryToggle] = useState(false);
   const [hide, setHide] = useState(false);

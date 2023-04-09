@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 
 import styles from '../Screen/Shop/CatalogUpload/cataloguploadstyle';
@@ -25,35 +27,72 @@ const CatalogUpload = props => {
   const token = useSelector(state => state.userDetails.login_token);
 
   const [allData, setAllData] = useState([]);
-  const [singleUplaod, setSingleUplaod] = useState([]);
+  const [singleUpload, setSingleUplaod] = useState([]);
   const [bulkUpload, setBulkUpload] = useState([]);
+  const [page, setPage] = useState(0);
+  const [singlePage, setSinglePage] = useState(0);
+  const [bulkPage, setBulkPage] = useState(0);
+  const [singleUploadLength, setSingleUploadLength] = useState(0);
+  const [bulkUploadLength, setBulkUploadLength] = useState(0);
+  const [bundleKitLength, setBundleKitLength] = useState(0);
 
   const [uploadbtnclick, setUploadBtnClick] = useState('Single uploads');
 
-  useEffect(() => {
-    if (allData.length > 0) {
-      const single = allData.filter(item => item.uploadType === 'SINGLE');
-      const bulk = allData.filter(item => item.uploadType === 'BULK');
-      setSingleUplaod(single);
-      setBulkUpload(bulk);
-    }
-  }, [allData]);
+  // useEffect(() => {
+  //   if (allData.length > 0) {
+  //     const single = allData.filter(item => item.uploadType === 'SINGLE');
+  //     const bulk = allData.filter(item => item.uploadType === 'BULK');
+  //     setSingleUplaod(single);
+  //     setBulkUpload(bulk);
+  //   }
+  // }, [allData]);
 
-  const getAllCategory = async state => {
+  useEffect(() => {
+    getAllCategory();
+  }, [uploadbtnclick]);
+
+  const getAllCategory = async () => {
     try {
       const headers = {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       };
 
+      // http://18.234.206.45:8085/api/v1/partner/product/qc/paging?page=0&rows=5&sortBy=id&asc=false&uploadType=SINGLE
+      const isSingle = uploadbtnclick.includes('Single');
+      let uploadType = '';
+      if (isSingle) {
+        uploadType = 'SINGLE';
+      } else {
+        uploadType = 'BULK';
+      }
+
       const res = await axios.get(
-        `http://18.234.206.45:8085/api/v1/partner/product/qc`,
+        `http://18.234.206.45:8085/api/v1/partner/product/qc/paging?page=${
+          isSingle ? singlePage : bulkPage
+        }&rows=5&sortBy=id&asc=false&uploadType=${uploadType}`,
         {
           headers,
         },
       );
-      setAllData(res?.data?.results);
-      console.log(res, 'res');
+      console.log(
+        '🚀 ~ file: CatalogUpload.js:58 ~ getAllCategory ~ res:',
+        res,
+      );
+      if (res.data.status !== 'SUCCESS') {
+        return alert("Can't fetch data");
+      }
+
+      setSingleUploadLength(res?.data?.results?.total_single_upload);
+      setBulkUploadLength(res?.data?.results?.total_bulk_upload);
+      setBundleKitLength(res?.data?.results?.total_buldle_kit);
+
+      if (isSingle) {
+        setSingleUplaod(prevVal => [...prevVal, ...res?.data?.results?.qc]);
+      } else {
+        setBulkUpload(prevVal => [...prevVal, ...res?.data?.results?.qc]);
+        // setAllData(res?.data?.results);
+      }
     } catch (error) {
       console.log(
         '🚀 ~ file: PersonalDetails.js:35 ~ getAllData ~ error:',
@@ -63,7 +102,7 @@ const CatalogUpload = props => {
   };
 
   useEffect(() => {
-    getAllCategory();
+    getAllCategory(page);
   }, []);
 
   return (
@@ -142,19 +181,25 @@ const CatalogUpload = props => {
           </Text>
 
           <View style={styles.overviewboxhead}>
-            <OverviewBox label={'Total uploads done'} number={allData.length} />
+            <OverviewBox
+              label="Total uploads done"
+              number={singleUploadLength + bulkUploadLength + bundleKitLength}
+            />
 
             <OverviewBox
               label={'Using Single uploads'}
-              number={singleUplaod.length}
+              number={singleUploadLength}
             />
 
             <OverviewBox
               label={'Using Bulk uploads'}
-              number={bulkUpload.length}
+              number={bulkUploadLength}
             />
 
-            <OverviewBox label={'Using Bundled Kits'} number={'0'} />
+            <OverviewBox
+              label={'Using Bundled Kits'}
+              number={bundleKitLength}
+            />
           </View>
 
           <View style={styles.catalogbtnbox}>
@@ -169,7 +214,7 @@ const CatalogUpload = props => {
                     uploadbtnclick === 'Single uploads' ? 'bold' : '400',
                   fontSize: 12,
                 }}>
-                Single uploads ( {singleUplaod.length} )
+                Single uploads ( {singleUploadLength} )
               </Text>
             </TouchableOpacity>
 
@@ -186,7 +231,7 @@ const CatalogUpload = props => {
                     uploadbtnclick === 'Bulk uploads' ? 'bold' : '400',
                   fontSize: 12,
                 }}>
-                Bulk uploads ({bulkUpload.length})
+                Bulk uploads ({bulkUploadLength})
               </Text>
             </TouchableOpacity>
 
@@ -206,23 +251,50 @@ const CatalogUpload = props => {
                     uploadbtnclick === 'Bundled kits listing' ? 'bold' : '400',
                   fontSize: 12,
                 }}>
-                Bundled kits listing ( 1 )
+                Bundled kits{'\n'}listing ( {bundleKitLength} )
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-
-        <FlatList
-          nestedScrollEnabled={true}
-          contentContainerStyle={{
-            backgroundColor: '#fff',
-          }}
-          data={uploadbtnclick === 'Single uploads' ? singleUplaod : bulkUpload}
-          renderItem={({item, index}) => {
-            return <SingleUploads index={index} item={item} />;
-          }}
-        />
       </SafeAreaView>
+      <FlatList
+        nestedScrollEnabled={true}
+        contentContainerStyle={{
+          backgroundColor: '#fff',
+        }}
+        data={uploadbtnclick === 'Single uploads' ? singleUpload : bulkUpload}
+        renderItem={({item, index}) => {
+          return <SingleUploads index={index} item={item} />;
+        }}
+        keyExtractor={item => item.id}
+        onEndReachedThreshold={0.2}
+        onEndReached={() => {
+          console.log('onEndReached');
+          if (uploadbtnclick === 'Single uploads') {
+            if (singleUpload.length < singleUploadLength) {
+              setSinglePage(prevVal => prevVal + 1);
+              getAllCategory();
+            }
+          } else {
+            if (bulkUpload.length < bulkUploadLength) {
+              setBulkPage(prevVal => prevVal + 1);
+              getAllCategory();
+            }
+          }
+        }}
+        ListFooterComponent={() => {
+          if (uploadbtnclick === 'Single uploads') {
+            if (singleUpload.length < singleUploadLength) {
+              return <ActivityIndicator size="large" color="#FF6658" />;
+            }
+          } else {
+            if (bulkUpload.length < bulkUploadLength) {
+              return <ActivityIndicator size="large" color="#FF6658" />;
+            }
+          }
+          return null;
+        }}
+      />
     </ScrollView>
   );
 };

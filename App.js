@@ -35,7 +35,6 @@ async function requestUserPermission() {
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
   if (enabled) {
-    console.log('Authorization status:===================', authStatus);
   }
 }
 
@@ -47,12 +46,8 @@ function App({navigation, props}) {
     if (!messaging().isDeviceRegisteredForRemoteMessages) {
       messaging()
         .registerDeviceForRemoteMessages()
-        .then(value => {
-          console.log('REGISTER ', value);
-          console.log('REGISTER ', value);
-        });
+        .then(value => {});
     }
-    console.log('REGISTER 2', messaging().isDeviceRegisteredForRemoteMessages);
     setCalled(true);
   }
   // useEffect(() => {
@@ -64,14 +59,11 @@ function App({navigation, props}) {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function (token) {
-        console.log('TOKEN:', token);
         //this.props.add_pushnotification_token(token);
       },
 
       // (required) Called when a remote is received or opened, or local notification is opened
       onNotification: function (notification) {
-        console.log('NOTIFICATION:', notification);
-
         // process the notification
 
         // (required) Called when a remote is received or opened, or local notification is opened
@@ -80,9 +72,6 @@ function App({navigation, props}) {
 
       // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
       onAction: function (notification) {
-        console.log('ACTION:', notification.action);
-        console.log('NOTIFICATION:', notification);
-
         // process the action
       },
 

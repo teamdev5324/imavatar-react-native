@@ -5,7 +5,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {platform} from 'react-native';
 
-import {createStackNavigator, HeaderTitle} from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  HeaderTitle,
+} from '@react-navigation/stack';
 
 import LoginScreen from '../Screen/LoginScreen';
 
@@ -77,9 +81,13 @@ const mapDispatchToProps = {};
 export default function TabNavigation() {
   return (
     <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor={'white'} hideen />
+      <StatusBar barStyle="dark-content" backgroundColor={'white'} />
 
-      <Stack.Navigator initialRouteName={'Splashscreen'}>
+      <Stack.Navigator
+        initialRouteName="Splashscreen"
+        screenOptions={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}>
         <Stack.Screen
           name="Splashscreen"
           component={Splashscreen}

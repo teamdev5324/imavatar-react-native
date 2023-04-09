@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   catalogbottomhead: {
     paddingHorizontal: 16,
     paddingVertical: 15,
+    backgroundColor: '#fff',
   },
 
   catalogbottomtext: {

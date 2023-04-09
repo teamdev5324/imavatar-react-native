@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import DocumentPicker from 'react-native-document-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
@@ -19,15 +20,41 @@ const BankDetails = () => {
   const [bankName, setBankName] = useState('');
   const [bankBranch, setBankBranch] = useState('');
   const [fileName, setFileName] = useState('');
-  // val.split('').length === 10 && val.match(/^[789]\d{9}$/);
+  const [fileData, setFileData] = useState('');
 
   useEffect(() => {
-    getData();
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+
+    return unsubscribe;
   }, []);
 
   const getData = async () => {
     const res = await getAllData(route.params.token);
     const data = res.data.results.bank;
+    console.log('🚀 ~ file: BankDetails.js:31 ~ getData ~ data:', data);
+
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://18.234.206.45:8085/api/v1/files/download/' + data.documentId,
+      headers: {
+        Authorization: 'Bearer ' + route.params.token,
+      },
+    };
+
+    axios
+      .request(config)
+      .then(res => {
+        res = res.data.results;
+        console.log('res', res);
+        setFileData(res.fileContent);
+        setFileName(res.filename);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
 
     setAccountHolderName(data.accountHolderName);
     setAccountNumber(data.accountNumber);
@@ -38,10 +65,24 @@ const BankDetails = () => {
   };
 
   const getFile = async () => {
-    const results = await DocumentPicker.pickSingle({
-      type: [DocumentPicker.types.images],
-    });
-    setFileName(results.name);
+    try {
+      const results = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
+        copyTo: 'cachesDirectory',
+      });
+      console.log('🚀 ~ file: BankDetails.js:46 ~ getFile ~ results:', results);
+      const getFileData = await RNFetchBlob.fs.readFile(
+        results.type === DocumentPicker.types.pdf
+          ? results.uri
+          : results.fileCopyUri,
+        'base64',
+      );
+      setFileData(getFileData);
+      setFileName(results.name);
+    } catch (error) {
+      alert('Something went wrong while uploading file');
+      console.log('🚀 ~ file: BankDetails.js:47 ~ getFile ~ error:', error);
+    }
   };
 
   const onBtnPress = (isPrev = false) => {
@@ -62,41 +103,76 @@ const BankDetails = () => {
     } else if (IFSCCode.split('').length !== 11) {
       alert('Enter valid ifsc code');
     } else {
-      const param = {
-        accountHolderName: accountHolderName,
-        accountNumber: accountNumber,
-        bankName: bankName,
-        branchName: bankBranch,
-        documentId: 'DDMS0018',
-        ifscCode: IFSCCode,
+      const fileParams = {
+        fileContent: fileData,
+        fileName: fileName,
+        usecaseName: 'userBankDetail',
+      };
+      console.log(
+        '🚀 ~ file: BankDetails.js:87 ~ onBtnPress ~ fileParams:',
+        fileParams,
+      );
+
+      const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://18.234.206.45:8085/api/v1/files/upload',
+        headers: {
+          Authorization: 'Bearer ' + route.params.token,
+          'Content-Type': 'application/json',
+        },
+        data: fileParams,
       };
 
-      const headers = {
-        Authorization: 'Bearer ' + route.params.token,
-        'Content-Type': 'application/json',
-      };
-
-      const queryParams = {
-        includeDeleted: true,
-        sortBy: 'createdAt',
-      };
-
-      axios
-        .put('http://18.234.206.45:8085/api/v1/partner/profile/bank', param, {
-          params: queryParams,
-          headers,
-        })
-        .then(Response => {
-          console.log('Response', Response.data);
-          if (isPrev) {
-            navigation.goBack();
+      axios(config)
+        .then(function (res) {
+          console.log('File upload res:', res);
+          if (res.data.status !== 'SUCCESS') {
+            alert('Something went wrong');
           } else {
-            navigation.navigate('GSTINDetails', route.params);
+            const param = {
+              accountHolderName: accountHolderName,
+              accountNumber: accountNumber,
+              bankName: bankName,
+              branchName: bankBranch,
+              documentId: res.data.results.documentId,
+              ifscCode: IFSCCode,
+            };
+
+            const config2 = {
+              method: 'put',
+              maxBodyLength: Infinity,
+              url: 'http://18.234.206.45:8085/api/v1/partner/profile/bank',
+              headers: {
+                Authorization: 'Bearer ' + route.params.token,
+                'Content-Type': 'application/json',
+              },
+              data: JSON.stringify(param),
+            };
+
+            axios(config2)
+              .then(async function (res) {
+                console.log('Bank details res:', res);
+                if (res.data.status === 'SUCCESS') {
+                  if (isPrev) {
+                    navigation.goBack();
+                  } else {
+                    navigation.navigate('GSTINDetails', route.params);
+                  }
+                } else {
+                  console.log('Not getting proper response');
+                  alert('Something went wrong');
+                }
+              })
+              .catch(function (error) {
+                alert('Something went wrong');
+                console.log('error', error);
+              });
           }
         })
-        .catch(err => {
-          console.log('Error', err);
+        .catch(function (error) {
           alert('Something went wrong');
+          console.log('error', error);
         });
     }
   };
@@ -201,7 +277,9 @@ const BankDetails = () => {
         <TouchableOpacity onPress={getFile}>
           <Text style={{}}>Upload file</Text>
         </TouchableOpacity>
-        <Text>{fileName}</Text>
+        <Text>
+          {fileName.length >= 15 ? fileName.substring(0, 15) + '...' : fileName}
+        </Text>
       </View>
     </OnboardingContainer>
   );

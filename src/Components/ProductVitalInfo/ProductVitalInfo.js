@@ -11,7 +11,7 @@ const ProductVitalInfo = ({onBtnPress, onCancelPress}) => {
       <InputWithIcon star="star" title="Product Name" />
       <InputWithIcon star="star" title="Product Title" />
       <InputWithIcon title="Product ID" />
-      <InputWithIcon star="star" title="Product ID Type" select="select" />
+      {/* <InputWithIcon star="star" title="Product ID Type" select="select" /> */}
       <InputWithIcon title="Brand Name" />
       <InputWithIcon star="star" title="Product Type" />
       <InputWithIcon star="star" title="Stock status" select="select" />

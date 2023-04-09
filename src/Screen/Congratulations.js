@@ -4,9 +4,11 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Congratulations = ({navigation, route}) => {
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       navigation.navigate('Dashboard', route.params);
     }, 5000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (

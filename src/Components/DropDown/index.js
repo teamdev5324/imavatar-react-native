@@ -72,6 +72,13 @@ const AppDropDown = ({
           // if data array is an array of objects then return item.property to represent item in dropdown
           return item;
         }}
+        rowTextStyle={{
+          color: '#000',
+          fontSize: 12,
+          fontWeight: '400',
+          textAlign: 'left',
+        }}
+        dropdownOverlayColor={'#00000000'}
       />
       {error !== '' && error !== undefined && (
         <Text style={{color: 'red', marginTop: 4}}>{error}</Text>

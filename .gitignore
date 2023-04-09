@@ -64,6 +64,8 @@ captures/
 node_modules/
 npm-debug.log
 yarn-error.log
+yarn.lock
+package-lock.json
 
 # Google Services (e.g. APIs or Firebase)
 # google-services.json

@@ -212,14 +212,6 @@ export class LoginScreen extends Component {
                 console.log('Res123', Response1.data);
                 console.log('====================================');
                 this.props.addUserId(Response1.data.data.id);
-                // this.props.navigation.navigate('MobileOTPVerificationScreen', {
-                //   // userid: Response.data.data.id,
-                //   // token: dem,
-                //   mobile_numer: Response1.data.data.phoneNumber,
-                //   email: Response1.data.data.emailId,
-                //   userid: Response1.data.data.id,
-                //   local_pass: local_pass,
-                // });
 
                 this.props.navigation.navigate('EmailOTPVerificationScreen', {
                   email: Response1.data.data.emailId,

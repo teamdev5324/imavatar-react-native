@@ -1,6 +1,7 @@
 import {View, Text, Image} from 'react-native';
 import React from 'react';
 import styles from './singleuploadstyle';
+import moment from 'moment';
 
 const SingleUploads = ({item, index}) => {
   return (
@@ -37,13 +38,15 @@ const SingleUploads = ({item, index}) => {
         </View>
 
         <View style={styles.returnfirstbox}>
-          <Text style={styles.fontcolorgray}>{item?.fileId}</Text>
+          <Text style={styles.fontcolorgray}>
+            {item?.fileId ?? item?.image}
+          </Text>
         </View>
       </View>
 
       <View style={styles.returnboxfirst}>
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontweightbold}>Created Date{'\n'}& Time</Text>
+          <Text style={styles.fontweightbold}>Created Date {'\n'}& Time</Text>
         </View>
 
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
@@ -61,7 +64,12 @@ const SingleUploads = ({item, index}) => {
 
       <View style={styles.creditboxsec}>
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>
-          <Text style={styles.fontcolorgray}>{item?.updatedDate}</Text>
+          {/* <Text style={styles.fontcolorgray}>{item?.updatedDate}</Text> */}
+          <Text style={styles.fontcolorgray}>{`${moment(
+            item?.updatedDate,
+          ).format('DD-MM-YYYY')}       ${moment(item?.updatedDate).format(
+            'hh:mm a',
+          )}`}</Text>
         </View>
 
         <View style={[styles.returnfirstbox, styles.returnfirstboxborder]}>

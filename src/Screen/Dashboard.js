@@ -17,24 +17,12 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    console.log('====================================');
-    console.log('this is login  token', this.props.login_tokenn);
-    console.log('this', this.props.user_idd);
-    console.log('this', this.props);
-    console.log('====================================');
-
     // AsyncStorage.getItem('userToken').then(res => {
-    //   console.log(JSON.parse(res).token, 'res');
     //   let token = JSON.parse(res).token;
-    //   console.log('====================================');
-    //   console.log(token, 'token');
-    //   console.log('====================================');
     //   this.setState({
     //     userToken: `${token}`,
     //   });
     // });
-
-    console.log(this.state, 'usertOKEN');
   }
 
   onLogOutPress() {}
