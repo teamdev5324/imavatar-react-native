@@ -41,8 +41,10 @@ const AddSingleCatalog = props => {
   const [subCategoryData, setSubCategoryData] = useState([]);
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
-
-  const test = {};
+  const [categoryToggle, setCategoryToggle] = useState(false);
+  const [subcategoryToggle, setSubCategoryToggle] = useState(false);
+  const [hide, setHide] = useState(false);
+  const [searchData, setSearchData] = useState([]);
 
   const getAllData = async () => {
     try {
@@ -99,8 +101,6 @@ const AddSingleCatalog = props => {
     subCategory: subCategory,
   };
 
-  const [serarchData, setSearchData] = useState([]);
-
   const searchText = async text => {
     try {
       const headers = {
@@ -122,9 +122,6 @@ const AddSingleCatalog = props => {
     }
   };
 
-  const [categoryToggle, setCategoryToggle] = useState(false);
-  const [subcategoryToggle, setSubCategoryToggle] = useState(false);
-  const [hide, setHide] = useState(false);
   return (
     <View
       style={{
@@ -193,6 +190,7 @@ const AddSingleCatalog = props => {
               <View
                 style={{
                   height: Dimensions.get('window').height * 0.7,
+                  backgroundColor: '#fff',
                 }}>
                 <TouchableOpacity onPress={() => setHide(false)}>
                   <Text
@@ -208,7 +206,7 @@ const AddSingleCatalog = props => {
                   </Text>
                 </TouchableOpacity>
                 <FlatList
-                  data={serarchData}
+                  data={searchData}
                   renderItem={({item}) => {
                     return (
                       <TouchableOpacity
@@ -217,6 +215,8 @@ const AddSingleCatalog = props => {
                           setHide(false);
                           setCategory(item?.category?.title);
                           setSubCategory(item?.title);
+                          setCategoryInd(-1);
+                          setSubCategoryInd(-1);
                         }}>
                         <Text
                           style={{
@@ -375,7 +375,6 @@ const AddSingleCatalog = props => {
           disabled={categoryInd === undefined || subcategoryInd === undefined}
           onPress={() => {
             navigation.navigate('CatalogAddProductInfo');
-            console.log(prepareData, 'prepareData');
             dispatch(category_subCategory(prepareData));
             dispatch(editProductInfoAction({}));
           }}>

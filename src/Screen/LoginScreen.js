@@ -421,7 +421,9 @@ export class LoginScreen extends Component {
               <TouchableOpacity
                 style={{marginTop: 20}}
                 onPress={() => {
-                  this.props.navigation.goBack();
+                  if (this.props.navigation.canGoBack())
+                    this.props.navigation.goBack();
+                  else this.props.navigation.navigate('Signup');
                 }}>
                 <Text style={styles.accounttextinnner}>Create an account</Text>
               </TouchableOpacity>

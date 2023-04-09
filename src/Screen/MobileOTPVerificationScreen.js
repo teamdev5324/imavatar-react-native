@@ -1,6 +1,7 @@
 import {textAlign} from '@mui/system';
 import axios from 'axios';
 import React, {Component} from 'react';
+import Modal from 'react-native-modal';
 
 import {
   Text,
@@ -25,6 +26,8 @@ export class MobileOTPVerificationScreen extends Component {
       otp2: '',
       otp3: '',
       otp4: '',
+      newMobileNumber: '',
+      isVisible: false,
     };
 
     this.input1 = React.createRef();
@@ -40,20 +43,13 @@ export class MobileOTPVerificationScreen extends Component {
       this.props.route.params.local_pass,
     );
   }
-  componentDidMount() {
-    console.log(
-      'this.props.route.params.local_pass',
-      this.props.route.params.local_pass,
-    );
+
+  sendOtp(number) {
     const param = {
       partnerType: 'admin',
-      userName: this.state.mobile_number,
+      userName: number,
       userType: '6',
     };
-    console.log('====================================');
-    console.log('param', param);
-    console.log('====================================');
-    //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
     axios
       .post(
         'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
@@ -61,9 +57,13 @@ export class MobileOTPVerificationScreen extends Component {
       )
       .then(Response => {
         console.log('Response', Response.data);
-        if (Response.data.statusCode == '200') {
-        }
+      })
+      .catch(errr => {
+        alert('Unable to send otp');
+        console.log('errr', errr);
       });
+
+    BackgroundTimer.clearInterval(this.interval);
 
     this.interval = BackgroundTimer.setInterval(() => {
       if (this.state.timeLeft == 0) {
@@ -75,9 +75,12 @@ export class MobileOTPVerificationScreen extends Component {
         });
       } else {
         this.setState(prevState => ({timeLeft: prevState.timeLeft - 1}));
-        console.log('timeLeft', this.state.timeLeft);
       }
     }, 1000);
+  }
+
+  componentDidMount() {
+    this.sendOtp(this.state.mobile_number);
   }
 
   _resendOtp() {
@@ -86,9 +89,7 @@ export class MobileOTPVerificationScreen extends Component {
       userName: this.state.mobile_number,
       userType: '6',
     };
-    console.log('====================================');
     console.log('param', param);
-    console.log('====================================');
     axios
       .post(
         'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
@@ -155,6 +156,73 @@ export class MobileOTPVerificationScreen extends Component {
     }
   }
 
+  updateNumber() {
+    if (
+      this.state.newMobileNumber.split('').length === 10 &&
+      this.state.newMobileNumber.match(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+      )
+    ) {
+      const newThis = this;
+      axios
+        .get(
+          'http://52.90.60.5:8080/api/user/MP/noAuth/userExists/' +
+            this.state.newMobileNumber,
+        )
+        .then(res => {
+          if (res.data.status === 'SUCCESS') {
+            alert('User already exists');
+          } else {
+            const data = JSON.stringify({
+              phoneNumber: this.state.newMobileNumber,
+              user_id: this.props.route.params.userid,
+            });
+            const headers = {
+              Authorization:
+                'Bearer ' +
+                'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwNTM1IiwiYXV0aCI6ImFkbWluIiwiaWQiOjI0MTMsImlhdCI6MTY3NjkwNDc0NH0.BNVFViuxgwtXH5du_L4vvjM8gfF6pmMO9xG2mb4yLII',
+              'Content-Type': 'application/json',
+            };
+
+            const config = {
+              method: 'post',
+              maxBodyLength: Infinity,
+              url: 'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
+              headers,
+              data: data,
+            };
+
+            axios(config)
+              .then(function (res) {
+                let newRes = res.data;
+                if (newRes) {
+                  alert('Mobile number updated successfully');
+                  console.log('this', newThis);
+                  newThis.setState({
+                    isVisible: false,
+                    mobile_number: newThis.state.newMobileNumber,
+                    timeLeft: 60,
+                  });
+                  newThis.sendOtp(newThis.state.newMobileNumber);
+                } else {
+                  alert('Something went wrong');
+                }
+              })
+              .catch(function (error) {
+                console.log('error', error);
+                alert('Something went wrong');
+              });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+          alert('Something went wrong');
+        });
+    } else {
+      alert('Enter valid mobile number');
+    }
+  }
+
   render() {
     const {timeLeft} = this.state;
     const seconds = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
@@ -182,7 +250,9 @@ export class MobileOTPVerificationScreen extends Component {
             </Text>
             <Pressable
               onPress={() => {
-                this.props.navigation.goBack();
+                this.setState({
+                  isVisible: true,
+                });
               }}>
               <Text style={styles.veritextinnner}> Change</Text>
             </Pressable>
@@ -288,6 +358,57 @@ export class MobileOTPVerificationScreen extends Component {
             <Text style={styles.signupbuttontext}>Confirm</Text>
           </TouchableOpacity>
         </View>
+        <Modal
+          isVisible={this.state.isVisible}
+          transparent
+          style={{margin: 0, padding: 0}}
+          onBackdropPress={() => this.setState({isVisible: false})}
+          onBackButtonPress={() => this.setState({isVisible: false})}
+          animationIn="bounceInUp"
+          animationOut="slideOutDown">
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 20,
+            }}>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                padding: 20,
+                borderRadius: 12,
+                width: '80%',
+              }}>
+              <Text>New Mobile Number</Text>
+              <TextInput
+                onChangeText={text =>
+                  this.setState({
+                    newMobileNumber: text.replace(/[^0-9]/g, ''),
+                  })
+                }
+                value={this.state.newMobileNumber}
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5,
+                  padding: 10,
+                  marginTop: 15,
+                }}
+                placeholder="Your New Mobile Number"
+                keyboardType="number-pad"
+                maxLength={10}
+              />
+              <TouchableOpacity
+                style={styles.signupbutton}
+                onPress={() => {
+                  this.updateNumber();
+                }}>
+                <Text style={styles.signupbuttontext}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }

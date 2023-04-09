@@ -382,9 +382,24 @@ const DescriptionInfo = () => {
               defaultValue={values.exchangeAvailable}
             />
 
+            <AppDropDown
+              data={['mm', 'cm', 'm', 'ft', 'in']}
+              error={touched.unitMeasurement ? errors.unitMeasurement : ''}
+              onChange={item => {
+                setFieldValue('unitMeasurement', item);
+              }}
+              label={'Unit of Measurement (UOM)'}
+              onBlur={() => setFieldTouched('unitMeasurement', true)}
+              value={values.unitMeasurement}
+              defaultValue={values.unitMeasurement}
+            />
             <View style={{marginBottom: 10}}>
-              <View style={{flexDirection: 'row'}}>
-                <Icon name="close" style={{marginRight: 6}} />
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                {/* <Icon name="close" style={{marginRight: 6}} /> */}
+                <Image
+                  source={require('../assets/HelpinputIcon.png')}
+                  style={{marginRight: 5}}
+                />
                 <Text
                   style={{
                     marginRight: 4,
@@ -435,17 +450,6 @@ const DescriptionInfo = () => {
                 />
               </View>
             </View>
-            <AppDropDown
-              data={['mm', 'cm', 'm', 'ft', 'in']}
-              error={touched.unitMeasurement ? errors.unitMeasurement : ''}
-              onChange={item => {
-                setFieldValue('unitMeasurement', item);
-              }}
-              label={'Unit of Measurement (UOM)'}
-              onBlur={() => setFieldTouched('unitMeasurement', true)}
-              value={values.unitMeasurement}
-              defaultValue={values.unitMeasurement}
-            />
             <View
               style={{
                 flexDirection: 'row',

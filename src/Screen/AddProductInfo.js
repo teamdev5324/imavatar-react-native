@@ -92,11 +92,7 @@ const CatalogAddProductInfo = () => {
         usecaseName: 'certificateUpload',
         fileContent: base64Data,
       };
-      console.log(
-        '🚀 ~ file: AddProductInfo.js:99 ~ convertinBase64 ~ data:',
-        data,
-        token,
-      );
+
       let config_ = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -107,16 +103,10 @@ const CatalogAddProductInfo = () => {
         },
         data,
       };
-      console.log(
-        '🚀 ~ file: AddProductInfo.js:106 ~ convertinBase64 ~ config_:',
-        config_,
-      );
+      console.log('config', config_);
 
       const fileRes = await axios(config_);
-      console.log(
-        '🚀 ~ file: AddProductInfo.js:111 ~ convertinBase64 ~ fileRes:',
-        fileRes,
-      );
+      console.log('fileRes', fileRes);
 
       const docId = fileRes.data.results.documentId;
       if (docId !== '') {
@@ -148,10 +138,22 @@ const CatalogAddProductInfo = () => {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        const res = await DocumentPicker.pickSingle({
-          type: [DocumentPicker.types.pdf],
+        const results = await DocumentPicker.pickSingle({
+          type: [DocumentPicker.types.pdf, DocumentPicker.types.images],
+          copyTo: 'cachesDirectory',
         });
-        convertinBase64(res.uri, res.name);
+        console.log('response', results);
+        const fileLocation =
+          results.type === DocumentPicker.types.pdf
+            ? results.uri
+            : results.fileCopyUri;
+
+        const fileName =
+          results.type === DocumentPicker.types.pdf
+            ? results.name + '.pdf'
+            : results.name;
+
+        convertinBase64(fileLocation, fileName);
       } else {
         alert('Media Library Permission Denied');
       }
@@ -184,10 +186,10 @@ const CatalogAddProductInfo = () => {
     stockStatus: Yup.string().required('Stock status is required'),
     weightOfProduct: Yup.string()
       .required('Weight of product is required')
-      .matches(/^[0-9\b]+$/, 'Enter valid quantity'),
-    dimensionsOfProduct: Yup.string().required(
-      'Dimensions of product is required',
-    ),
+      .matches(/^[0-9\b]+$/, 'Enter valid weight of product'),
+    // dimensionsOfProduct: Yup.string().required(
+    //   'Dimensions of product is required',
+    // ),
     CountryOfOrigin: Yup.string().required('Country of origin is required'),
     includedItems: Yup.string()
       .required('Included items is required')
@@ -209,7 +211,7 @@ const CatalogAddProductInfo = () => {
       'Unit of measurement two is required',
     ),
     width: Yup.string()
-      .required('Weight is required')
+      .required('Width is required')
       .matches(/^\d+(\.\d+)*$/, 'Enter Valid Width'),
     height: Yup.string()
       .required('Height is required')
@@ -263,9 +265,9 @@ const CatalogAddProductInfo = () => {
       weightOfProduct: editProductInfo.isEdit
         ? preFillValue.weightOfProduct
         : '',
-      dimensionsOfProduct: editProductInfo.isEdit
-        ? preFillValue.unitOfDimension
-        : '',
+      // dimensionsOfProduct: editProductInfo.isEdit
+      //   ? preFillValue.unitOfDimension
+      //   : '',
       CountryOfOrigin: editProductInfo.isEdit
         ? preFillValue.countryOfOrigin
         : '',
@@ -289,6 +291,11 @@ const CatalogAddProductInfo = () => {
     },
     validationSchema: productVistalInfo,
     onSubmit: values => {
+      console.log(
+        '🚀 ~ file: AddProductInfo.js:395 ~ CatalogAddProductInfo ~ values:',
+        values,
+      );
+
       setisTrue(true);
       let prepareData;
       if (editProductInfo.isEdit) {
@@ -349,7 +356,8 @@ const CatalogAddProductInfo = () => {
             stockStatus: values.stockStatus,
             taxClass: values.TaxClass,
             unitOfMeasurementDimension: values.unitOfMeasurement,
-            unitOfMeasurementWeight: values.unitOfMeasurementTwo,
+            unitOfMeasurementWeight: values.unitOfMeasurement,
+            unitOfDimension: values.unitOfMeasurementTwo,
             weightOfProduct: values.weightOfProduct,
             widthOfProduct: values.width,
           },
@@ -390,6 +398,8 @@ const CatalogAddProductInfo = () => {
       }
     },
   });
+
+  console.log('Values', values);
 
   return (
     <ScrollView>
@@ -608,7 +618,7 @@ const CatalogAddProductInfo = () => {
               value={values.includedItems}
               onBlur={handleBlur('includedItems')}
             />
-            <View>
+            <View style={{marginBottom: 5}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image
                   source={require('../assets/HelpinputIcon.png')}

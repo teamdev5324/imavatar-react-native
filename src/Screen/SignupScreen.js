@@ -44,10 +44,16 @@ export class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // f_name: 'Test',
+      // l_name: 'Test',
+      // email: `test+${(Math.random() * 100).toFixed()}@gmail.com`,
+      // mobile: `97989898${(Math.random() * 100).toFixed()}`,
+      // password: 'Testing@123',
+      // confirm_password: 'Testing@123',
       f_name: '',
       l_name: '',
-      email: '',
-      mobile: '',
+      email: ``,
+      mobile: ``,
       password: '',
       confirm_password: '',
       pass_visible: '',
@@ -82,6 +88,11 @@ export class SignupScreen extends Component {
     } else if (this.state.mobile == '') {
       alert('Enter mobile number');
     } else if (this.state.mobile.length != 10) {
+      console.log(
+        '🚀 ~ file: SignupScreen.js:85 ~ SignupScreen ~ _validation ~ this.state.mobile.length:',
+        this.state.mobile,
+        this.state.mobile.length,
+      );
       alert('Enter 10 digit moible number ');
     } else if (this.state.mobile.match(/^[789]\d{9}$/) === null) {
       alert('Enter 10 digit moible number ');
@@ -136,10 +147,10 @@ export class SignupScreen extends Component {
         headers,
       })
       .then(Response => {
-        console.log('====================================');
-        console.log('param', Response.data);
-        console.log('param', Response.data.data.id);
-        console.log('====================================');
+        console.log(
+          '🚀 ~ file: SignupScreen.js:160 ~ SignupScreen ~ _api ~ Response:',
+          Response,
+        );
         if (Response.data.statusCode == '200') {
           this.props.navigation.navigate('MobileOTPVerificationScreen', {
             mobile_numer: this.state.mobile,
