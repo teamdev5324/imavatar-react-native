@@ -126,9 +126,7 @@ export class MobileOTPVerificationScreen extends Component {
               phoneVerified: 'true',
             };
 
-            console.log('====================================');
             console.log('param', param);
-            console.log('====================================');
 
             axios
               .post(
@@ -352,8 +350,12 @@ export class MobileOTPVerificationScreen extends Component {
           <TouchableOpacity
             style={styles.signupbutton}
             onPress={() => {
-              this._validateOtp();
-              //this.props.navigation.navigate('MobileOTPVerifiedScreen');
+              // this._validateOtp();
+              this.props.navigation.navigate('MobileOTPVerifiedScreen', {
+                email: this.props.route.params.email,
+                userid: this.props.route.params.userid,
+                local_pass: this.props.route.params.local_pass,
+              });
             }}>
             <Text style={styles.signupbuttontext}>Confirm</Text>
           </TouchableOpacity>

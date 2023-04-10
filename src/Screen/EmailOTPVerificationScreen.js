@@ -10,13 +10,15 @@ import {
 import styles from '../Screen/Auth/EmailOTPVerificationScreen/emailotpverificationstyle';
 import axios from 'axios';
 import BackgroundTimer from 'react-native-background-timer';
+import Modal from 'react-native-modal';
 export class EmailOTPVerificationScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: this.props.route.params.email,
       user_id: this.props.route.params.userid,
-
+      isVisible: false,
+      newEmail: '',
       timeLeft: 60,
       otp1: '',
       otp2: '',
@@ -42,7 +44,6 @@ export class EmailOTPVerificationScreen extends Component {
         });
       } else {
         this.setState(prevState => ({timeLeft: prevState.timeLeft - 1}));
-        console.log('timeLeft', this.state.timeLeft);
       }
     }, 1000);
   }
@@ -61,9 +62,7 @@ export class EmailOTPVerificationScreen extends Component {
       userName: this.state.email,
       userType: '6',
     };
-    console.log('====================================');
     console.log('param', param);
-    console.log('====================================');
     axios
       .post(
         'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/emailVerification',
@@ -112,9 +111,7 @@ export class EmailOTPVerificationScreen extends Component {
               phoneVerified: 'true',
             };
 
-            console.log('====================================');
             console.log('param', param);
-            console.log('====================================');
 
             axios
               .post(
@@ -148,6 +145,68 @@ export class EmailOTPVerificationScreen extends Component {
     }
   }
 
+  async updateEmail() {
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(this.state.newEmail)) {
+      return alert('Enter valid email');
+    }
+
+    const newThis = this;
+
+    try {
+      const res = await axios.get(
+        'http://52.90.60.5:8080/api/user/MP/noAuth/userExists/' +
+          this.state.newEmail,
+      );
+
+      if (res.data.status === 'SUCCESS') {
+        alert('User already exists with this email');
+      } else {
+        const data = JSON.stringify({
+          email: this.state.newEmail,
+          user_id: this.state.user_id,
+        });
+
+        const config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
+          headers: {
+            Authorization:
+              'Bearer ' +
+              'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwNTM1IiwiYXV0aCI6ImFkbWluIiwiaWQiOjI0MTMsImlhdCI6MTY3NjkwNDc0NH0.BNVFViuxgwtXH5du_L4vvjM8gfF6pmMO9xG2mb4yLII',
+            'Content-Type': 'application/json',
+          },
+          data: data,
+        };
+
+        axios(config)
+          .then(function (res) {
+            const response = res.data;
+            if (response) {
+              alert('Email ID changed successfully');
+              newThis.setState({
+                email: newThis.state.newEmail,
+                isVisible: false,
+              });
+              newThis._resendOtp();
+            } else {
+              alert('Something went wrong');
+            }
+          })
+          .catch(function (error) {
+            console.log('error', error);
+            alert('Something went wrong');
+          });
+      }
+    } catch (error) {
+      alert('Something went wrong');
+      console.log(
+        '🚀 ~ file: EmailOTPVerificationScreen.js:152 ~ EmailOTPVerificationScreen ~ updateEmail ~ error:',
+        error,
+      );
+    }
+  }
+
   render() {
     const {timeLeft} = this.state;
     const seconds = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
@@ -172,7 +231,12 @@ export class EmailOTPVerificationScreen extends Component {
               Enter OTP sent to {this.state.email}
             </Text>
           </View>
-          <Pressable>
+          <Pressable
+            onPress={() =>
+              this.setState({
+                isVisible: true,
+              })
+            }>
             <Text style={styles.veritextinnner}> Change</Text>
           </Pressable>
           <View style={styles.otpinputbox}>
@@ -276,6 +340,55 @@ export class EmailOTPVerificationScreen extends Component {
             <Text style={styles.signupbuttontext}>Confirm</Text>
           </TouchableOpacity>
         </View>
+        <Modal
+          isVisible={this.state.isVisible}
+          transparent
+          style={{margin: 0, padding: 0}}
+          onBackdropPress={() => this.setState({isVisible: false})}
+          onBackButtonPress={() => this.setState({isVisible: false})}
+          animationIn="bounceInUp"
+          animationOut="slideOutDown">
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 20,
+            }}>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                padding: 20,
+                borderRadius: 12,
+                width: '80%',
+              }}>
+              <Text>New Email ID</Text>
+              <TextInput
+                onChangeText={text =>
+                  this.setState({
+                    newEmail: text,
+                  })
+                }
+                value={this.state.newEmail}
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5,
+                  padding: 10,
+                  marginTop: 15,
+                }}
+                placeholder="Your New Email Id"
+              />
+              <TouchableOpacity
+                style={styles.signupbutton}
+                onPress={() => {
+                  this.updateEmail();
+                }}>
+                <Text style={styles.signupbuttontext}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
