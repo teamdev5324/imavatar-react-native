@@ -9,6 +9,7 @@ import {
   TextInput,
   Picker,
   Platform,
+  NativeModules,
 } from 'react-native';
 import CryptoJS from 'crypto-js';
 
@@ -173,9 +174,7 @@ export class ProfileEditScreen extends Component {
           // });
         })
         .catch(err => {
-          console.log('====================================');
           console.log('err', err);
-          console.log('====================================');
         });
       // setMultipleFile(results);
     } catch (err) {
@@ -191,6 +190,43 @@ export class ProfileEditScreen extends Component {
     }
   };
 
+  async downloadFile() {
+    try {
+      const config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url:
+          'http://18.234.206.45:8085/api/v1/files/download/' +
+          this.state.documentId,
+        headers: {
+          Authorization: 'Bearer ' + this.props.login_tokenn,
+        },
+      };
+
+      const res = await axios.request(config);
+      console.log('res', res);
+
+      await RNFetchBlob.config({
+        fileCache: true,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path:
+            RNFetchBlob.fs.dirs.DownloadDir + '/' + res.data.results.filename,
+          description: 'Downloading file...',
+        },
+      }).fetch('GET', res.data.results.url);
+
+      alert('File downloaded successfully.');
+    } catch (error) {
+      alert('File not downloaded.');
+      console.log(
+        '🚀 ~ file: ProfileEditScreen.js:196 ~ downloadFile ~ error:',
+        error,
+      );
+    }
+  }
+
   _getUserData() {
     axios
       .get(
@@ -204,16 +240,11 @@ export class ProfileEditScreen extends Component {
           email_id: Response.data.data.emailId,
           mobile_number: Response.data.data.phoneNumber,
         });
-      });
+      })
+      .catch(err => console.log('Error => ', err));
   }
 
   componentDidMount() {
-    console.log(
-      'login_token====================================',
-      this.props.login_tokenn,
-    );
-    console.log('user_id', this.state.user_id);
-
     this._getUserData();
     // alert(this.props.route.params.userid);
     this._getOtherdata();
@@ -240,7 +271,8 @@ export class ProfileEditScreen extends Component {
             City: Response.data.results[i].cityName,
           });
         }
-      });
+      })
+      .catch(err => console.log('Error => ', err));
   }
 
   _getState(name) {
@@ -259,11 +291,8 @@ export class ProfileEditScreen extends Component {
             Name: Response.data.results[i],
           });
         }
-      });
-
-    console.log('====================================');
-    console.log('state_pickerOptions', this.state.state_pickerOptions);
-    console.log('====================================');
+      })
+      .catch(err => console.log('Error => ', err));
   }
 
   _getCity(name) {
@@ -291,7 +320,8 @@ export class ProfileEditScreen extends Component {
         }
 
         console.log('city_pickerOptions', this.state.city_pickerOptions);
-      });
+      })
+      .catch(err => console.log('Error => ', err));
   }
 
   _getpincode(name) {
@@ -316,7 +346,8 @@ export class ProfileEditScreen extends Component {
         }
 
         console.log('city_pickerOptions', this.state.pincode_pickerOptions);
-      });
+      })
+      .catch(err => console.log('Error => ', err));
   }
 
   handleTextChange = newText => {
@@ -341,7 +372,7 @@ export class ProfileEditScreen extends Component {
         {headers},
       )
       .then(Response => {
-        console.log('Response12******', Response.data.results.aggreements);
+        console.log('Response => ', Response.data);
         const data = Response.data.results.aggreements;
         let newData = [];
         const temData = data.map(item => ({
@@ -349,6 +380,35 @@ export class ProfileEditScreen extends Component {
           termId: item.term.id,
           isAccepted: item.accepted,
         }));
+
+        const config = {
+          method: 'get',
+          maxBodyLength: Infinity,
+          url:
+            'http://18.234.206.45:8085/api/v1/files/download/' +
+            Response.data.results.bank.documentId,
+          headers: {
+            Authorization: 'Bearer ' + this.props.login_tokenn,
+          },
+        };
+
+        axios
+          .request(config)
+          .then(res => {
+            console.log(
+              '🚀 ~ file: ProfileEditScreen.js:396 ~ axios.request ~ res:',
+              res,
+            );
+            this.setState({
+              can_cheq_pic: res.data.results.url,
+            });
+          })
+          .catch(err => {
+            console.log(
+              '🚀 ~ file: ProfileEditScreen.js:398 ~ axios.request ~ err:',
+              err,
+            );
+          });
 
         // data.forEach((item, index) => {
         //   _terms.data[index] = {termId: item.term.id, isAccepted: true};
@@ -363,6 +423,7 @@ export class ProfileEditScreen extends Component {
           account_holder_name: Response.data.results.bank.accountHolderName,
           account_number: Response.data.results.bank.accountNumber,
           account_number_confirm: Response.data.results.bank.accountNumber,
+          documentId: Response.data.results.bank.documentId,
           bank_name: Response.data.results.bank.bankName,
           ifsc_code: Response.data.results.bank.ifscCode,
           branch_name: Response.data.results.bank.branchName,
@@ -380,7 +441,8 @@ export class ProfileEditScreen extends Component {
           address_line: Response.data.results.businessInfo.addressLine,
           termsData: temData,
         });
-      });
+      })
+      .catch(err => console.log('Error => ', err));
   }
 
   onDownlaodClick(id) {
@@ -628,7 +690,8 @@ export class ProfileEditScreen extends Component {
                             alert('SUCCESS');
 
                             this._getUserData();
-                          });
+                          })
+                          .catch(err => console.log('Error => ', err));
                       }
                     }}
                     style={{
@@ -1268,7 +1331,8 @@ export class ProfileEditScreen extends Component {
                                 state_code:
                                   Response.data.places[0]['state abbreviation'],
                               });
-                            });
+                            })
+                            .catch(err => console.log('Error => ', err));
                         }
                       }}
                       max={6}
@@ -1382,7 +1446,8 @@ export class ProfileEditScreen extends Component {
                               });
 
                               this._getUserData();
-                            });
+                            })
+                            .catch(err => console.log('Error => ', err));
                         }
                       }}
                       style={{
@@ -1641,7 +1706,8 @@ export class ProfileEditScreen extends Component {
                                 gstinshow: true,
                                 bankshow: false,
                               });
-                            });
+                            })
+                            .catch(err => console.log('Error => ', err));
                         }
                       }}>
                       <Text style={styles.verifiedboxbtntext}>
@@ -1830,7 +1896,8 @@ export class ProfileEditScreen extends Component {
                                 legaltermsshow: true,
                                 editGst: false,
                               });
-                            });
+                            })
+                            .catch(err => console.log('Error => ', err));
                         }
                       }}>
                       <Text style={styles.verifiedboxbtntext}>

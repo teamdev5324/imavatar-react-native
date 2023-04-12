@@ -156,11 +156,11 @@ export class MobileOTPVerificationScreen extends Component {
 
   updateNumber() {
     if (
-      this.state.newMobileNumber.split('').length === 10 &&
-      this.state.newMobileNumber.match(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-      )
+      this.state.newMobileNumber.length != 10 ||
+      this.state.newMobileNumber.match(/^[789]\d{9}$/) === null
     ) {
+      alert('Enter valid mobile number');
+    } else {
       const newThis = this;
       axios
         .get(
@@ -216,8 +216,6 @@ export class MobileOTPVerificationScreen extends Component {
           console.log('err', err);
           alert('Something went wrong');
         });
-    } else {
-      alert('Enter valid mobile number');
     }
   }
 

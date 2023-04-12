@@ -59,7 +59,6 @@ const AppDropDown = ({
           height: 40,
         }}
         onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
           onChange(selectedItem);
         }}
         buttonTextAfterSelection={(selectedItem, index) => {

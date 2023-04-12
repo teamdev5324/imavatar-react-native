@@ -11,6 +11,7 @@ const AppTextInput = ({
   icon,
   require: Require,
   onBlur,
+  editable = true
 }) => {
   return (
     <View style={{marginBottom: 10}}>
@@ -52,6 +53,7 @@ const AppTextInput = ({
             },
             textInputStyle,
           ]}
+          editable={editable}
         />
         {error !== '' && error !== undefined && (
           <Text style={{color: 'red', marginTop: 4}}>{error}</Text>

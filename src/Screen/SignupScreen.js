@@ -88,11 +88,6 @@ export class SignupScreen extends Component {
     } else if (this.state.mobile == '') {
       alert('Enter mobile number');
     } else if (this.state.mobile.length != 10) {
-      console.log(
-        '🚀 ~ file: SignupScreen.js:85 ~ SignupScreen ~ _validation ~ this.state.mobile.length:',
-        this.state.mobile,
-        this.state.mobile.length,
-      );
       alert('Enter 10 digit moible number ');
     } else if (this.state.mobile.match(/^[789]\d{9}$/) === null) {
       alert('Enter 10 digit moible number ');
@@ -131,9 +126,7 @@ export class SignupScreen extends Component {
       userType: 'partner',
     };
 
-    console.log('====================================');
     console.log('param', param);
-    console.log('====================================');
 
     const headers = {
       Authorization:

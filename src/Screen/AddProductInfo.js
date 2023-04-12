@@ -174,9 +174,9 @@ const CatalogAddProductInfo = () => {
     productTitle: Yup.string()
       .required('Product title is required')
       .matches(/^[a-zA-Z ]*$/, 'Enter valid product title'),
-    productID: Yup.string()
-      .required('Product id is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter Valid Product Id'),
+    // productID: Yup.string()
+    //   .required('Product id is required')
+    //   .matches(/^\d+(\.\d+)*$/, 'Enter Valid Product Id'),
     brandName: Yup.string()
       .required('Brand name is required')
       .matches(/^[a-zA-Z ]*$/, 'Enter valid product id'),
@@ -399,8 +399,6 @@ const CatalogAddProductInfo = () => {
     },
   });
 
-  console.log('Values', values);
-
   return (
     <ScrollView>
       <SafeAreaView style={styles.paymentcontainer} nestedScrollEnabled={true}>
@@ -464,10 +462,11 @@ const CatalogAddProductInfo = () => {
             <AppTextInput
               label={'Product ID'}
               icon
-              onChangeText={handleChange('productID')}
-              error={touched.productID ? errors.productID : ''}
+              // onChangeText={handleChange('productID')}
+              // error={touched.productID ? errors.productID : ''}
               value={values.productID}
-              onBlur={handleBlur('productID')}
+              editable={false}
+              // onBlur={handleBlur('productID')}
             />
             <AppDropDown
               data={['Generic', 'GTIN', 'ISBN', 'UPC', 'EAN']}
