@@ -20,21 +20,36 @@ export class Dashboard extends Component {
   }
 
   getData() {
+    const headers = {
+      Authorization: 'Bearer ' + this.props.login_tokenn,
+      'Content-Type': 'application/json',
+    };
+
     axios
       .get(
-        `http://52.90.60.5:8080/api/user/noAuth/getUserInfo/${this.props.user_idd}`,
+        'http://18.234.206.45:8085/api/v1/partner/profile',
+
+        {headers},
       )
       .then(Response => {
-        let name =
-          Response.data.data.firstName + ' ' + Response.data.data.lastName;
-        let logo = name.split(' ');
-        const logoName =
-          logo[0].charAt(0).toUpperCase() + logo[1].charAt(0).toUpperCase();
+        console.log(
+          '🚀 ~ file: Dashboard.js:51 ~ Dashboard ~ getData ~ Response:',
+          Response.data.results.businessInfo,
+        );
+        const data = Response.data.results.businessInfo;
+        const userName = data.businessName;
+        let name = '';
+        const temp = data.businessName.split(' ');
+        if (temp.length > 1) {
+          name =
+            temp[0].charAt(0).toUpperCase() + temp[1].charAt(0).toUpperCase();
+        } else {
+          name = temp[0].charAt(0).toUpperCase();
+        }
 
         this.setState({
-          userName:
-            Response.data.data.firstName + ' ' + Response.data.data.lastName,
-          logoName,
+          userName,
+          logoName: name,
         });
       })
       .catch(err => {
