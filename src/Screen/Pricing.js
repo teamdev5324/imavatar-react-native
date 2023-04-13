@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 
 import styles from '../Screen/Shop/CatalogUpload/cataloguploadstyle';
@@ -120,17 +121,19 @@ const PricingInfo = () => {
   const productVistalInfo = Yup.object().shape({
     partnerSKUId: Yup.string()
       .required('Partner sku id is required')
-      .matches(/^[A-Za-z\s]+$/, 'Enter valid product sku id'),
+      .matches(/^[A-Za-z0-9\s]+$/, 'Enter valid product sku id'),
     yourSellingPrice: Yup.string()
       .required('Selling price is required')
-      .matches(/^[0-9\b]+$/, 'Enter valid selling price'),
+      .matches(/^\d{0,8}(\.\d{1,4})?$/, 'Enter valid selling price'),
     onHandUnitCost: Yup.string()
       .required('On hand unit cost is required')
-      .matches(/^[0-9\b]+$/, 'Enter valid unit cost'),
+      .matches(/^\d{0,8}(\.\d{1,4})?$/, 'Enter valid unit cost'),
     maximumRetailPrice: Yup.string()
       .required('Maximum retial price is required')
-      .matches(/^[0-9\b]+$/, 'Enter valid MRP'),
-    HSNCode: Yup.string().required('HSN code is required'),
+      .matches(/^\d{0,8}(\.\d{1,4})?$/, 'Enter valid MRP'),
+    HSNCode: Yup.string()
+      .required('HSN code is required')
+      .matches(/^[0-9\b]+$/, 'Enter valid HSN code'),
   });
 
   const {handleChange, handleSubmit, values, errors, touched, handleBlur} =
@@ -185,7 +188,7 @@ const PricingInfo = () => {
             navigation.navigate('DescriptionInfo');
           })
           .catch(err => {
-            alert('Something went wrong');
+            Alert.alert('', 'Something went wrong');
           });
       },
     });

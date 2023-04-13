@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
@@ -81,30 +82,30 @@ const PersonalDetails = props => {
 
   const onNextBtnPress = () => {
     if (firstName == '') {
-      alert('Enter First Name');
+      Alert.alert('', 'Enter First Name');
     } else if (lastName == '') {
-      alert('Enter Last Name');
+      Alert.alert('', 'Enter Last Name');
     } else if (emailId == '') {
-      alert('Enter email id');
+      Alert.alert('', 'Enter email id');
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailId)) {
-      alert('Enter valid email');
+      Alert.alert('', 'Enter valid email');
     } else if (mobileNumber == '') {
-      alert('Enter mobile number');
+      Alert.alert('', 'Enter mobile number');
     } else if (mobileNumber.length != 10) {
-      alert('Enter 10 digit mobile number');
+      Alert.alert('', 'Enter 10 digit mobile number');
     } else if (mobileNumber.match(/^[789]\d{9}$/) === null) {
-      alert('Enter 10 digit mobile number');
+      Alert.alert('', 'Enter 10 digit mobile number');
     } else if (pincode == '') {
-      alert('Enter pincode');
+      Alert.alert('', 'Enter pincode');
     } else if (
       addressLine == '' ||
       city == '' ||
       state == '' ||
       country == ''
     ) {
-      alert('Enter address');
+      Alert.alert('', 'Enter address');
     } else if (!nameOfBusiness.match(/^[\w ]*[^\W_][\w ]*$/)) {
-      alert('Enter valid name of business');
+      Alert.alert('', 'Enter valid name of business');
     } else {
       const param = {
         active: 'true',
@@ -154,12 +155,12 @@ const PersonalDetails = props => {
           if (data.status === 'SUCCESS') {
             navigation.navigate('BankDetails', route.params);
           } else {
-            alert('Detail not saved');
+            Alert.alert('', 'Detail not saved');
           }
         })
         .catch(err => {
           console.log('err', err);
-          alert('Something went wrong');
+          Alert.alert('', 'Something went wrong');
         });
     }
   };

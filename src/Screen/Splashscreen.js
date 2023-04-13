@@ -9,13 +9,33 @@ export class Splashscreen extends Component {
       console.log(res, 'res');
       setTimeout(() => {
         if (res === 'true') {
-          this.props.navigation.replace('Dashboard');
-        } else if (res === null) {
-          this.props.navigation.replace('Signup');
+          AsyncStorage.getItem('verificationStatus').then(
+            verificationStatus => {
+              console.log('verificationStatus', verificationStatus);
+              if (verificationStatus === 'APPROVED') {
+                this.props.navigation.replace('Dashboard');
+              } else if (
+                verificationStatus === 'DRAFT' ||
+                verificationStatus === 'REJECT'
+              ) {
+                this.props.navigation.replace('PersonalDetails', {
+                  userid: Response.data.data.id,
+                  token: dem,
+                  data: Response.data,
+                });
+              } else if (verificationStatus === 'WIP') {
+                this.props.navigation.replace('Congratulations', {
+                  userid: Response.data.data.id,
+                  token: dem,
+                  data: Response.data,
+                });
+              }
+            },
+          );
         } else {
           this.props.navigation.replace('Signup');
         }
-      }, 2000);
+      }, 3000);
     });
     // setTimeout(() => {
     //   console.log('dfdfdff', this.props.is_login);

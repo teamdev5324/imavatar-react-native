@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import styles from './Auth/LoginScreen/loginstyle';
 import {useNavigation} from '@react-navigation/native';
@@ -36,13 +37,13 @@ export class LoginWithMobile extends Component {
 
   _validation() {
     if (this.state.email == '') {
-      alert('Enter email');
+      Alert.alert('', 'Enter email');
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(this.state.email)
     ) {
-      alert('Enter valid email');
+      Alert.alert('', 'Enter valid email');
     } else if (this.state.password == '') {
-      alert('Enter password');
+      Alert.alert('', 'Enter password');
     } else if (!passwordPattern.test(this.state.password)) {
       alert(
         `Your password must have :\n\n -Between 9-16 character,\n-1 Uppercase character,\n-1 Lowercase character,\n-1 Special character(~!@#$%^&*),\n-1 Number(0-9)`,
@@ -153,13 +154,13 @@ export class LoginWithMobile extends Component {
               onBlur={() => {
                 if (this.state.showError == true) {
                   if (this.state.email == '') {
-                    alert('Enter Email/Mobile number');
+                    Alert.alert('', 'Enter Email/Mobile number');
                     // this.input1.current.focus();
                   }
                 }
                 // this.state.showError == true
                 //   ? this.state.f_name == ''
-                //     ? alert('Enter firstname')
+                //     ? Alert.alert('','Enter firstname')
                 //     : null
                 //   : null;
               }}
@@ -189,10 +190,10 @@ export class LoginWithMobile extends Component {
               style={[styles.loginbutton, {marginTop: 80}]}
               onPress={() => {
                 if (this.state.email == '') {
-                  alert('Enter mobile number');
+                  Alert.alert('', 'Enter mobile number');
                 } else {
                   if (this.state.email.match(/^[789]\d{9}$/) === null) {
-                    alert('Enter Valid Mobile number');
+                    Alert.alert('', 'Enter Valid Mobile number');
                   } else {
                     const param = {
                       partnerType: 'admin',

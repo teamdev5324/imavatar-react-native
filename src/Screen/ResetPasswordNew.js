@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import styles from '../Screen/Auth/ResetPassword/resetpasswordstyle';
 import CryptoJS from 'crypto-js';
@@ -70,7 +71,7 @@ export class ResetPasswordNew extends Component {
                 onBlur={() => {
                   if (this.state.showError == true) {
                     if (this.state.password == '') {
-                      alert('Enter password');
+                      Alert.alert('', 'Enter password');
                       this.input1.current.focus();
                     }
                   }
@@ -165,19 +166,19 @@ export class ResetPasswordNew extends Component {
           <TouchableOpacity
             onPress={() => {
               if (this.state.password == '') {
-                alert('Enter password');
+                Alert.alert('', 'Enter password');
               } else if (!passwordPattern.test(this.state.password)) {
                 alert(
                   `Your password must have :\n\n -Between 9-16 character,\n-1 Uppercase character,\n-1 Lowercase character,\n-1 Special character(~!@#$%^&*),\n-1 Number(0-9)`,
                 );
               } else if (this.state.confirm_password == '') {
-                alert('Enter confirm password');
+                Alert.alert('', 'Enter confirm password');
               } else if (!passwordPattern.test(this.state.confirm_password)) {
                 alert(
                   `Your password must have :\n\n -Between 9-16 character,\n-1 Uppercase character,\n-1 Lowercase character,\n-1 Special character(~!@#$%^&*),\n-1 Number(0-9)`,
                 );
               } else if (this.state.password != this.state.confirm_password) {
-                alert('Password and confirm password do not match');
+                Alert.alert('', 'Password and confirm password do not match');
               } else {
                 var key = 'imavatar';
                 var iv = 'mHGFxENnZLbienLyANoi.e';

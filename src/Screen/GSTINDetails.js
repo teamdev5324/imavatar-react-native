@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
@@ -39,36 +40,36 @@ const GSTINDetails = () => {
       ),
     );
     if (gstIdNumber == '') {
-      alert('Enter gst number');
+      Alert.alert('', 'Enter gst number');
     } else if (
       !gstIdNumber.match(
         /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
       )
     ) {
-      alert('Enter valid GSTIN Number');
+      Alert.alert('', 'Enter valid GSTIN Number');
     } else if (businessName === '') {
-      alert('Enter business name');
+      Alert.alert('', 'Enter business name');
     } else if (gstinMobileNumber == '') {
-      alert('Enter gst mobile number');
+      Alert.alert('', 'Enter gst mobile number');
     } else if (
       gstinMobileNumber.length != 10 &&
       gstinMobileNumber.match(/^[789]\d{9}$/)
     ) {
-      alert('Enter enter valid mobile number');
+      Alert.alert('', 'Enter enter valid mobile number');
     } else if (!/^[789]\d{9}$/.test(gstinMobileNumber)) {
-      alert('enter valid GSTIN Mobile number');
+      Alert.alert('', 'enter valid GSTIN Mobile number');
     } else if (gstinEmailId == '') {
-      alert('Enter gst email');
+      Alert.alert('', 'Enter gst email');
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(gstinEmailId)) {
-      alert('Enter valid email');
+      Alert.alert('', 'Enter valid email');
     } else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan)) {
-      alert('Enter valid PAN');
+      Alert.alert('', 'Enter valid PAN');
     }
     // else if (pan == '') {
-    //   alert('Enter pan number');
+    //   Alert.alert('','Enter pan number');
     // }
     // else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(this.state.pan)) {
-    //   alert('Enter valid PAN');
+    //   Alert.alert('','Enter valid PAN');
     // }
     else {
       const param = {
@@ -104,7 +105,7 @@ const GSTINDetails = () => {
         })
         .catch(err => {
           console.log('err', err);
-          alert('Something went wrong');
+          Alert.alert('', 'Something went wrong');
         });
     }
   };

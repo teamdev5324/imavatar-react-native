@@ -10,6 +10,7 @@ import {
   Picker,
   Platform,
   NativeModules,
+  Alert,
 } from 'react-native';
 import CryptoJS from 'crypto-js';
 
@@ -117,7 +118,7 @@ export class ProfileEditScreen extends Component {
       account_holder_name: '',
       account_number: '',
       account_number_confirm: '',
-      documentId: 'DDMS0018',
+      documentId: '',
       bank_name: '',
       ifsc_code: '',
       can_cheq_pic: '',
@@ -181,10 +182,10 @@ export class ProfileEditScreen extends Component {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
         //If user canceled the document selection
-        alert('Canceled from multiple doc picker');
+        Alert.alert('', 'Canceled from multiple doc picker');
       } else {
         //For Unknown Error
-        alert('Unknown Error: ' + JSON.stringify(err));
+        Alert.alert('', 'Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
@@ -217,9 +218,9 @@ export class ProfileEditScreen extends Component {
         },
       }).fetch('GET', res.data.results.url);
 
-      alert('File downloaded successfully.');
+      Alert.alert('', 'File downloaded successfully.');
     } catch (error) {
-      alert('File not downloaded.');
+      Alert.alert('', 'File not downloaded.');
       console.log(
         '🚀 ~ file: ProfileEditScreen.js:196 ~ downloadFile ~ error:',
         error,
@@ -363,8 +364,6 @@ export class ProfileEditScreen extends Component {
       'Content-Type': 'application/json',
     };
 
-    console.log('this.props.route.params.token', this.props.login_tokenn);
-
     axios
       .get(
         'http://18.234.206.45:8085/api/v1/partner/profile',
@@ -381,34 +380,34 @@ export class ProfileEditScreen extends Component {
           isAccepted: item.accepted,
         }));
 
-        const config = {
-          method: 'get',
-          maxBodyLength: Infinity,
-          url:
-            'http://18.234.206.45:8085/api/v1/files/download/' +
-            Response.data.results.bank.documentId,
-          headers: {
-            Authorization: 'Bearer ' + this.props.login_tokenn,
-          },
-        };
+        // const config = {
+        //   method: 'get',
+        //   maxBodyLength: Infinity,
+        //   url:
+        //     'http://18.234.206.45:8085/api/v1/files/download/' +
+        //     Response.data.results.bank.documentId,
+        //   headers: {
+        //     Authorization: 'Bearer ' + this.props.login_tokenn,
+        //   },
+        // };
 
-        axios
-          .request(config)
-          .then(res => {
-            console.log(
-              '🚀 ~ file: ProfileEditScreen.js:396 ~ axios.request ~ res:',
-              res,
-            );
-            this.setState({
-              can_cheq_pic: res.data.results.url,
-            });
-          })
-          .catch(err => {
-            console.log(
-              '🚀 ~ file: ProfileEditScreen.js:398 ~ axios.request ~ err:',
-              err,
-            );
-          });
+        // axios
+        //   .request(config)
+        //   .then(res => {
+        //     console.log(
+        //       '🚀 ~ file: ProfileEditScreen.js:398 ~ _getOtherdata ~ res:',
+        //       res,
+        //     );
+        //     this.setState({
+        //       can_cheq_pic: res.data.results.url,
+        //     });
+        //   })
+        //   .catch(err => {
+        //     console.log(
+        //       '🚀 ~ file: ProfileEditScreen.js:398 ~ axios.request ~ err:',
+        //       err,
+        //     );
+        //   });
 
         // data.forEach((item, index) => {
         //   _terms.data[index] = {termId: item.term.id, isAccepted: true};
@@ -483,7 +482,7 @@ export class ProfileEditScreen extends Component {
           )
           .then(res => {
             console.log('res posen wa///////////', res);
-            alert('Download Complete');
+            Alert.alert('', 'Download Complete');
           })
           .catch(err => {
             console.log('download File error was,,,,,,,,,,,,,,', err);
@@ -541,7 +540,9 @@ export class ProfileEditScreen extends Component {
                       </Text>
                       <TouchableOpacity
                         activeOpacity={0.7}
-                        onPress={() => this.setState({profileEdit: true})}>
+                        onPress={() => {
+                          this.setState({profileEdit: true});
+                        }}>
                         <Image
                           source={require('../assets/Icons/edit.png')}
                           style={styles.editIcon}
@@ -641,28 +642,28 @@ export class ProfileEditScreen extends Component {
                     /> */}
                   </View>
 
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => {
                       if (this.state.first_name == '') {
-                        alert('Enter firstname');
+                        Alert.alert('','Enter firstname');
                       } else if (this.state.last_name == '') {
-                        alert('Enter lastname');
+                        Alert.alert('','Enter lastname');
                       } else if (this.state.email_id == '') {
-                        alert('Enter email id');
+                        Alert.alert('','Enter email id');
                       } else if (
                         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                           this.state.email_id,
                         )
                       ) {
-                        alert('Enter valid email');
+                        Alert.alert('','Enter valid email');
                       } else if (this.state.mobile_number == '') {
-                        alert('Enter mobile number');
+                        Alert.alert('','Enter mobile number');
                       } else if (this.state.mobile_number.length != 10) {
-                        alert('Enter 10 digit mobile number');
+                        Alert.alert('','Enter 10 digit mobile number');
                       } else if (
                         this.state.mobile_number.match(/^[789]\d{9}$/) === null
                       ) {
-                        alert('Enter valid mobile number');
+                        Alert.alert('','Enter valid mobile number');
                       } else {
                         const param = {
                           active: 'true',
@@ -687,7 +688,7 @@ export class ProfileEditScreen extends Component {
                             this.setState({
                               editProfile: false,
                             });
-                            alert('SUCCESS');
+                            Alert.alert('','SUCCESS');
 
                             this._getUserData();
                           })
@@ -707,7 +708,7 @@ export class ProfileEditScreen extends Component {
                     <Text style={styles.verifiedboxbtntext}>
                       Save & Continue
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
 
                   <View style={styles.personaldetail}>
                     <View style={styles.personaldetailtextbox}>
@@ -753,541 +754,6 @@ export class ProfileEditScreen extends Component {
                       //onChangeName={setAddress}
                     />
 
-                    {/* <View style={{flexDirection: 'row', marginTop: 19}}>
-                      <View style={{flex: 0.7}}>
-                        <Text
-                          style={{fontSize: 12, width: '40%', lineHeight: 12}}>
-                          Country
-                        </Text>
-                      </View>
-                      <View style={{flex: 1, paddingLeft: 5}}>
-                        <View
-                          style={{
-                            width: 188,
-                            height: 25,
-
-                            padding: 0,
-                            backgroundColor: '#F8F8F8',
-                            borderColor: '#000000',
-                            borderWidth: 1,
-                            paddingLeft: 7,
-                            fontSize: 12,
-                          }}>
-                          <PickerModal
-                            // style={{flex: 1}}
-                            renderSelectView={(
-                              disabled,
-                              selected,
-                              showModal,
-                            ) => (
-                              <TouchableOpacity
-                                style={{
-                                  flexDirection: 'row',
-                                  marginLeft: 10,
-                                  marginRight: 10,
-                                  alignContent: 'center',
-                                  alignItems: 'center',
-                                }}
-                                disabled={disabled}
-                                onPress={showModal}>
-                                {this.state.country == '' ? (
-                                  <Text
-                                    style={{
-                                      color: '#8A8A8A',
-                                      flex: 1,
-
-                                      fontSize: 12,
-                                      paddingTop: 3,
-                                      marginLeft: -10,
-                                    }}>
-                                    Select Country
-                                  </Text>
-                                ) : (
-                                  <Text
-                                    style={{
-                                      color: '#8A8A8A',
-                                      flex: 1,
-                                      marginLeft: -10,
-                                      fontSize: 12,
-                                      paddingTop: 3,
-                                    }}>
-                                    {selected.Name}
-                                  </Text>
-                                )}
-                              </TouchableOpacity>
-                            )}
-                            onSelected={selected => {
-                              const headers = {
-                                Authorization:
-                                  'Bearer ' + this.props.route.params.token,
-                                'Content-Type': 'application/json',
-                              };
-
-                              axios
-                                .get(
-                                  `http://18.234.206.45:8085/api/v1/city/list/${selected.Name}`,
-                                  {headers},
-                                )
-                                .then(Response => {
-                                  console.log(
-                                    'Response-data',
-                                    Response.data.results,
-                                  );
-                                  this.setState({country: selected.Name});
-                                  for (
-                                    let i = 0;
-                                    i < Response.data.results.length;
-                                    i++
-                                  ) {
-                                    this.state.state_pickerOptions.push({
-                                      Id: i,
-                                      Name: Response.data.results[i],
-                                    });
-                                  }
-
-                                  console.log(
-                                    '====================================',
-                                  );
-                                  console.log(
-                                    'state_pickerOptions',
-                                    this.state.state_pickerOptions,
-                                  );
-                                  console.log(
-                                    '====================================',
-                                  );
-                                });
-
-                              //  this._get_city(selected.Id);
-                              //this._getState(selected.Name);
-                            }}
-                            onClosed={console.log('close')}
-                            onBackButtonPressed={console.log('back pressed')}
-                            items={this.state.county_pickerOptions}
-                            sortingLanguage={'tr'}
-                            showToTopButton={true}
-                            selected={this.state.county_pickerOptions}
-                            showAlphabeticalIndex={true}
-                            autoGenerateAlphabeticalIndex={true}
-                            selectPlaceholderText={'Choose one...'}
-                            onEndReached={() => console.log('list ended...')}
-                            searchPlaceholderText={'Search...'}
-                            requireSelection={false}
-                            autoSort={false}
-                          />
-                        </View>
-                      </View>
-                    </View> */}
-
-                    {/* <View style={{flexDirection: 'row', marginTop: 19}}>
-                      <View style={{flex: 0.7}}>
-                        <Text
-                          style={{fontSize: 12, width: '40%', lineHeight: 12}}>
-                          State
-                        </Text>
-                      </View>
-                      <View style={{flex: 1, paddingLeft: 5}}>
-                        <View
-                          style={{
-                            width: 188,
-                            height: 25,
-
-                            padding: 0,
-                            backgroundColor: '#F8F8F8',
-                            borderColor: '#000000',
-                            borderWidth: 1,
-                            paddingLeft: 7,
-                            fontSize: 12,
-                          }}>
-                          <PickerModal
-                            // style={{flex: 1}}
-                            renderSelectView={(
-                              disabled,
-                              selected,
-                              showModal,
-                            ) => (
-                              <TouchableOpacity
-                                style={{
-                                  flexDirection: 'row',
-                                  marginLeft: 10,
-                                  marginRight: 10,
-                                  alignContent: 'center',
-                                  alignItems: 'center',
-                                }}
-                                onPress={showModal}>
-                                {this.state.state == '' ? (
-                                  <Text
-                                    style={{
-                                      color: '#8A8A8A',
-                                      flex: 1,
-
-                                      fontSize: 12,
-                                      paddingTop: 3,
-                                      marginLeft: -10,
-                                    }}>
-                                    Select State
-                                  </Text>
-                                ) : (
-                                  <Text
-                                    style={{
-                                      color: '#8A8A8A',
-                                      flex: 1,
-                                      marginLeft: -10,
-                                      fontSize: 12,
-                                      paddingTop: 3,
-                                    }}>
-                                    {selected.Name}
-                                  </Text>
-                                )}
-                              </TouchableOpacity>
-                            )}
-                            onSelected={selected => {
-                              console.log(
-                                '====================================',
-                              );
-                              console.log('state demo', selected.Name);
-                              console.log(
-                                '====================================',
-                              );
-
-                              //  this._get_city(selected.Id);
-
-                              const headers = {
-                                Authorization:
-                                  'Bearer ' + this.props.route.params.token,
-                                'Content-Type': 'application/json',
-                              };
-                              this.state.city_pickerOptions = [];
-                              axios
-                                .get(
-                                  `http://18.234.206.45:8085/api/v1/city/list/${this.state.country}/${selected.Name}`,
-                                  {headers},
-                                )
-                                .then(Response => {
-                                  console.log(
-                                    'Response-data',
-                                    Response.data.results,
-                                  );
-
-                                  this.setState({state: selected.Name});
-
-                                  for (
-                                    let i = 0;
-                                    i < Response.data.results.length;
-                                    i++
-                                  ) {
-                                    this.state.city_pickerOptions.push({
-                                      Id: i,
-                                      Name: Response.data.results[i],
-                                    });
-                                    console.log(
-                                      '====================================',
-                                    );
-                                    console.log(
-                                      'sdsd',
-                                      Response.data.results[i].cityName,
-                                    );
-                                    console.log(
-                                      '====================================',
-                                    );
-                                  }
-
-                                  console.log(
-                                    'city_pickerOptions',
-                                    this.state.city_pickerOptions,
-                                  );
-                                });
-                            }}
-                            onClosed={console.log('close')}
-                            onBackButtonPressed={console.log('back pressed')}
-                            items={this.state.state_pickerOptions}
-                            sortingLanguage={'tr'}
-                            showToTopButton={true}
-                            selected={this.state.state_pickerOptions}
-                            showAlphabeticalIndex={true}
-                            autoGenerateAlphabeticalIndex={true}
-                            selectPlaceholderText={'Choose one...'}
-                            onEndReached={() => console.log('list ended...')}
-                            searchPlaceholderText={'Search...'}
-                            requireSelection={false}
-                            autoSort={false}
-                          />
-                        </View>
-                      </View>
-                    </View> */}
-
-                    {/* <View style={{flexDirection: 'row', marginTop: 19}}>
-                      <View style={{flex: 0.7}}>
-                        <Text
-                          style={{fontSize: 12, width: '40%', lineHeight: 12}}>
-                          City
-                        </Text>
-                      </View>
-                      <View style={{flex: 1, paddingLeft: 5}}>
-                        <View
-                          style={{
-                            width: 188,
-                            height: 25,
-
-                            padding: 0,
-                            backgroundColor: '#F8F8F8',
-                            borderColor: '#000000',
-                            borderWidth: 1,
-                            paddingLeft: 7,
-                            fontSize: 12,
-                          }}>
-                          <PickerModal
-                            // style={{flex: 1}}
-                            renderSelectView={(
-                              disabled,
-                              selected,
-                              showModal,
-                            ) => (
-                              <TouchableOpacity
-                                style={{
-                                  flexDirection: 'row',
-                                  marginLeft: 10,
-                                  marginRight: 10,
-                                  alignContent: 'center',
-                                  alignItems: 'center',
-                                }}
-                                onPress={showModal}>
-                                {this.state.city == '' ? (
-                                  <Text
-                                    style={{
-                                      color: '#8A8A8A',
-                                      flex: 1,
-                                      marginLeft: -10,
-                                      fontSize: 12,
-                                      paddingTop: 3,
-                                    }}>
-                                    Select City
-                                  </Text>
-                                ) : (
-                                  <Text
-                                    style={{
-                                      color: '#8A8A8A',
-                                      flex: 1,
-                                      marginLeft: -10,
-                                      fontSize: 12,
-                                      paddingTop: 3,
-                                    }}>
-                                    {selected.Name}
-                                  </Text>
-                                )}
-                              </TouchableOpacity>
-                            )}
-                            onSelected={selected => {
-                              console.log(
-                                '====================================',
-                              );
-                              console.log('state demo', selected);
-                              console.log(
-                                '====================================',
-                              );
-
-                              const headers = {
-                                Authorization:
-                                  'Bearer ' + this.props.route.params.token,
-                                'Content-Type': 'application/json',
-                              };
-                              this.state.pincode_pickerOptions = [];
-                              axios
-                                .get(
-                                  `http://18.234.206.45:8085/api/v1/city/list/${this.state.country}/${this.state.state}/${selected.Name}`,
-                                  {headers},
-                                )
-                                .then(Response => {
-                                  console.log(
-                                    'Response-data',
-                                    Response.data.results,
-                                  );
-                                  this.setState({city: selected.Name});
-                                  for (
-                                    let i = 0;
-                                    i < Response.data.results.length;
-                                    i++
-                                  ) {
-                                    this.state.pincode_pickerOptions.push({
-                                      Id: i,
-                                      Name: Response.data.results[i],
-                                    });
-                                  }
-
-                                  console.log(
-                                    'city_pickerOptions',
-                                    this.state.pincode_pickerOptions,
-                                  );
-                                });
-                              //  this._get_city(selected.Id);
-                            }}
-                            onClosed={console.log('close')}
-                            onBackButtonPressed={console.log('back pressed')}
-                            items={this.state.city_pickerOptions}
-                            sortingLanguage={'tr'}
-                            showToTopButton={true}
-                            selected={this.state.city_pickerOptions}
-                            showAlphabeticalIndex={true}
-                            autoGenerateAlphabeticalIndex={true}
-                            selectPlaceholderText={'Choose one...'}
-                            onEndReached={() => console.log('list ended...')}
-                            searchPlaceholderText={'Search...'}
-                            requireSelection={false}
-                            autoSort={false}
-                          />
-                        </View>
-                      </View>
-                    </View> */}
-
-                    {/* <View style={{flexDirection: 'row', marginTop: 19}}>
-                      <View style={{flex: 0.7}}>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            width: '40%',
-                            lineHeight: 12,
-                            paddingTop: 5,
-                          }}>
-                          Pincode
-                        </Text>
-                      </View>
-                      <View style={{flex: 1, marginLeft: 5}}>
-                     
-                      </View>
-                    </View> */}
-
-                    {/* <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginTop: 19,
-                      }}>
-                      <Text
-                        style={{fontSize: 12, width: '40%', lineHeight: 12}}>
-                        Pincode
-                      </Text>
-                      <View
-                        style={{
-                          width: 188,
-                          height: 25,
-
-                          padding: 0,
-                          backgroundColor: '#F8F8F8',
-                          borderColor: '#000000',
-                          borderWidth: 1,
-                          paddingLeft: 7,
-                          fontSize: 12,
-                        }}>
-                        <PickerModal
-                          // style={{flex: 1}}
-                          renderSelectView={(disabled, selected, showModal) => (
-                            <TouchableOpacity
-                              style={{
-                                flexDirection: 'row',
-                                marginLeft: 10,
-                                marginRight: 10,
-                                alignContent: 'center',
-                                alignItems: 'center',
-                              }}
-                              onPress={showModal}>
-                              {this.state.pincode == '' ? (
-                                <Text
-                                  style={{
-                                    color: '#8A8A8A',
-                                    flex: 1,
-                                    marginLeft: -10,
-                                    fontSize: 12,
-                                    paddingTop: 3,
-                                  }}>
-                                  Select Pincode
-                                </Text>
-                              ) : (
-                                <Text
-                                  style={{
-                                    color: '#8A8A8A',
-                                    flex: 1,
-                                    marginLeft: -10,
-                                    fontSize: 12,
-                                    paddingTop: 3,
-                                  }}>
-                                  {selected.Name}
-                                </Text>
-                              )}
-                            </TouchableOpacity>
-                          )}
-                          onSelected={selected => {
-                            console.log('====================================');
-                            console.log('state demo', selected.Id);
-                            console.log('====================================');
-
-                            axios
-                              .get(
-                                `https://api.postalpincode.in/pincode/${selected.Name}`,
-                              )
-                              .then(Response => {
-                                console.log(
-                                  'PostOffice',
-                                  Response.data[0].PostOffice[0].Region,
-                                );
-
-                                this.setState({
-                                  city: Response.data[0].PostOffice[0].Region,
-                                });
-                              });
-
-                            console.log('====================================');
-                            console.log(
-                              'https://api.zippopotam.us/IN/${selected.Name}',
-                              `https://api.zippopotam.us/IN/${selected.Name}`,
-                            );
-                            console.log('====================================');
-
-                            axios
-                              .get(
-                                `https://api.zippopotam.us/IN/${selected.Name}`,
-                              )
-                              .then(Response => {
-                                console.log(
-                                  'PostOffice',
-                                  Response.data.country,
-                                );
-
-                                console.log(
-                                  'PostOffice1232',
-                                  Response.data.places[0]['state abbreviation'],
-                                );
-
-                                this.setState({
-                                  state: Response.data.places[0].state,
-                                  country: Response.data.country,
-                                  state_code:
-                                    Response.data.places[0][
-                                      'state abbreviation'
-                                    ],
-                                });
-                              });
-
-                            this.setState({
-                              pincode: selected.Name,
-                            });
-                          }}
-                          onClosed={console.log('close')}
-                          onBackButtonPressed={console.log('back pressed')}
-                          items={this.state.pincode_pickerOptions}
-                          sortingLanguage={'tr'}
-                          showToTopButton={true}
-                          selected={this.state.pincode_pickerOptions}
-                          showAlphabeticalIndex={true}
-                          autoGenerateAlphabeticalIndex={true}
-                          selectPlaceholderText={'Choose one...'}
-                          onEndReached={() => console.log('list ended...')}
-                          searchPlaceholderText={'Search...'}
-                          requireSelection={false}
-                          autoSort={false}
-                        />
-                      </View>
-                    </View> */}
-
                     <InputUI
                       label="Pincode"
                       keyboard={'number-pad'}
@@ -1312,7 +778,7 @@ export class ProfileEditScreen extends Component {
                               });
                             })
                             .catch(error => {
-                              alert('Enter correct pincode');
+                              Alert.alert('', 'Enter correct pincode');
                             });
 
                           axios
@@ -1385,20 +851,50 @@ export class ProfileEditScreen extends Component {
 
                     <TouchableOpacity
                       onPress={() => {
-                        if (this.state.businessname == '') {
-                          alert('Enter business name');
+                        if (this.state.first_name == '') {
+                          Alert.alert('', 'Enter firstname');
+                        } else if (this.state.last_name == '') {
+                          Alert.alert('', 'Enter lastname');
+                        } else if (this.state.email_id == '') {
+                          Alert.alert('', 'Enter email id');
+                        } else if (
+                          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+                            this.state.email_id,
+                          )
+                        ) {
+                          Alert.alert('', 'Enter valid email');
+                        } else if (this.state.mobile_number == '') {
+                          Alert.alert('', 'Enter mobile number');
+                        } else if (this.state.mobile_number.length != 10) {
+                          Alert.alert('', 'Enter 10 digit mobile number');
+                        } else if (
+                          this.state.mobile_number.match(/^[789]\d{9}$/) ===
+                          null
+                        ) {
+                          Alert.alert('', 'Enter valid mobile number');
+                        } else if (this.state.businessname == '') {
+                          Alert.alert('', 'Enter business name');
                         } else if (this.state.address_line == '') {
-                          alert('Enter address line');
+                          Alert.alert('', 'Enter address line');
                         } else if (this.state.country == '') {
-                          alert('Select country');
+                          Alert.alert('', 'Select country');
                         } else if (this.state.state == '') {
-                          alert('Select state');
+                          Alert.alert('', 'Select state');
                         } else if (this.state.city == '') {
-                          alert('Select City');
+                          Alert.alert('', 'Select City');
                         } else if (this.state.pincode == '') {
-                          alert('Select pincode');
+                          Alert.alert('', 'Select pincode');
                         } else {
                           const param = {
+                            active: 'true',
+                            email: this.state.email_id,
+                            firstName: this.state.first_name,
+                            lastName: this.state.last_name,
+                            phoneNumber: this.state.mobile_number,
+                            user_id: this.state.user_id,
+                          };
+
+                          const param2 = {
                             addressLine: this.state.address_line,
                             city: this.state.city,
                             cityCode: this.state.city,
@@ -1411,8 +907,6 @@ export class ProfileEditScreen extends Component {
                             businessDisplayName: this.state.businessname,
                           };
 
-                          console.log('param', param);
-
                           const headers = {
                             Authorization: 'Bearer ' + this.props.login_tokenn,
                             'Content-Type': 'application/json',
@@ -1424,28 +918,36 @@ export class ProfileEditScreen extends Component {
                           };
 
                           axios
-                            .put(
-                              'http://18.234.206.45:8085/api/v1/partner/profile/businessInfo',
+                            .post(
+                              'http://52.90.60.5:8080/api/user/noAuth/updateUser',
                               param,
-                              {params: queryParams, headers},
                             )
                             .then(Response => {
-                              console.log(
-                                '====================================',
-                              );
-                              console.log('Respo', Response.data);
-                              console.log(
-                                '====================================',
-                              );
-                              alert('SUCCESS');
+                              console.log('Personal info response ', Response);
+                              axios
+                                .put(
+                                  'http://18.234.206.45:8085/api/v1/partner/profile/businessInfo',
+                                  param2,
+                                  {params: queryParams, headers},
+                                )
+                                .then(Response => {
+                                  console.log(
+                                    'Business details response',
+                                    Response,
+                                  );
 
-                              this.setState({
-                                personalshow: false,
-                                bankshow: true,
-                                editBus: false,
-                              });
+                                  Alert.alert('', 'SUCCESS');
 
-                              this._getUserData();
+                                  this.setState({
+                                    personalshow: false,
+                                    bankshow: true,
+                                    editBus: false,
+                                    editProfile: false,
+                                  });
+
+                                  this._getUserData();
+                                })
+                                .catch(err => console.log('Error => ', err));
                             })
                             .catch(err => console.log('Error => ', err));
                         }
@@ -1588,7 +1090,7 @@ export class ProfileEditScreen extends Component {
                               });
                             })
                             .catch(error => {
-                              alert('Enter correct IFSC code');
+                              Alert.alert('', 'Enter correct IFSC code');
                             });
                         }
                       }}
@@ -1622,26 +1124,27 @@ export class ProfileEditScreen extends Component {
                     <TouchableOpacity
                       disabled={!editBank}
                       onPress={() => {
-                        this._getFile();
+                        this.downloadFile();
                       }}>
                       <View style={styles.cancelchequebox}>
                         <Text style={styles.cancelchequetext}>
                           Cancelled cheque/passbook
                         </Text>
+
                         <Image
                           style={styles.cancelchequeicon}
                           source={require('../assets/Icons/cancelcheckpassbook.png')}
                         />
                       </View>
                     </TouchableOpacity>
-
-                    {this.state.can_cheq_pic == '' ? null : (
+                    <Text>{this.state.documentId}</Text>
+                    {/* {this.state.can_cheq_pic == '' ? null : (
                       <Image
                         style={{height: 100, width: 250}}
                         resizeMode={'contain'}
                         source={{uri: this.state.can_cheq_pic}}
                       />
-                    )}
+                    )} */}
 
                     <TouchableOpacity
                       style={{
@@ -1656,16 +1159,16 @@ export class ProfileEditScreen extends Component {
                       }}
                       onPress={() => {
                         if (this.state.account_holder_name == '') {
-                          alert('Enter account holder name');
+                          Alert.alert('', 'Enter account holder name');
                         } else if (this.state.account_number == '') {
-                          alert('Enter account number');
+                          Alert.alert('', 'Enter account number');
                         } else if (
                           this.state.account_number < 9 ||
                           this.state.account_number < 15
                         ) {
-                          alert('Enter valid bank account number');
+                          Alert.alert('', 'Enter valid bank account number');
                         } else if (this.state.account_number_confirm == '') {
-                          alert('Enter confirm account number');
+                          Alert.alert('', 'Enter confirm account number');
                         } else if (
                           this.state.account_number !=
                           this.state.account_number_confirm
@@ -1674,9 +1177,9 @@ export class ProfileEditScreen extends Component {
                             'Account number and confirm account number do not match',
                           );
                         } else if (this.state.bank_name == '') {
-                          alert('Enter bank name');
+                          Alert.alert('', 'Enter bank name');
                         } else if (this.state.ifsc_code == '') {
-                          alert('Enter ifsc code');
+                          Alert.alert('', 'Enter ifsc code');
                         } else {
                           const param = {
                             accountHolderName: this.state.account_holder_name,
@@ -1833,35 +1336,35 @@ export class ProfileEditScreen extends Component {
                       }}
                       onPress={() => {
                         if (this.state.gstin == '') {
-                          alert('Enter gst number');
+                          Alert.alert('', 'Enter gst number');
                         } else if (
                           !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
                             this.state.gstin,
                           )
                         ) {
-                          alert('Enter valid GSTIN Number');
+                          Alert.alert('', 'Enter valid GSTIN Number');
                         } else if (this.state.gstinmobileNumber == '') {
-                          alert('Enter gst mobile number');
+                          Alert.alert('', 'Enter gst mobile number');
                         } else if (this.state.gstinmobileNumber.length != 10) {
-                          alert('Enter enter valid mobile number');
+                          Alert.alert('', 'Enter enter valid mobile number');
                         } else if (
                           !/^[789]\d{9}$/.test(this.state.gstinmobileNumber)
                         ) {
-                          alert('enter valid GSTIN Mobile number');
+                          Alert.alert('', 'enter valid GSTIN Mobile number');
                         } else if (this.state.gstinemail == '') {
-                          alert('Enter gst email');
+                          Alert.alert('', 'Enter gst email');
                         } else if (
                           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                             this.state.gstinemail,
                           )
                         ) {
-                          alert('Enter valid email');
+                          Alert.alert('', 'Enter valid email');
                         } else if (this.state.pan == '') {
-                          alert('Enter pan number');
+                          Alert.alert('', 'Enter pan number');
                         } else if (
                           !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(this.state.pan)
                         ) {
-                          alert('Enter valid PAN');
+                          Alert.alert('', 'Enter valid PAN');
                         } else {
                           const param = {
                             gstin: this.state.gstin,
@@ -2091,13 +1594,13 @@ export class ProfileEditScreen extends Component {
                       }}
                       onPress={() => {
                         if (this.state.password == '') {
-                          alert('Enter current password');
+                          Alert.alert('', 'Enter current password');
                         } else if (!passwordPattern.test(this.state.password)) {
                           alert(
                             `Your password must have :\n\n -Between 8-16 characters,\n-1 Uppercase characters,\n-1 Lowercase characters,\n-1 Special characters,\n-1 Number(0-9)`,
                           );
                         } else if (this.state.c_password == '') {
-                          alert('Enter new password');
+                          Alert.alert('', 'Enter new password');
                         } else if (
                           !passwordPattern.test(this.state.c_password)
                         ) {
@@ -2105,7 +1608,7 @@ export class ProfileEditScreen extends Component {
                             `Your password must have :\n\n -Between 8-16 characters,\n-1 Uppercase characters,\n-1 Lowercase characters,\n-1 Special characters,\n-1 Number(0-9)`,
                           );
                         } else if (this.state.c_r_password == '') {
-                          alert('Enter confirm new password');
+                          Alert.alert('', 'Enter confirm new password');
                         } else if (
                           !passwordPattern.test(this.state.c_r_password)
                         ) {
@@ -2168,7 +1671,7 @@ export class ProfileEditScreen extends Component {
                             })
                             .catch(error => {
                               console.log(error);
-                              alert('Something went wrong');
+                              Alert.alert('', 'Something went wrong');
                             });
 
                           // const param = {
@@ -2328,9 +1831,9 @@ export class ProfileEditScreen extends Component {
                       }}
                       onPress={() => {
                         if (this.state.whatsappNumber == '') {
-                          alert('Enter whatsapp number');
+                          Alert.alert('', 'Enter whatsapp number');
                         } else if (this.state.whatsappNumber.length != 10) {
-                          alert('Enter enter valid whatsapp number');
+                          Alert.alert('', 'Enter enter valid whatsapp number');
                         } else {
                           let data = JSON.stringify({
                             activateNumber: true,
@@ -2355,14 +1858,14 @@ export class ProfileEditScreen extends Component {
                             .then(function (res) {
                               console.log(res, 'res');
                               if (res.data.status === 'SUCCESS') {
-                                alert('Subscribed successfully');
+                                Alert.alert('', 'Subscribed successfully');
                               } else {
-                                alert('Something went wrong');
+                                Alert.alert('', 'Something went wrong');
                               }
                             })
                             .catch(function (error) {
                               console.log(error, 'error');
-                              alert('Something went wrong');
+                              Alert.alert('', 'Something went wrong');
                             });
                           // const param = {
                           //   activateNumber: true,

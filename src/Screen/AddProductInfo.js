@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 
 import styles from '../Screen/Shop/CatalogUpload/cataloguploadstyle';
@@ -115,7 +116,7 @@ const CatalogAddProductInfo = () => {
 
       setDocumentId(docId);
     } catch (error) {
-      alert('Unable to upload the document');
+      Alert.alert('', 'Unable to upload the document');
       console.log(
         '🚀 ~ file: AddProductInfo.js:92 ~ convertinBase64 ~ error:',
         error,
@@ -155,14 +156,14 @@ const CatalogAddProductInfo = () => {
 
         convertinBase64(fileLocation, fileName);
       } else {
-        alert('Media Library Permission Denied');
+        Alert.alert('', 'Media Library Permission Denied');
       }
     } catch (err) {
       console.log('🚀 ~ file: AddProductInfo.js:133 ~ pickAPDF ~ err:', err);
       if (DocumentPicker.isCancel(err)) {
-        alert('Please select a file');
+        Alert.alert('', 'Please select a file');
       } else {
-        alert('something went wrong');
+        Alert.alert('', 'something went wrong');
       }
     }
   };
@@ -170,30 +171,30 @@ const CatalogAddProductInfo = () => {
   const productVistalInfo = Yup.object().shape({
     productName: Yup.string()
       .required('Product name is required')
-      .matches(/^[a-zA-Z ]*$/, 'Enter valid product name'),
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid product name'),
     productTitle: Yup.string()
       .required('Product title is required')
-      .matches(/^[a-zA-Z ]*$/, 'Enter valid product title'),
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid product title'),
     // productID: Yup.string()
     //   .required('Product id is required')
     //   .matches(/^\d+(\.\d+)*$/, 'Enter Valid Product Id'),
     brandName: Yup.string()
       .required('Brand name is required')
-      .matches(/^[a-zA-Z ]*$/, 'Enter valid product id'),
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid product id'),
     productType: Yup.string()
       .required('Product type is required')
-      .matches(/^[a-zA-Z ]*$/, 'Enter valid product type'),
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid product type'),
     stockStatus: Yup.string().required('Stock status is required'),
     weightOfProduct: Yup.string()
       .required('Weight of product is required')
-      .matches(/^[0-9\b]+$/, 'Enter valid weight of product'),
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid weight of product'),
     // dimensionsOfProduct: Yup.string().required(
     //   'Dimensions of product is required',
     // ),
     CountryOfOrigin: Yup.string().required('Country of origin is required'),
     includedItems: Yup.string()
       .required('Included items is required')
-      .matches(/^[a-zA-Z ]*$/, 'Enter valid included items'),
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid included items'),
     onHandQuantity: Yup.string()
       .required('Quantity is required')
       .matches(/^[0-9\b]+$/, 'Enter valid quantity'),
@@ -203,7 +204,9 @@ const CatalogAddProductInfo = () => {
     TaxClass: Yup.string().required('Tax class is required'),
     Colour: Yup.string().required('Colour is required'),
     shape: Yup.string().required('Shape is required'),
-    materialType: Yup.string().required('Material type is required'),
+    materialType: Yup.string()
+      .required('Material type is required')
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid material type'),
     unitOfMeasurement: Yup.string().required(
       'Unit of measurement one is required',
     ),
@@ -212,13 +215,13 @@ const CatalogAddProductInfo = () => {
     ),
     width: Yup.string()
       .required('Width is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter Valid Width'),
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter Valid Width'),
     height: Yup.string()
       .required('Height is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter Valid Height '),
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter Valid Height'),
     depth: Yup.string()
       .required('Depth is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter Valid   Depth '),
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter Valid Depth'),
     productTypeId: Yup.string().required('Product Type Id is required'),
   });
 
@@ -391,10 +394,10 @@ const CatalogAddProductInfo = () => {
               '🚀 ~ file: AddProductInfo.js:351 ~ CatalogAddProductInfo ~ err:',
               err,
             );
-            alert('something went wrong');
+            Alert.alert('', 'something went wrong');
           });
       } else {
-        alert('Please upload document');
+        Alert.alert('', 'Please upload document');
       }
     },
   });

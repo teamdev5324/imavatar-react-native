@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Picker,
+  Alert,
 } from 'react-native';
 import CryptoJS from 'crypto-js';
 
@@ -178,10 +179,10 @@ export class Profile extends Component {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
         //If user canceled the document selection
-        alert('Canceled from multiple doc picker');
+        Alert.alert('', 'Canceled from multiple doc picker');
       } else {
         //For Unknown Error
-        alert('Unknown Error: ' + JSON.stringify(err));
+        Alert.alert('', 'Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
@@ -411,7 +412,7 @@ export class Profile extends Component {
           )
           .then(res => {
             console.log('res posen wa///////////', res);
-            alert('Download Complete');
+            Alert.alert('', 'Download Complete');
           })
           .catch(err => {
             console.log('download File error was,,,,,,,,,,,,,,', err);
@@ -561,25 +562,25 @@ export class Profile extends Component {
                   <TouchableOpacity
                     onPress={() => {
                       if (this.state.first_name == '') {
-                        alert('Enter First Name');
+                        Alert.alert('', 'Enter First Name');
                       } else if (this.state.last_name == '') {
-                        alert('Enter Last Name');
+                        Alert.alert('', 'Enter Last Name');
                       } else if (this.state.email_id == '') {
-                        alert('Enter email id');
+                        Alert.alert('', 'Enter email id');
                       } else if (
                         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                           this.state.email_id,
                         )
                       ) {
-                        alert('Enter valid email');
+                        Alert.alert('', 'Enter valid email');
                       } else if (this.state.mobile_number == '') {
-                        alert('Enter mobile number');
+                        Alert.alert('', 'Enter mobile number');
                       } else if (this.state.mobile_number.length != 10) {
-                        alert('Enter 10 digit mobile number');
+                        Alert.alert('', 'Enter 10 digit mobile number');
                       } else if (
                         this.state.mobile_number.match(/^[789]\d{9}$/) === null
                       ) {
-                        alert('Enter 10 digit mobile number');
+                        Alert.alert('', 'Enter 10 digit mobile number');
                       } else {
                         const param = {
                           active: 'true',
@@ -601,7 +602,7 @@ export class Profile extends Component {
                             console.log('====================================');
                             console.log('Respo', Response.data);
                             console.log('====================================');
-                            alert('SUCCESS');
+                            Alert.alert('', 'SUCCESS');
                             this.setState({
                               profileEdit: false,
                             });
@@ -1231,7 +1232,7 @@ export class Profile extends Component {
                               });
                             })
                             .catch(error => {
-                              alert('Enter correct pincode');
+                              Alert.alert('', 'Enter correct pincode');
                             });
 
                           axios
@@ -1304,17 +1305,17 @@ export class Profile extends Component {
                     <TouchableOpacity
                       onPress={() => {
                         if (this.state.businessname == '') {
-                          alert('Enter business name');
+                          Alert.alert('', 'Enter business name');
                         } else if (this.state.address_line == '') {
-                          alert('Enter address line');
+                          Alert.alert('', 'Enter address line');
                         } else if (this.state.country == '') {
-                          alert('Select country');
+                          Alert.alert('', 'Select country');
                         } else if (this.state.state == '') {
-                          alert('Select state');
+                          Alert.alert('', 'Select state');
                         } else if (this.state.city == '') {
-                          alert('Select City');
+                          Alert.alert('', 'Select City');
                         } else if (this.state.pincode == '') {
-                          alert('Select pincode');
+                          Alert.alert('', 'Select pincode');
                         } else {
                           const param = {
                             addressLine: this.state.address_line,
@@ -1356,7 +1357,7 @@ export class Profile extends Component {
                               console.log(
                                 '====================================',
                               );
-                              alert('SUCCESS');
+                              Alert.alert('', 'SUCCESS');
 
                               this.setState({
                                 personalshow: false,
@@ -1497,7 +1498,7 @@ export class Profile extends Component {
                               });
                             })
                             .catch(error => {
-                              alert('Enter correct IFSC code');
+                              Alert.alert('', 'Enter correct IFSC code');
                             });
                         }
                       }}
@@ -1561,11 +1562,11 @@ export class Profile extends Component {
                       }}
                       onPress={() => {
                         if (this.state.account_holder_name == '') {
-                          alert('Enter account holder name');
+                          Alert.alert('', 'Enter account holder name');
                         } else if (this.state.account_number == '') {
-                          alert('Enter account number');
+                          Alert.alert('', 'Enter account number');
                         } else if (this.state.account_number_confirm == '') {
-                          alert('Enter confirm account number');
+                          Alert.alert('', 'Enter confirm account number');
                         } else if (
                           this.state.account_number !=
                           this.state.account_number_confirm
@@ -1574,9 +1575,9 @@ export class Profile extends Component {
                             'Account number and confirm account number do not match',
                           );
                         } else if (this.state.bank_name == '') {
-                          alert('Enter bank name');
+                          Alert.alert('', 'Enter bank name');
                         } else if (this.state.ifsc_code == '') {
-                          alert('Enter ifsc code');
+                          Alert.alert('', 'Enter ifsc code');
                         } else {
                           const param = {
                             accountHolderName: this.state.account_holder_name,
@@ -1733,40 +1734,40 @@ export class Profile extends Component {
                       }}
                       onPress={() => {
                         if (this.state.gstin == '') {
-                          alert('Enter gst number');
+                          Alert.alert('', 'Enter gst number');
                         } else if (
                           !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
                             this.state.gstin,
                           )
                         ) {
-                          alert('Enter valid GSTIN Number');
+                          Alert.alert('', 'Enter valid GSTIN Number');
                         } else if (this.state.gstinmobileNumber == '') {
-                          alert('Enter gst mobile number');
+                          Alert.alert('', 'Enter gst mobile number');
                         } else if (this.state.gstinmobileNumber.length != 10) {
-                          alert('Enter enter valid mobile number');
+                          Alert.alert('', 'Enter enter valid mobile number');
                         } else if (
                           this.state.gstinmobileNumber.match(/^[789]\d{9}$/) ===
                           null
                         ) {
-                          alert('Enter enter valid mobile number');
+                          Alert.alert('', 'Enter enter valid mobile number');
                         } else if (
                           !/^[789]\d{9}$/.test(this.state.gstinmobileNumber)
                         ) {
-                          alert('enter valid GSTIN Mobile number');
+                          Alert.alert('', 'enter valid GSTIN Mobile number');
                         } else if (this.state.gstinemail == '') {
-                          alert('Enter gst email');
+                          Alert.alert('', 'Enter gst email');
                         } else if (
                           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                             this.state.gstinemail,
                           )
                         ) {
-                          alert('Enter valid email');
+                          Alert.alert('', 'Enter valid email');
                         } else if (this.state.pan == '') {
-                          alert('Enter pan number');
+                          Alert.alert('', 'Enter pan number');
                         } else if (
                           !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(this.state.pan)
                         ) {
-                          alert('Enter valid PAN');
+                          Alert.alert('', 'Enter valid PAN');
                         } else {
                           const param = {
                             gstin: this.state.gstin,
@@ -1980,13 +1981,13 @@ export class Profile extends Component {
                       }}
                       onPress={() => {
                         if (this.state.password == '') {
-                          alert('Enter current password');
+                          Alert.alert('','Enter current password');
                         } else if (!passwordPattern.test(this.state.password)) {
                           alert(
                             `Your password must have :\n\n -Between 8-16 characters,\n-1 Uppercase characters,\n-1 Lowercase characters,\n-1 Special characters,\n-1 Number(0-9)`,
                           );
                         } else if (this.state.c_password == '') {
-                          alert('Enter new password');
+                          Alert.alert('','Enter new password');
                         } else if (
                           !passwordPattern.test(this.state.c_password)
                         ) {
@@ -1994,7 +1995,7 @@ export class Profile extends Component {
                             `Your password must have :\n\n -Between 8-16 characters,\n-1 Uppercase characters,\n-1 Lowercase characters,\n-1 Special characters,\n-1 Number(0-9)`,
                           );
                         } else if (this.state.c_r_password == '') {
-                          alert('Enter confirm new password');
+                          Alert.alert('','Enter confirm new password');
                         } else if (
                           !passwordPattern.test(this.state.c_r_password)
                         ) {
@@ -2171,9 +2172,9 @@ export class Profile extends Component {
                       }}
                       onPress={() => {
                         if (this.state.whatsappNumber == '') {
-                          alert('Enter whatsapp number');
+                          Alert.alert('','Enter whatsapp number');
                         } else if (this.state.whatsappNumber.length != 10) {
-                          alert('Enter enter valid whatsapp number');
+                          Alert.alert('','Enter enter valid whatsapp number');
                         } else {
                           const param = {
                             activateNumber: true,

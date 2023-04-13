@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
@@ -59,7 +60,7 @@ export class MobileOTPVerificationScreen extends Component {
         console.log('Response', Response.data);
       })
       .catch(errr => {
-        alert('Unable to send otp');
+        Alert.alert('', 'Unable to send otp');
         console.log('errr', errr);
       });
 
@@ -110,7 +111,7 @@ export class MobileOTPVerificationScreen extends Component {
       this.state.otp3 == '' ||
       this.state.otp4 == ''
     ) {
-      alert('Please enter OTP');
+      Alert.alert('', 'Please enter OTP');
     } else {
       var otp =
         this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4;
@@ -159,7 +160,7 @@ export class MobileOTPVerificationScreen extends Component {
       this.state.newMobileNumber.length != 10 ||
       this.state.newMobileNumber.match(/^[789]\d{9}$/) === null
     ) {
-      alert('Enter valid mobile number');
+      Alert.alert('', 'Enter valid mobile number');
     } else {
       const newThis = this;
       axios
@@ -169,7 +170,7 @@ export class MobileOTPVerificationScreen extends Component {
         )
         .then(res => {
           if (res.data.status === 'SUCCESS') {
-            alert('User already exists');
+            Alert.alert('', 'User already exists');
           } else {
             const data = JSON.stringify({
               phoneNumber: this.state.newMobileNumber,
@@ -194,7 +195,7 @@ export class MobileOTPVerificationScreen extends Component {
               .then(function (res) {
                 let newRes = res.data;
                 if (newRes) {
-                  alert('Mobile number updated successfully');
+                  Alert.alert('', 'Mobile number updated successfully');
                   console.log('this', newThis);
                   newThis.setState({
                     isVisible: false,
@@ -203,18 +204,18 @@ export class MobileOTPVerificationScreen extends Component {
                   });
                   newThis.sendOtp(newThis.state.newMobileNumber);
                 } else {
-                  alert('Something went wrong');
+                  Alert.alert('', 'Something went wrong');
                 }
               })
               .catch(function (error) {
                 console.log('error', error);
-                alert('Something went wrong');
+                Alert.alert('', 'Something went wrong');
               });
           }
         })
         .catch(err => {
           console.log('err', err);
-          alert('Something went wrong');
+          Alert.alert('', 'Something went wrong');
         });
     }
   }
@@ -334,7 +335,7 @@ export class MobileOTPVerificationScreen extends Component {
               if (this.state.timeLeft == 0) {
                 this._resendOtp();
               } else {
-                alert('Otp sent on above mobile number please wait.');
+                Alert.alert('', 'Otp sent on above mobile number please wait.');
               }
             }}>
             <Text

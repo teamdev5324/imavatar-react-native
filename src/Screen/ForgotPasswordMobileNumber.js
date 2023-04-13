@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import styles from './Auth/LoginScreen/loginstyle';
 import {useNavigation} from '@react-navigation/native';
@@ -74,13 +75,13 @@ export class ForgotPasswordMobileNumber extends Component {
               // onBlur={() => {
               //   if (this.state.showError == true) {
               //     if (this.state.email == '') {
-              //       alert('Enter Email/Mobile number');
+              //       Alert.alert('','Enter Email/Mobile number');
               //       this.input1.current.focus();
               //     }
               //   }
               //   // this.state.showError == true
               //   //   ? this.state.f_name == ''
-              //   //     ? alert('Enter firstname')
+              //   //     ? Alert.alert('','Enter firstname')
               //   //     : null
               //   //   : null;
               // }}
@@ -110,10 +111,10 @@ export class ForgotPasswordMobileNumber extends Component {
               style={[styles.loginbutton, {marginTop: 80}]}
               onPress={() => {
                 if (this.state.email == '') {
-                  alert('Enter mobile number');
+                  Alert.alert('', 'Enter mobile number');
                 } else {
                   if (this.state.email.match(/^[789]\d{9}$/) === null) {
-                    alert('Enter Valid Mobile number');
+                    Alert.alert('', 'Enter Valid Mobile number');
                   } else {
                     const param = {
                       partnerType: 'admin',
@@ -121,7 +122,6 @@ export class ForgotPasswordMobileNumber extends Component {
                       userType: '6',
                     };
                     console.log('param', param);
-                    console.log('====================================');
                     //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                     axios
                       .post(

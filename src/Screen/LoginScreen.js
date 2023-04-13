@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import styles from './Auth/LoginScreen/loginstyle';
 import {useNavigation} from '@react-navigation/native';
@@ -39,11 +40,11 @@ export class LoginScreen extends Component {
   _validation() {
     const rightVal = this.validate(this.state.email);
     if (this.state.email == '') {
-      alert('Enter email');
+      Alert.alert('', 'Enter email');
     } else if (!rightVal) {
-      alert('Enter valid email or mobile number');
+      Alert.alert('', 'Enter valid email or mobile number');
     } else if (this.state.password == '') {
-      alert('Enter password');
+      Alert.alert('', 'Enter password');
     } else if (!passwordPattern.test(this.state.password)) {
       alert(
         `Your password must have :\n\n -Between 9-16 character,\n-1 Uppercase character,\n-1 Lowercase character,\n-1 Special character(~!@#$%^&*),\n-1 Number(0-9)`,
@@ -81,8 +82,7 @@ export class LoginScreen extends Component {
       .post('http://52.90.60.5:8080/api/user/MP/noAuth/login', param)
       .then(Response => {
         console.clear();
-        console.log(Response.data.data.isPhoneVerified);
-        console.log(Response.data.data.isEmailVerified);
+        console.log('response', Response);
         if (Response.data.statusCode == '200') {
           if (
             Response.data.data.isPhoneVerified == true &&
@@ -134,14 +134,24 @@ export class LoginScreen extends Component {
 
                   const {verificationStatus} = await profileStatus(dem);
 
-                  if (verificationStatus === 'WIP') {
-                    this.props.navigation.replace('Congratulations', {
+                  AsyncStorage.setItem(
+                    'verificationStatus',
+                    verificationStatus,
+                  );
+
+                  if (verificationStatus === 'APPROVED') {
+                    this.props.navigation.replace('Dashboard');
+                  } else if (
+                    verificationStatus === 'DRAFT' ||
+                    verificationStatus === 'REJECT'
+                  ) {
+                    this.props.navigation.replace('PersonalDetails', {
                       userid: Response.data.data.id,
                       token: dem,
                       data: Response.data,
                     });
-                  } else {
-                    this.props.navigation.replace('PersonalDetails', {
+                  } else if (verificationStatus === 'WIP') {
+                    this.props.navigation.replace('Congratulations', {
                       userid: Response.data.data.id,
                       token: dem,
                       data: Response.data,
@@ -227,7 +237,7 @@ export class LoginScreen extends Component {
         }
       })
       .catch(error => {
-        alert('Something went wrong !');
+        Alert.alert('', 'Something went wrong !');
         console.clear();
         console.log(error);
       });
@@ -283,16 +293,18 @@ export class LoginScreen extends Component {
               onBlur={() => {
                 // if (this.state.showError == true) {
                 if (this.state.email == '') {
-                  alert('Enter Email/Mobile number');
+                  Alert.alert('', 'Enter Email/Mobile number');
                   // this.input1.current.focus();
                 } else {
                   const rightVal = this.validate(this.state.email);
-                  rightVal ? null : alert('Enter valid email or mobile number');
+                  rightVal
+                    ? null
+                    : Alert.alert('', 'Enter valid email or mobile number');
                 }
                 // }
                 // this.state.showError == true
                 //   ? this.state.f_name == ''
-                //     ? alert('Enter firstname')
+                //     ? Alert.alert('','Enter firstname')
                 //     : null
                 //   : null;
               }}
@@ -383,7 +395,7 @@ export class LoginScreen extends Component {
                 this.props.navigation.navigate('LoginWithMobile');
 
                 // if (this.state.email == '') {
-                //   alert('Enter Email/Mobile number');
+                //   Alert.alert('','Enter Email/Mobile number');
                 // } else {
                 //   const param = {
                 //     partnerType: 'admin',

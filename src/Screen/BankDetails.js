@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, Alert} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import DocumentPicker from 'react-native-document-picker';
@@ -80,28 +80,28 @@ const BankDetails = () => {
       setFileData(getFileData);
       setFileName(results.name);
     } catch (error) {
-      alert('Something went wrong while uploading file');
+      Alert.alert('', 'Something went wrong while uploading file');
       console.log('🚀 ~ file: BankDetails.js:47 ~ getFile ~ error:', error);
     }
   };
 
   const onBtnPress = (isPrev = false) => {
     if (accountHolderName == '') {
-      alert('Enter account holder name');
+      Alert.alert('', 'Enter account holder name');
     } else if (accountNumber == '') {
-      alert('Enter account number');
+      Alert.alert('', 'Enter account number');
     } else if (confirmAccNumber == '') {
-      alert('Enter confirm account number');
+      Alert.alert('', 'Enter confirm account number');
     } else if (accountNumber.match(/^[a-zA-Z ]*$/)) {
-      alert('Enter account number');
+      Alert.alert('', 'Enter account number');
     } else if (confirmAccNumber.match(/^[a-zA-Z ]*$/)) {
-      alert('Enter confirm account number');
+      Alert.alert('', 'Enter confirm account number');
     } else if (accountNumber != confirmAccNumber) {
-      alert('Account number and confirm account number do not match');
+      Alert.alert('', 'Account number and confirm account number do not match');
     } else if (IFSCCode === '') {
-      alert('Enter ifsc code');
+      Alert.alert('', 'Enter ifsc code');
     } else if (IFSCCode.split('').length !== 11) {
-      alert('Enter valid ifsc code');
+      Alert.alert('', 'Enter valid ifsc code');
     } else {
       const fileParams = {
         fileContent: fileData,
@@ -128,7 +128,7 @@ const BankDetails = () => {
         .then(function (res) {
           console.log('File upload res:', res);
           if (res.data.status !== 'SUCCESS') {
-            alert('Something went wrong');
+            Alert.alert('', 'Something went wrong');
           } else {
             const param = {
               accountHolderName: accountHolderName,
@@ -161,17 +161,17 @@ const BankDetails = () => {
                   }
                 } else {
                   console.log('Not getting proper response');
-                  alert('Something went wrong');
+                  Alert.alert('', 'Something went wrong');
                 }
               })
               .catch(function (error) {
-                alert('Something went wrong');
+                Alert.alert('', 'Something went wrong');
                 console.log('error', error);
               });
           }
         })
         .catch(function (error) {
-          alert('Something went wrong');
+          Alert.alert('', 'Something went wrong');
           console.log('error', error);
         });
     }
@@ -242,7 +242,7 @@ const BankDetails = () => {
                   '🚀 ~ file: BankDetails.js:73 ~ BankDetails ~ error:',
                   error,
                 );
-                alert('Enter correct IFSC code');
+                Alert.alert('', 'Enter correct IFSC code');
               });
           }
           setIFSCCode(text);

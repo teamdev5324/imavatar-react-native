@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 
@@ -66,14 +67,26 @@ const VariationsInfo = () => {
   }, [editProductInfo]);
 
   const productVistalInfo = Yup.object().shape({
-    size: Yup.string(),
-    materialType: Yup.string(),
-    color: Yup.string(),
-    shape: Yup.string(),
-    length: Yup.string(),
-    width: Yup.string(),
-    height: Yup.string(),
-    unitQuantity: Yup.string(),
+    size: Yup.string()
+      .required('Size is required')
+      .matches(/^[0-9\b]+$/, 'Enter valid size'),
+    materialType: Yup.string()
+      .required('MaterailType is required')
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid materialType'),
+    color: Yup.string().required('Colour is required'),
+    shape: Yup.string().required('Shape is required'),
+    length: Yup.string()
+      .required('Length is required')
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid length'),
+    width: Yup.string()
+      .required('Width is required')
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid width'),
+    height: Yup.string()
+      .required('Height is required')
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid height'),
+    unitQuantity: Yup.string()
+      .required('Unit quantity is required')
+      .matches(/^[0-9\b]+$/, 'Enter valid unit quantity'),
   });
 
   const {handleChange, handleSubmit, values, errors} = useFormik({
@@ -126,7 +139,7 @@ const VariationsInfo = () => {
         })
         .catch(err => {
           console.log('Error', err);
-          alert('something went wrong');
+          Alert.alert('', 'something went wrong');
         });
     },
   });

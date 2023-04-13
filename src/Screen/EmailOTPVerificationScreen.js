@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import styles from '../Screen/Auth/EmailOTPVerificationScreen/emailotpverificationstyle';
 import axios from 'axios';
@@ -84,7 +85,7 @@ export class EmailOTPVerificationScreen extends Component {
       this.state.otp3 == '' ||
       this.state.otp4 == ''
     ) {
-      alert('Please enter OTP');
+      Alert.alert('', 'Please enter OTP');
     } else {
       console.log(
         `http://52.90.60.5:8080/api/user/userVerification/email/${
@@ -147,7 +148,7 @@ export class EmailOTPVerificationScreen extends Component {
 
   async updateEmail() {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(this.state.newEmail)) {
-      return alert('Enter valid email');
+      return Alert.alert('', 'Enter valid email');
     }
 
     const newThis = this;
@@ -159,7 +160,7 @@ export class EmailOTPVerificationScreen extends Component {
       );
 
       if (res.data.status === 'SUCCESS') {
-        alert('User already exists with this email');
+        Alert.alert('', 'User already exists with this email');
       } else {
         const data = JSON.stringify({
           email: this.state.newEmail,
@@ -183,27 +184,24 @@ export class EmailOTPVerificationScreen extends Component {
           .then(function (res) {
             const response = res.data;
             if (response) {
-              alert('Email ID changed successfully');
+              Alert.alert('', 'Email ID changed successfully');
               newThis.setState({
                 email: newThis.state.newEmail,
                 isVisible: false,
               });
               newThis._resendOtp();
             } else {
-              alert('Something went wrong');
+              Alert.alert('', 'Something went wrong');
             }
           })
           .catch(function (error) {
             console.log('error', error);
-            alert('Something went wrong');
+            Alert.alert('', 'Something went wrong');
           });
       }
     } catch (error) {
-      alert('Something went wrong');
-      console.log(
-        '🚀 ~ file: EmailOTPVerificationScreen.js:152 ~ EmailOTPVerificationScreen ~ updateEmail ~ error:',
-        error,
-      );
+      Alert.alert('', 'Something went wrong');
+      console.log('error:', error);
     }
   }
 
@@ -320,7 +318,7 @@ export class EmailOTPVerificationScreen extends Component {
               if (this.state.timeLeft == 0) {
                 this._resendOtp();
               } else {
-                alert('Otp sent on above email please wait.');
+                Alert.alert('', 'Otp sent on above email please wait.');
               }
             }}>
             <Text

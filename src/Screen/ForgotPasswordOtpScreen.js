@@ -1,4 +1,4 @@
-import {TextInput, Text, View, Image, Pressable} from 'react-native';
+import {TextInput, Text, View, Image, Pressable, Alert} from 'react-native';
 import React, {Component} from 'react';
 import styles from '../Screen/Auth/MobileLoginOTPVerificationScreen/mobileloginotpverificationstyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -191,7 +191,7 @@ export class ForgotPasswordOtpScreen extends Component {
                     );
                   });
               } else {
-                alert('Otp sent on above mobile number please wait.');
+                Alert.alert('', 'Otp sent on above mobile number please wait.');
               }
             }}>
             <Text
@@ -206,13 +206,13 @@ export class ForgotPasswordOtpScreen extends Component {
           <TouchableOpacity
             onPress={() => {
               if (this.state.otp1 == '') {
-                alert('Enter OTP');
+                Alert.alert('', 'Enter OTP');
               } else if (this.state.otp2 == '') {
-                alert('Enter OTP');
+                Alert.alert('', 'Enter OTP');
               } else if (this.state.otp3 == '') {
-                alert('Enter OTP');
+                Alert.alert('', 'Enter OTP');
               } else if (this.state.otp4 == '') {
-                alert('Enter OTP');
+                Alert.alert('', 'Enter OTP');
               } else {
                 const param = {
                   otp:
@@ -259,7 +259,7 @@ export class ForgotPasswordOtpScreen extends Component {
                     console.log('====================================');
                     console.log('error', error);
                     console.log('====================================');
-                    alert('Something went wrong ');
+                    Alert.alert('', 'Something went wrong ');
                   });
               }
             }}

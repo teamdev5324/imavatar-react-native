@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import styles from '../Screen/Shop/CatalogUpload/cataloguploadstyle';
@@ -62,7 +63,7 @@ const CorrectError = () => {
             setAllData(allData => [...allData, res.data.results]);
           })
           .catch(error => {
-            alert('Something went wrong');
+            Alert.alert('', 'Something went wrong');
           });
       });
     }

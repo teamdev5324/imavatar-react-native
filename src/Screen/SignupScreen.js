@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
+  Alert,
 } from 'react-native';
 import styles from './signupstyle';
 import randombytes from 'react-native-randombytes';
@@ -76,31 +77,31 @@ export class SignupScreen extends Component {
 
   _validation() {
     if (this.state.f_name == '') {
-      alert('Enter First Name');
+      Alert.alert('', 'Enter First Name');
     } else if (this.state.l_name == '') {
-      alert('Enter Last Name');
+      Alert.alert('', 'Enter Last Name');
     } else if (this.state.email == '') {
-      alert('Enter Email');
+      Alert.alert('', 'Enter Email');
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(this.state.email)
     ) {
-      alert('Enter valid email');
+      Alert.alert('', 'Enter valid email');
     } else if (this.state.mobile == '') {
-      alert('Enter mobile number');
+      Alert.alert('', 'Enter mobile number');
     } else if (this.state.mobile.length != 10) {
-      alert('Enter 10 digit moible number ');
+      Alert.alert('', 'Enter 10 digit moible number ');
     } else if (this.state.mobile.match(/^[789]\d{9}$/) === null) {
-      alert('Enter 10 digit moible number ');
+      Alert.alert('', 'Enter 10 digit moible number ');
     } else if (this.state.password == '') {
-      alert('Enter Password');
+      Alert.alert('', 'Enter Password');
     } else if (!passwordPattern.test(this.state.password)) {
       alert(
         `Your password must have :\n\n -Between 9-16 character,\n-1 Uppercase character,\n-1 Lowercase character,\n-1 Special character(~!@#$%^&*),\n-1 Number(0-9)`,
       );
     } else if (this.state.confirm_password == '') {
-      alert('Enter confirm password');
+      Alert.alert('', 'Enter confirm password');
     } else if (this.state.password != this.state.confirm_password) {
-      alert('Password and confirm password do not match');
+      Alert.alert('', 'Password and confirm password do not match');
     } else {
       this._api();
     }
@@ -157,7 +158,7 @@ export class SignupScreen extends Component {
         //  alert(Response.data.status);
       })
       .catch(error => {
-        alert('User already exists.');
+        Alert.alert('', 'User already exists.');
       });
   }
   render() {
@@ -193,13 +194,13 @@ export class SignupScreen extends Component {
                 onBlur={() => {
                   if (this.state.showError == true) {
                     if (this.state.f_name == '') {
-                      alert('Enter First Name');
+                      Alert.alert('', 'Enter First Name');
                       // this.input1.current.focus();
                     }
                   }
                   // this.state.showError == true
                   //   ? this.state.f_name == ''
-                  //     ? alert('Enter firstname')
+                  //     ? Alert.alert('','Enter firstname')
                   //     : null
                   //   : null;
                 }}
@@ -235,13 +236,13 @@ export class SignupScreen extends Component {
                 onBlur={() => {
                   if (this.state.showError1 == true) {
                     if (this.state.l_name == '') {
-                      alert('Enter lastname');
+                      Alert.alert('', 'Enter lastname');
                       // this.input2.current.focus();
                     }
                   }
                   // this.state.showError1 == true
                   //   ? this.state.l_name == ''
-                  //     ? alert('Enter lastname')
+                  //     ? Alert.alert('','Enter lastname')
                   //     : null
                   //   : null;
                 }}
@@ -266,7 +267,7 @@ export class SignupScreen extends Component {
                 placeholder="Email*"
                 onFocus={() => {
                   if (this.state.l_name == '') {
-                    //alert('Enter lastname first');
+                    //Alert.alert('','Enter lastname first');
                     // this.input2.current.focus();
                   } else {
                     this.setState({
@@ -278,19 +279,19 @@ export class SignupScreen extends Component {
                 onBlur={() => {
                   if (this.state.showError2 == true) {
                     if (this.state.email == '') {
-                      alert('Enter email');
+                      Alert.alert('', 'Enter email');
                       // this.input3.current.focus();
                     } else if (
                       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
                         this.state.email,
                       )
                     ) {
-                      alert('Enter valid email');
+                      Alert.alert('', 'Enter valid email');
                     }
                   }
                   // this.state.showError2 == true
                   //   ? this.state.email == ''
-                  //     ? alert('Enter email')
+                  //     ? Alert.alert('','Enter email')
                   //     : null
                   //   : null;
                 }}
@@ -330,13 +331,13 @@ export class SignupScreen extends Component {
                 // onBlur={() => {
                 //   if (this.state.showError3 == true) {
                 //     if (this.state.mobile == '') {
-                //       alert('Enter mobile number');
+                //       Alert.alert('','Enter mobile number');
                 //       // this.input4.current.focus();
                 //     }
                 //   }
                 //   // this.state.showError3 == true
                 //   //   ? this.state.mobile == ''
-                //   //     ? alert('Enter mobile number')
+                //   //     ? Alert.alert('','Enter mobile number')
                 //   //     : null
                 //   //   : null;
                 // }}
@@ -370,10 +371,10 @@ export class SignupScreen extends Component {
                     ref={this.input5}
                     onFocus={() => {
                       if (this.state.mobile == '') {
-                        //alert('Enter mobile number first');
+                        //Alert.alert('','Enter mobile number first');
                         // this.input4.current.focus();
                       } else if (this.state.mobile.length != 10) {
-                        //alert('Enter mobile number first');
+                        //Alert.alert('','Enter mobile number first');
                         // this.input4.current.focus();
                       } else {
                         this.setState({
@@ -384,13 +385,13 @@ export class SignupScreen extends Component {
                     onBlur={() => {
                       if (this.state.showError4 == true) {
                         if (this.state.password == '') {
-                          alert('Enter password');
+                          Alert.alert('', 'Enter password');
                           // this.input5.current.focus();
                         }
                       }
                       // this.state.showError4 == true
                       //   ? this.state.password == ''
-                      //     ? alert('Enter password')
+                      //     ? Alert.alert('','Enter password')
                       //     : null
                       //   : null;
                     }}
@@ -448,7 +449,7 @@ export class SignupScreen extends Component {
                     secureTextEntry={!this.state.pass_visible_c}
                     onFocus={() => {
                       if (this.state.password == '') {
-                        alert('Enter password first');
+                        Alert.alert('', 'Enter password first');
                         // this.input5.current.focus();
                       } else {
                         this.setState({
@@ -460,13 +461,13 @@ export class SignupScreen extends Component {
                     onBlur={() => {
                       if (this.state.showError5 == true) {
                         if (this.state.confirm_password == '') {
-                          alert('Enter confirm password');
+                          Alert.alert('', 'Enter confirm password');
                           // this.input6.current.focus();
                         }
                       }
                       // this.state.showError5 == true
                       //   ? this.state.confirm_password == ''
-                      //     ? alert('Enter confirm password')
+                      //     ? Alert.alert('','Enter confirm password')
                       //     : null
                       //   : null;
                     }}

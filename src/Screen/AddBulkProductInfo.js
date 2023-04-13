@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import styles from '../Screen/Shop/CatalogUpload/cataloguploadstyle';
@@ -144,7 +145,7 @@ const AddBulkProductInfo = () => {
       })
       .catch(error => {
         console.log(error, 'errr');
-        alert('something went wrong');
+        Alert.alert('', 'something went wrong');
       });
   };
 
@@ -160,13 +161,13 @@ const AddBulkProductInfo = () => {
           convertinBase64(res.uri, res.name);
         })
         .catch(err => {
-          alert('something went wrong');
+          Alert.alert('', 'something went wrong');
         });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        alert('Please select a file');
+        Alert.alert('', 'Please select a file');
       } else {
-        alert('something went wrong');
+        Alert.alert('', 'something went wrong');
       }
     }
   };
@@ -279,7 +280,7 @@ const AddBulkProductInfo = () => {
                 <DownLoadComponent
                   onPress={pickExcel}
                   title="Upload"
-                  color="#FF665880"
+                  color="#FF6658"
                 />
               </View>
             </View>

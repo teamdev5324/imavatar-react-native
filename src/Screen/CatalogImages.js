@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 
 import styles from '../Screen/Shop/CatalogUpload/cataloguploadstyle';
@@ -196,7 +197,7 @@ const CatalogImages = () => {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         pickImage(task);
       } else {
-        alert('Media Library Permission Denied');
+        Alert.alert('', 'Media Library Permission Denied');
       }
     } catch (err) {
       console.warn(err);

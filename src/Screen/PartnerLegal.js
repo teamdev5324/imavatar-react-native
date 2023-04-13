@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Alert} from 'react-native';
 import Modal from 'react-native-modal';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
@@ -68,7 +68,7 @@ const PartnerLegal = () => {
               .then(function (res) {
                 res = res.data;
                 console.log(res);
-                alert('Profile submitted successfully');
+                Alert.alert('', 'Profile submitted successfully');
                 navigation.navigate('Congratulations');
               })
               .catch(function (error) {
@@ -88,7 +88,7 @@ const PartnerLegal = () => {
         '🚀 ~ file: PartnerLegal.js:28 ~ onNextBtnPress ~ error:',
         error,
       );
-      alert('Something went wrong');
+      Alert.alert('', 'Something went wrong');
     }
   };
 

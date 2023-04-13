@@ -70,13 +70,25 @@ const DescriptionInfo = () => {
   }, [editProductInfo]);
 
   const productVistalInfo = Yup.object().shape({
-    briefDescription: Yup.string().required('Description is required'),
-    highlights: Yup.string().required('Highlights are required'),
+    briefDescription: Yup.string()
+      .required('Description is required')
+      .matches(/^[A-Za-z0-9\s]+$/, 'Enter valid Description'),
+    highlights: Yup.string()
+      .required('Highlights are required')
+      .matches(/^[A-Za-z0-9\s]+$/, 'Enter valid hightlights'),
     keywords: Yup.string().required('Keywords are required'),
-    relatedFaiths: Yup.string().required('Related faiths are required'),
-    relatedFestival: Yup.string().required('Related festivals are required'),
-    relatedDeities: Yup.string().required('Related deities are required'),
-    otherInformation: Yup.string().required('Other information is required'),
+    relatedFaiths: Yup.string()
+      .required('Related faiths are required')
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid related faiths'),
+    relatedFestival: Yup.string()
+      .required('Related festivals are required')
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid related festivals'),
+    relatedDeities: Yup.string()
+      .required('Related deities are required')
+      .matches(/^[A-Za-z\s]+$/, 'Enter valid related deities'),
+    otherInformation: Yup.string()
+      .required('Other information is required')
+      .matches(/^[A-Za-z0-9\s]+$/, 'Enter valid other information'),
     formOfProduct: Yup.string().required('Form of product is required'),
     expirable: Yup.string().required('Expirability is required'),
     shelfLife: Yup.string().required('Shelf life is required'),
@@ -87,14 +99,14 @@ const DescriptionInfo = () => {
     ),
     unitMeasurement: Yup.string().required('Unit of measurement is required'),
     width: Yup.string()
-      .required('Weight is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter valid Weight'),
+      .required('Width is required')
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid width'),
     height: Yup.string()
       .required('Height is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter valid Height'),
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid Height'),
     depth: Yup.string()
       .required('Depth is required')
-      .matches(/^\d+(\.\d+)*$/, 'Enter valid Depth'),
+      .matches(/^[+-]?((\d+\.?\d*)|(\.\d+))$/, 'Enter valid Depth'),
   });
 
   //  briefDescription: values.briefDescription,

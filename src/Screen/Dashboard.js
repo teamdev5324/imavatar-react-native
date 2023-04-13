@@ -7,22 +7,43 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userToken: '',
+      userName: '',
+      logoName: '',
     };
   }
 
+  getData() {
+    axios
+      .get(
+        `http://52.90.60.5:8080/api/user/noAuth/getUserInfo/${this.props.user_idd}`,
+      )
+      .then(Response => {
+        let name =
+          Response.data.data.firstName + ' ' + Response.data.data.lastName;
+        let logo = name.split(' ');
+        const logoName =
+          logo[0].charAt(0).toUpperCase() + logo[1].charAt(0).toUpperCase();
+
+        this.setState({
+          userName:
+            Response.data.data.firstName + ' ' + Response.data.data.lastName,
+          logoName,
+        });
+      })
+      .catch(err => {
+        console.log('Error', err);
+      });
+  }
+
   componentDidMount() {
-    // AsyncStorage.getItem('userToken').then(res => {
-    //   let token = JSON.parse(res).token;
-    //   this.setState({
-    //     userToken: `${token}`,
-    //   });
-    // });
+    this.getData();
   }
 
   onLogOutPress() {}
@@ -40,9 +61,11 @@ export class Dashboard extends Component {
 
         <View style={styles.userdetails}>
           <View style={styles.userdetailsprofile}>
-            <Text style={styles.userdetailsprofiletext}>SP</Text>
+            <Text style={styles.userdetailsprofiletext}>
+              {this.state.logoName}
+            </Text>
           </View>
-          <Text style={styles.userdetailsname}>User</Text>
+          <Text style={styles.userdetailsname}>{this.state.userName}</Text>
         </View>
 
         <BarBox
