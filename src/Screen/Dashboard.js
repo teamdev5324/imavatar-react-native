@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import {partnerBaseUrl} from '../apiService';
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export class Dashboard extends Component {
 
     axios
       .get(
-        'http://18.234.206.45:8085/api/v1/partner/profile',
+        `${partnerBaseUrl}/partner/profile`,
 
         {headers},
       )

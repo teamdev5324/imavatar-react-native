@@ -4,6 +4,7 @@ import OnboardingContainer from '../Components/OnboardingContainer/OnboardingCon
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
+import {partnerBaseUrl, userBaseUrl} from '../apiService';
 
 export const getAllData = async token => {
   try {
@@ -13,7 +14,7 @@ export const getAllData = async token => {
     };
 
     const res = await axios.get(
-      'http://18.234.206.45:8085/api/v1/partner/profile',
+      `${partnerBaseUrl}/partner/profile`,
 
       {headers},
     );
@@ -68,7 +69,7 @@ const PersonalDetails = props => {
 
   const getUserData = () => {
     axios
-      .get(`http://52.90.60.5:8080/api/user/noAuth/getUserInfo/${userId}`)
+      .get(`${userBaseUrl}/user/noAuth/getUserInfo/${userId}`)
       .then(Response => {
         console.log('Response', Response.data);
         const {firstName, lastName, emailId, phoneNumber} = Response.data.data;
@@ -119,7 +120,7 @@ const PersonalDetails = props => {
       console.log('param', param);
 
       axios
-        .post('http://52.90.60.5:8080/api/user/noAuth/updateUser', param)
+        .post(`${userBaseUrl}/user/noAuth/updateUser`, param)
         .then(async Response => {
           console.log('Response', Response.data);
 
@@ -145,7 +146,7 @@ const PersonalDetails = props => {
           const config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: 'http://18.234.206.45:8085/api/v1/partner/profile/businessInfo',
+            url: `${partnerBaseUrl}/partner/profile/businessInfo`,
             headers,
             data: _data,
           };

@@ -21,6 +21,7 @@ import qs from 'qs';
 // } from '../Store/Services/userAuthApi';
 import Toast from 'react-native-toast-message';
 import CryptoJS from 'crypto-js';
+import {userBaseUrl} from '../apiService';
 // import key from "../../../../secretKey";
 
 const token =
@@ -137,7 +138,7 @@ export class SignupScreen extends Component {
     };
 
     axios
-      .post('http://52.90.60.5:8080/api/user/noAuth/addUser', param, {
+      .post(`${userBaseUrl}/user/noAuth/addUser`, param, {
         headers,
       })
       .then(Response => {

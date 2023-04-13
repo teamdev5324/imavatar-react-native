@@ -3,40 +3,55 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import styles from './Auth/LoginScreen/loginstyle';
 import AsyncStorage from '@react-native-community/async-storage';
+import profileStatus from '../profileStatus';
+
 export class Splashscreen extends Component {
   componentDidMount() {
-    AsyncStorage.getItem('isUserLogin').then(res => {
-      console.log(res, 'res');
-      setTimeout(() => {
+    AsyncStorage.getItem('isUserLogin')
+      .then(async res => {
+        console.log(res, 'res');
         if (res === 'true') {
-          AsyncStorage.getItem('verificationStatus').then(
-            verificationStatus => {
-              console.log('verificationStatus', verificationStatus);
-              if (verificationStatus === 'APPROVED') {
-                this.props.navigation.replace('Dashboard');
-              } else if (
-                verificationStatus === 'DRAFT' ||
-                verificationStatus === 'REJECT'
-              ) {
-                this.props.navigation.replace('PersonalDetails', {
-                  userid: Response.data.data.id,
-                  token: dem,
-                  data: Response.data,
-                });
-              } else if (verificationStatus === 'WIP') {
-                this.props.navigation.replace('Congratulations', {
-                  userid: Response.data.data.id,
-                  token: dem,
-                  data: Response.data,
-                });
-              }
-            },
-          );
+          try {
+            const {verificationStatus} = await profileStatus(
+              this.props.login_tokenn,
+            );
+
+            console.log('verificationStatus', verificationStatus);
+
+            let data = await AsyncStorage.getItem('data');
+            data = JSON.parse(data);
+
+            if (verificationStatus === 'APPROVED') {
+              this.props.navigation.replace('Dashboard');
+            } else if (
+              verificationStatus === 'DRAFT' ||
+              verificationStatus === 'REJECT'
+            ) {
+              this.props.navigation.replace('PersonalDetails', {
+                userid: data.data.id,
+                token: this.props.login_tokenn,
+                data: data,
+              });
+            } else if (verificationStatus === 'WIP') {
+              this.props.navigation.replace('Congratulations', {
+                userid: data.data.id,
+                token: this.props.login_tokenn,
+                data: data,
+              });
+            }
+          } catch (error) {
+            console.log(
+              '🚀 ~ file: Splashscreen.js:17 ~ Splashscreen ~ setTimeout ~ error:',
+              error,
+            );
+          }
         } else {
           this.props.navigation.replace('Signup');
         }
-      }, 3000);
-    });
+      })
+      .catch(err => {
+        console.log(err, 'err');
+      });
     // setTimeout(() => {
     //   console.log('dfdfdff', this.props.is_login);
     //   if (this.props.login_tokenn != '') {

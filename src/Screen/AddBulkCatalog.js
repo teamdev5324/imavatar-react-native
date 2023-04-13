@@ -27,6 +27,7 @@ import {
   editProductInfo,
   editProductInfoAction,
 } from '../reducers/UserReducer/user_actions';
+import {partnerBaseUrl} from '../apiService';
 
 const AddBulkCatalog = props => {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const AddBulkCatalog = props => {
       };
 
       const res = await axios.get(
-        'http://18.234.206.45:8085/api/v1/category',
+        `${partnerBaseUrl}/category`,
 
         {headers},
       );
@@ -73,7 +74,7 @@ const AddBulkCatalog = props => {
       };
 
       const res = await axios.get(
-        `http://18.234.206.45:8085/api/v1/category/${state}/subcategory`,
+        `${partnerBaseUrl}/category/${state}/subcategory`,
         {headers},
       );
       setSubCategoryData(res?.data?.results);
@@ -111,7 +112,7 @@ const AddBulkCatalog = props => {
       };
 
       const res = await axios.get(
-        `http://18.234.206.45:8085/api/v1/category/subcategory/search?query=${state}`,
+        `${partnerBaseUrl}/category/subcategory/search?query=${state}`,
         {headers},
       );
       console.log(res, 'res');

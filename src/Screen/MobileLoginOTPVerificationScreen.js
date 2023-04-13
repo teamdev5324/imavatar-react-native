@@ -4,6 +4,12 @@ import styles from '../Screen/Auth/MobileLoginOTPVerificationScreen/mobilelogino
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 import BackgroundTimer from 'react-native-background-timer';
+import profileStatus from '../profileStatus';
+import {addLoginToken, addUserId} from '../reducers/UserReducer/user_actions';
+
+import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
+import {userBaseUrl} from '../apiService';
 
 export class MobileLoginOTPVerificationScreen extends Component {
   constructor(props) {
@@ -41,7 +47,6 @@ export class MobileLoginOTPVerificationScreen extends Component {
         });
       } else {
         this.setState(prevState => ({timeLeft: prevState.timeLeft - 1}));
-        console.log('timeLeft', this.state.timeLeft);
       }
     }, 1000);
   }
@@ -170,15 +175,10 @@ export class MobileLoginOTPVerificationScreen extends Component {
                   userName: this.props.route.params.email,
                   userType: '6',
                 };
-                console.log('====================================');
                 console.log('param', param);
-                console.log('====================================');
-                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
+
                 axios
-                  .post(
-                    'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/login',
-                    param,
-                  )
+                  .post(`${userBaseUrl}/user/MP/noAuth/sendOTP/login`, param)
                   .then(Response => {
                     console.log('Response', Response.data);
                     this.setState({
@@ -223,52 +223,97 @@ export class MobileLoginOTPVerificationScreen extends Component {
                   userName: this.props.route.params.email,
                   userType: '6',
                 };
-                console.log('====================================');
-                console.log('param', param);
-                console.log('====================================');
-                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 axios
-                  .post(
-                    'http://52.90.60.5:8080/api/user/MP/noAuth/loginByOTP',
-                    param,
-                  )
+                  .post(`${userBaseUrl}/user/MP/noAuth/loginByOTP`, param)
                   .then(Response => {
-                    console.log('Response', Response.data);
+                    console.log('Response', Response);
+
                     if (Response.data.statusCode == '200') {
                       if (
                         Response.data.data.isPhoneVerified == true &&
                         Response.data.data.isEmailVerified == true
                       ) {
                         var dem = Response.data.data.token;
+                        this.props.addLoginToken(dem);
 
                         const headers = {
                           Authorization: 'Bearer ' + Response.data.data.token,
                           'Content-Type': 'application/json',
                         };
+                        console.log(
+                          '🚀 ~ file: MobileLoginOTPVerificationScreen.js:247 ~ MobileLoginOTPVerificationScreen ~ render ~ headers:',
+                          headers,
+                        );
 
                         axios
                           .post(
-                            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+                            `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                             {},
                             {
                               headers,
                             },
                           )
                           .then(Response => {
-                            console.log('====================================');
-                            console.log('Res', Response.data);
-                            console.log('====================================');
-                            this.props.navigation.replace('Dashboard', {
-                              userid: Response.data.data.id,
-                              token: dem,
-                            });
+                            console.log('Res', Response);
+                            console.log('props', this.props);
+                            this.props.addUserId(Response.data.data.id);
+                            AsyncStorage.setItem(
+                              'userData',
+                              JSON.stringify({
+                                email: this.state.email,
+                              }),
+                            )
+                              .then(async res => {
+                                console.log(
+                                  '🚀 ~ file: LoginScreen.js:122 ~ LoginScreen ~ _api ~ res:',
+                                  res,
+                                );
+
+                                AsyncStorage.setItem('isUserLogin', 'true');
+                                AsyncStorage.setItem(
+                                  'userToken',
+                                  JSON.stringify({
+                                    token: dem,
+                                  }),
+                                );
+
+                                const {verificationStatus} =
+                                  await profileStatus(dem);
+
+                                if (verificationStatus === 'APPROVED') {
+                                  this.props.navigation.replace('Dashboard');
+                                } else if (
+                                  verificationStatus === 'DRAFT' ||
+                                  verificationStatus === 'REJECT'
+                                ) {
+                                  this.props.navigation.replace(
+                                    'PersonalDetails',
+                                    {
+                                      userid: Response.data.data.id,
+                                      token: dem,
+                                      data: Response.data,
+                                    },
+                                  );
+                                } else if (verificationStatus === 'WIP') {
+                                  this.props.navigation.replace(
+                                    'Congratulations',
+                                    {
+                                      userid: Response.data.data.id,
+                                      token: dem,
+                                      data: Response.data,
+                                    },
+                                  );
+                                }
+                              })
+                              .catch(err => {
+                                console.log('err', err);
+                              });
                           });
                       } else if (
                         Response.data.data.isPhoneVerified == false ||
                         Response.data.data.isEmailVerified == false
                       ) {
                         console.log('Response both', Response.data);
-                        //alert(Response.data.status);
                         var dem = Response.data.data.token;
                         this.props.addLoginToken(dem);
 
@@ -279,16 +324,14 @@ export class MobileLoginOTPVerificationScreen extends Component {
 
                         axios
                           .post(
-                            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+                            `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                             {},
                             {
                               headers,
                             },
                           )
                           .then(Response1 => {
-                            console.log('====================================');
                             console.log('Res123', Response1.data);
-                            console.log('====================================');
                             this.props.addUserId(Response1.data.data.id);
                             this.props.navigation.navigate(
                               'MobileOTPVerificationScreen',
@@ -307,7 +350,6 @@ export class MobileLoginOTPVerificationScreen extends Component {
                         Response.data.data.isEmailVerified == false
                       ) {
                         console.log('Response both', Response.data);
-                        //alert(Response.data.status);
                         var dem = Response.data.data.token;
                         this.props.addLoginToken(dem);
 
@@ -318,25 +360,14 @@ export class MobileLoginOTPVerificationScreen extends Component {
 
                         axios
                           .post(
-                            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
-                            {},
+                            `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                             {
                               headers,
                             },
                           )
                           .then(Response1 => {
-                            console.log('====================================');
                             console.log('Res123', Response1.data);
-                            console.log('====================================');
                             this.props.addUserId(Response1.data.data.id);
-                            // this.props.navigation.navigate('MobileOTPVerificationScreen', {
-                            //   // userid: Response.data.data.id,
-                            //   // token: dem,
-                            //   mobile_numer: Response1.data.data.phoneNumber,
-                            //   email: Response1.data.data.emailId,
-                            //   userid: Response1.data.data.id,
-                            //   local_pass: local_pass,
-                            // });
 
                             this.props.navigation.navigate(
                               'EmailOTPVerificationScreen',
@@ -347,14 +378,18 @@ export class MobileLoginOTPVerificationScreen extends Component {
                               },
                             );
                           });
+                      } else {
+                        alert(Response.data.statusMessage);
                       }
-
-                      //this.props.navigation.navigate('MobileOTPVerifiedScreen');
                     } else {
                       alert(Response.data.statusMessage);
                     }
                   })
                   .catch(error => {
+                    console.log(
+                      '🚀 ~ file: MobileLoginOTPVerificationScreen.js:392 ~ MobileLoginOTPVerificationScreen ~ render ~ error:',
+                      error,
+                    );
                     Alert.alert('', 'Something went wrong ');
                   });
               }
@@ -369,4 +404,14 @@ export class MobileLoginOTPVerificationScreen extends Component {
   }
 }
 
-export default MobileLoginOTPVerificationScreen;
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = {
+  addLoginToken,
+  addUserId,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MobileLoginOTPVerificationScreen);

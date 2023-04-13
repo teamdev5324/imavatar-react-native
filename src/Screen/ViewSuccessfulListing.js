@@ -28,6 +28,7 @@ import axios from 'axios';
 import moment from 'moment';
 import {useEffect} from 'react';
 import {groupBy} from 'lodash';
+import {partnerBaseUrl} from '../apiService';
 
 const SingleRow = ({label, value, index, onPress}) => {
   return (
@@ -94,7 +95,7 @@ const ViewSuccessfulListing = () => {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/partner/product/qc?uploadType=BULK&status=PASS',
+      url: `${partnerBaseUrl}/partner/product/qc?uploadType=BULK&status=PASS`,
       headers: {
         Authorization: 'Bearer ' + token,
       },
@@ -146,7 +147,7 @@ const ViewSuccessfulListing = () => {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/files/download/' + fileId,
+      url: `${partnerBaseUrl}/files/download/` + fileId,
       headers: {
         Authorization: 'Bearer ' + token,
       },

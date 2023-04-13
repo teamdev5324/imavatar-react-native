@@ -25,6 +25,7 @@ import axios from 'axios';
 import productInfoData from './ApiData';
 import {useDispatch, useSelector} from 'react-redux';
 import {editProductInfoAction} from '../reducers/UserReducer/user_actions';
+import {partnerBaseUrl} from '../apiService';
 
 const DescriptionInfo = () => {
   const navigation = useNavigation();
@@ -46,7 +47,7 @@ const DescriptionInfo = () => {
       method: 'get',
       maxBodyLength: Infinity,
       url:
-        'http://18.234.206.45:8085/api/v1/partner/product/qc/product/' +
+        `${partnerBaseUrl}/partner/product/qc/product/` +
         editProductInfo?.item?.id,
       headers: {
         Authorization: 'Bearer ' + token,
@@ -207,7 +208,7 @@ const DescriptionInfo = () => {
 
       let config = {
         method: 'post',
-        url: 'http://18.234.206.45:8085/api/v1/partner/product/singleUpload/save',
+        url: `${partnerBaseUrl}/partner/product/singleUpload/save`,
         headers: {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'application/json',

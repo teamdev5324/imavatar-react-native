@@ -28,6 +28,7 @@ import axios from 'axios';
 import productInfoData from './ApiData';
 import {useEffect} from 'react';
 import {editProductInfoAction} from '../reducers/UserReducer/user_actions';
+import {partnerBaseUrl} from '../apiService';
 
 const CatalogImages = () => {
   const navigation = useNavigation();
@@ -98,7 +99,7 @@ const CatalogImages = () => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/files/upload',
+      url: `${partnerBaseUrl}/files/upload`,
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
@@ -221,7 +222,7 @@ const CatalogImages = () => {
 
     let config = {
       method: 'post',
-      url: 'http://18.234.206.45:8085/api/v1/partner/product/singleUpload/save',
+      url: `${partnerBaseUrl}/partner/product/singleUpload/save`,
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
@@ -266,7 +267,7 @@ const CatalogImages = () => {
       method: 'get',
       maxBodyLength: Infinity,
       url:
-        'http://18.234.206.45:8085/api/v1/partner/product/qc/product/' +
+        `${partnerBaseUrl}/partner/product/qc/product/` +
         editProductInfo?.item?.id,
       headers: {
         Authorization: 'Bearer ' + token,
@@ -284,7 +285,7 @@ const CatalogImages = () => {
           try {
             axios
               .get(
-                'http://18.234.206.45:8085/api/v1/files/download/' +
+                `${partnerBaseUrl}/files/download/` +
                   response['documentId' + i],
                 {
                   headers: {

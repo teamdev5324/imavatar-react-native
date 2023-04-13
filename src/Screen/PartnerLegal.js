@@ -5,6 +5,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
 import axios from 'axios';
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
+import {partnerBaseUrl} from '../apiService';
 
 const PartnerLegal = () => {
   const navigation = useNavigation();
@@ -20,7 +21,7 @@ const PartnerLegal = () => {
       const config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://18.234.206.45:8085/api/v1/partner/profile',
+        url: `${partnerBaseUrl}/partner/profile`,
         headers: {
           Authorization: 'Bearer ' + route.params.token,
         },
@@ -39,7 +40,7 @@ const PartnerLegal = () => {
       const config_ = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: 'http://18.234.206.45:8085/api/v1/partner/profile/aggreement',
+        url: `${partnerBaseUrl}/partner/profile/aggreement`,
         headers: {
           Authorization: 'Bearer ' + route.params.token,
           'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ const PartnerLegal = () => {
             const config__ = {
               method: 'get',
               maxBodyLength: Infinity,
-              url: 'http://18.234.206.45:8085/api/v1/partner/profile/submitProfile',
+              url: `${partnerBaseUrl}/partner/profile/submitProfile`,
               headers: {
                 Authorization: 'Bearer ' + route.params.token,
                 'Content-Type': 'application/json',

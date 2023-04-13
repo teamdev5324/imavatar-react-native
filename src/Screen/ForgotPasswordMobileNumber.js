@@ -15,6 +15,7 @@ import React, {Component} from 'react';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import qs from 'qs';
+import {userBaseUrl} from '../apiService';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
 
@@ -122,12 +123,9 @@ export class ForgotPasswordMobileNumber extends Component {
                       userType: '6',
                     };
                     console.log('param', param);
-                    //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
+
                     axios
-                      .post(
-                        'http://52.90.60.5:8080/api/user/noAuth/forgetPswd',
-                        param,
-                      )
+                      .post(`${userBaseUrl}/user/noAuth/forgetPswd`, param)
                       .then(Response => {
                         console.log('Response', Response.data);
                         let demo = Response.data.data;

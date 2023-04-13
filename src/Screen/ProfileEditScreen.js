@@ -35,6 +35,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
+import {partnerBaseUrl, userBaseUrl} from '../apiService';
 // import {MaterialCommunityIcons} from '@expo/vector-icons';
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -196,9 +197,7 @@ export class ProfileEditScreen extends Component {
       const config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url:
-          'http://18.234.206.45:8085/api/v1/files/download/' +
-          this.state.documentId,
+        url: `${partnerBaseUrl}/files/download/` + this.state.documentId,
         headers: {
           Authorization: 'Bearer ' + this.props.login_tokenn,
         },
@@ -230,9 +229,7 @@ export class ProfileEditScreen extends Component {
 
   _getUserData() {
     axios
-      .get(
-        `http://52.90.60.5:8080/api/user/noAuth/getUserInfo/${this.state.user_id}`,
-      )
+      .get(`${userBaseUrl}/user/noAuth/getUserInfo/${this.state.user_id}`)
       .then(Response => {
         console.log('Response', Response.data);
         this.setState({
@@ -260,7 +257,7 @@ export class ProfileEditScreen extends Component {
     };
     this.state.pincode_pickerOptions = [];
     axios
-      .get('http://18.234.206.45:8085/api/v1/city', {headers})
+      .get(`${partnerBaseUrl}/city`, {headers})
       .then(Response => {
         console.log('Response-data', Response.data.results);
         for (let i = 0; i < Response.data.results.length; i++) {
@@ -283,7 +280,7 @@ export class ProfileEditScreen extends Component {
     };
 
     axios
-      .get(`http://18.234.206.45:8085/api/v1/city/list/${name}`, {headers})
+      .get(`${partnerBaseUrl}/city/list/${name}`, {headers})
       .then(Response => {
         console.log('Response-data', Response.data.results);
         for (let i = 0; i < Response.data.results.length; i++) {
@@ -304,7 +301,7 @@ export class ProfileEditScreen extends Component {
     this.state.city_pickerOptions = [];
     axios
       .get(
-        `http://18.234.206.45:8085/api/v1/city/list/${this.state.country}/${this.state.state}`,
+        `${partnerBaseUrl}/city/list/${this.state.country}/${this.state.state}`,
         {headers},
       )
       .then(Response => {
@@ -332,7 +329,7 @@ export class ProfileEditScreen extends Component {
     };
     this.state.pincode_pickerOptions = [];
     axios
-      .get('http://18.234.206.45:8085/api/v1/city', {headers})
+      .get(`${partnerBaseUrl}/city`, {headers})
       .then(Response => {
         console.log('Response-data', Response.data.results);
         for (let i = 0; i < Response.data.results.length; i++) {
@@ -366,7 +363,7 @@ export class ProfileEditScreen extends Component {
 
     axios
       .get(
-        'http://18.234.206.45:8085/api/v1/partner/profile',
+        `${partnerBaseUrl}/partner/profile`,
 
         {headers},
       )
@@ -384,7 +381,7 @@ export class ProfileEditScreen extends Component {
         //   method: 'get',
         //   maxBodyLength: Infinity,
         //   url:
-        //     'http://18.234.206.45:8085/api/v1/files/download/' +
+        //     `${partnerBaseUrl}/files/download/` +
         //     Response.data.results.bank.documentId,
         //   headers: {
         //     Authorization: 'Bearer ' + this.props.login_tokenn,
@@ -450,7 +447,7 @@ export class ProfileEditScreen extends Component {
       'Content-Type': 'application/json',
     };
     axios
-      .get('http://18.234.206.45:8085/api/v1/files/download/DDMS0024', {
+      .get(`${partnerBaseUrl}/files/download/DDMS0024`, {
         headers,
       })
       .then(res => {
@@ -475,11 +472,9 @@ export class ProfileEditScreen extends Component {
           };
         }
         RNFetchBlob.config(options)
-          .fetch(
-            'GET',
-            'http://18.234.206.45:8085/api/v1/files/download/DDMS0024',
-            {Authorization: 'Bearer ' + this.props.login_tokenn},
-          )
+          .fetch('GET', `${partnerBaseUrl}/files/download/DDMS0024`, {
+            Authorization: 'Bearer ' + this.props.login_tokenn,
+          })
           .then(res => {
             console.log('res posen wa///////////', res);
             Alert.alert('', 'Download Complete');
@@ -677,10 +672,7 @@ export class ProfileEditScreen extends Component {
                         console.log('param', param);
 
                         axios
-                          .post(
-                            'http://52.90.60.5:8080/api/user/noAuth/updateUser',
-                            param,
-                          )
+                       
                           .then(Response => {
                             console.log('====================================');
                             console.log('Respo', Response.data);
@@ -919,14 +911,14 @@ export class ProfileEditScreen extends Component {
 
                           axios
                             .post(
-                              'http://52.90.60.5:8080/api/user/noAuth/updateUser',
+                              `${userBaseUrl}/user/noAuth/updateUser`,
                               param,
                             )
                             .then(Response => {
                               console.log('Personal info response ', Response);
                               axios
                                 .put(
-                                  'http://18.234.206.45:8085/api/v1/partner/profile/businessInfo',
+                                  `${partnerBaseUrl}/partner/profile/businessInfo`,
                                   param2,
                                   {params: queryParams, headers},
                                 )
@@ -1197,7 +1189,7 @@ export class ProfileEditScreen extends Component {
 
                           axios
                             .put(
-                              'http://18.234.206.45:8085/api/v1/partner/profile/bank',
+                              `${partnerBaseUrl}/partner/profile/bank`,
                               param,
                               {headers},
                             )
@@ -1386,7 +1378,7 @@ export class ProfileEditScreen extends Component {
 
                           axios
                             .put(
-                              'http://18.234.206.45:8085/api/v1/partner/profile/gst',
+                              `${partnerBaseUrl}/partner/profile/gst`,
                               param,
                               {params: queryParams, headers},
                             )
@@ -1655,7 +1647,7 @@ export class ProfileEditScreen extends Component {
                           let config = {
                             method: 'post',
                             maxBodyLength: Infinity,
-                            url: 'http://52.90.60.5:8080/api/user/MP/noAuth/userPwdChange',
+                            url: `${userBaseUrl}/user/MP/noAuth/userPwdChange`,
                             headers: {
                               Authorization: 'Bearer' + this.props.login_tokenn,
                               'Content-Type': 'application/json',
@@ -1682,7 +1674,7 @@ export class ProfileEditScreen extends Component {
 
                           // axios
                           //   .post(
-                          //     'http://52.90.60.5:8080/api/user/noAuth/userPwdChange',
+
                           //     param,
                           //   )
                           //   .then(Response => {
@@ -1844,7 +1836,7 @@ export class ProfileEditScreen extends Component {
                           let config = {
                             method: 'put',
                             maxBodyLength: Infinity,
-                            url: 'http://18.234.206.45:8085/api/v1/partner/profile/whatsappInfo',
+                            url: `${partnerBaseUrl}/partner/profile/whatsappInfo`,
                             headers: {
                               Authorization:
                                 'Bearer ' + this.props.login_tokenn,
@@ -1886,7 +1878,6 @@ export class ProfileEditScreen extends Component {
 
                           // axios
                           //   .put(
-                          //     'http://18.234.206.45:8085/api/v1/partner/profile/whatsappInfo',
                           //     param,
                           //     {params: queryParams, headers},
                           //   )

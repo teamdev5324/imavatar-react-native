@@ -10,6 +10,7 @@ import {
 import styles from '../Screen/Auth/EmailOTPVerifiedScreen/emailotpverifiedstyle';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
+import {userBaseUrl} from '../apiService';
 //import {LinearGradient} from 'expo-linear-gradient';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
@@ -72,7 +73,7 @@ export class EmailOTPVerifiedScreen extends Component {
               console.log('====================================');
 
               axios
-                .post('http://52.90.60.5:8080/api/user/noAuth/login', param, {
+                .post(`${userBaseUrl}/user/noAuth/login`, param, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
@@ -89,7 +90,7 @@ export class EmailOTPVerifiedScreen extends Component {
 
                   axios
                     .post(
-                      'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+                      `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                       {},
                       {
                         headers,

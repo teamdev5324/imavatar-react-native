@@ -18,6 +18,7 @@ import qs from 'qs';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import profileStatus from '../profileStatus';
+import {userBaseUrl} from '../apiService';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
 
@@ -28,8 +29,10 @@ export class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'thepatel5324@gmail.com',
+      password: 'Admin@2023',
+      // email: '',
+      // password: '',
       pass_visible: '',
       showError: false,
     };
@@ -74,12 +77,12 @@ export class LoginScreen extends Component {
       userType: '6',
     };
 
-    console.log('====================================');
     console.log('param', param);
-    console.log('====================================');
+
+    console.log('URI', `${userBaseUrl}/user/MP/noAuth/login`);
 
     axios
-      .post('http://52.90.60.5:8080/api/user/MP/noAuth/login', param)
+      .post(`${userBaseUrl}/user/MP/noAuth/login`, param)
       .then(Response => {
         console.clear();
         console.log('response', Response);
@@ -101,16 +104,14 @@ export class LoginScreen extends Component {
 
             axios
               .post(
-                'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+                `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                 {},
                 {
                   headers,
                 },
               )
               .then(Response => {
-                console.log('====================================');
                 console.log('Res', Response.data);
-                console.log('====================================');
                 this.props.addUserId(Response.data.data.id);
                 AsyncStorage.setItem(
                   'userData',
@@ -134,10 +135,7 @@ export class LoginScreen extends Component {
 
                   const {verificationStatus} = await profileStatus(dem);
 
-                  AsyncStorage.setItem(
-                    'verificationStatus',
-                    verificationStatus,
-                  );
+                  AsyncStorage.setItem('data', JSON.stringify(Response.data));
 
                   if (verificationStatus === 'APPROVED') {
                     this.props.navigation.replace('Dashboard');
@@ -175,16 +173,14 @@ export class LoginScreen extends Component {
 
             axios
               .post(
-                'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+                `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                 {},
                 {
                   headers,
                 },
               )
               .then(Response1 => {
-                console.log('====================================');
                 console.log('Res123', Response1.data);
-                console.log('====================================');
                 this.props.addUserId(Response1.data.data.id);
                 this.props.navigation.navigate('MobileOTPVerificationScreen', {
                   // userid: Response.data.data.id,
@@ -211,16 +207,14 @@ export class LoginScreen extends Component {
 
             axios
               .post(
-                'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+                `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
                 {},
                 {
                   headers,
                 },
               )
               .then(Response1 => {
-                console.log('====================================');
                 console.log('Res123', Response1.data);
-                console.log('====================================');
                 this.props.addUserId(Response1.data.data.id);
 
                 this.props.navigation.navigate('EmailOTPVerificationScreen', {
@@ -405,10 +399,8 @@ export class LoginScreen extends Component {
                 //   console.log('====================================');
                 //   console.log('param', param);
                 //   console.log('====================================');
-                //   //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
                 //   axios
                 //     .post(
-                //       'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/login',
                 //       param,
                 //     )
                 //     .then(Response => {

@@ -4,6 +4,7 @@ import styles from '../Screen/Auth/MobileLoginOTPVerificationScreen/mobilelogino
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 import BackgroundTimer from 'react-native-background-timer';
+import {userBaseUrl} from '../apiService';
 
 export class ForgotPasswordOtpScreen extends Component {
   constructor(props) {
@@ -174,12 +175,9 @@ export class ForgotPasswordOtpScreen extends Component {
                 console.log('====================================');
                 console.log('param', param);
                 console.log('====================================');
-                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
+
                 axios
-                  .post(
-                    'http://52.90.60.5:8080/api/user/noAuth/forgetPswd',
-                    param,
-                  )
+                  .post(`${userBaseUrl}/user/noAuth/forgetPswd`, param)
                   .then(Response => {
                     console.log('Response', Response.data);
                     this.setState({
@@ -233,13 +231,13 @@ export class ForgotPasswordOtpScreen extends Component {
                 console.log('====================================');
                 console.log(
                   'param',
-                  `http://52.90.60.5:8080/api/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
+                  `${userBaseUrl}/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
                 );
                 console.log('====================================');
-                //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
+
                 axios
                   .get(
-                    `http://52.90.60.5:8080/api/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
+                    `${userBaseUrl}/user/noAuth/verifyForgetPswdOTP/${otp}/${user_id}`,
                     param,
                   )
                   .then(Response => {

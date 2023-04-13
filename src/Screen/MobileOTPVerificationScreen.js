@@ -15,6 +15,7 @@ import {
 import BackgroundTimer from 'react-native-background-timer';
 
 import styles from '../Screen/Auth/MobileOTPVerificationScreen/mobileotpverificationstyle';
+import {userBaseUrl} from '../apiService';
 
 export class MobileOTPVerificationScreen extends Component {
   constructor(props) {
@@ -52,10 +53,7 @@ export class MobileOTPVerificationScreen extends Component {
       userType: '6',
     };
     axios
-      .post(
-        'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
-        param,
-      )
+      .post(`${userBaseUrl}/user/MP/noAuth/sendOTP/phoneVerification`, param)
       .then(Response => {
         console.log('Response', Response.data);
       })
@@ -92,10 +90,7 @@ export class MobileOTPVerificationScreen extends Component {
     };
     console.log('param', param);
     axios
-      .post(
-        'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/phoneVerification',
-        param,
-      )
+      .post(`${userBaseUrl}/user/MP/noAuth/sendOTP/phoneVerification`, param)
       .then(Response => {
         console.log('Response', Response.data);
         this.setState({
@@ -117,7 +112,7 @@ export class MobileOTPVerificationScreen extends Component {
         this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4;
       axios
         .get(
-          `http://52.90.60.5:8080/api/user/userVerification/phone/${otp}/${this.state.user_id}`,
+          `${userBaseUrl}/user/userVerification/phone/${otp}/${this.state.user_id}`,
         )
         .then(Response => {
           if (Response.data.statusCode == '200') {
@@ -130,10 +125,7 @@ export class MobileOTPVerificationScreen extends Component {
             console.log('param', param);
 
             axios
-              .post(
-                'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
-                param,
-              )
+              .post(`${userBaseUrl}/user/v2/noAuth/updateUser`, param)
               .then(Response => {
                 console.log('Response.data', Response.data);
                 //if (Response.data.statusCode == '200') {
@@ -165,7 +157,7 @@ export class MobileOTPVerificationScreen extends Component {
       const newThis = this;
       axios
         .get(
-          'http://52.90.60.5:8080/api/user/MP/noAuth/userExists/' +
+          `${userBaseUrl}/user/MP/noAuth/userExists/` +
             this.state.newMobileNumber,
         )
         .then(res => {
@@ -186,7 +178,7 @@ export class MobileOTPVerificationScreen extends Component {
             const config = {
               method: 'post',
               maxBodyLength: Infinity,
-              url: 'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
+              url: `${userBaseUrl}/user/v2/noAuth/updateUser`,
               headers,
               data: data,
             };

@@ -18,6 +18,7 @@ import ImageBox from '../ImageBox/ImageBox';
 import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {useState} from 'react';
+import {partnerBaseUrl} from '../../apiService';
 
 const SelectCategory = () => {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ const SelectCategory = () => {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/partner/product/qc',
+      url: `${partnerBaseUrl}/partner/product/qc`,
       headers: {
         Authorization: 'Bearer ' + token,
       },

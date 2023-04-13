@@ -16,6 +16,8 @@ import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import qs from 'qs';
 import AsyncStorage from '@react-native-community/async-storage';
+import profileStatus from '../profileStatus';
+import {userBaseUrl} from '../apiService';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MDAwODkwOTk1IiwiYXV0aCI6InBhcnRuZXIiLCJpZCI6MjM1MSwiaWF0IjoxNjc1MTg1NDE5fQ.oKpjXbeFucVEZQjHLTkmQeSthPukNulgUzj9zpGJlqo';
 
@@ -80,7 +82,7 @@ export class LoginWithMobile extends Component {
     console.log('====================================');
 
     axios
-      .post('http://52.90.60.5:8080/api/user/noAuth/login', param, {
+      .post(`${userBaseUrl}/user/noAuth/login`, param, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -97,7 +99,7 @@ export class LoginWithMobile extends Component {
 
         axios
           .post(
-            'http://52.90.60.5:8080/api/user/auth/getUserInfoPartner/6',
+            `${userBaseUrl}/user/auth/getUserInfoPartner/6`,
             {},
             {
               headers,
@@ -200,19 +202,18 @@ export class LoginWithMobile extends Component {
                       userName: this.state.email,
                       userType: '6',
                     };
-                    console.log('====================================');
-                    console.log('param', param);
-                    console.log('====================================');
-                    //http://52.90.60.5:8080/api/user/noAuth/sendOTPForLogin
+                    console.log(
+                      'URI',
+                      `${userBaseUrl}/user/MP/noAuth/sendOTP/login`,
+                    );
                     axios
                       .post(
-                        'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/login',
+                        `${userBaseUrl}/user/MP/noAuth/sendOTP/login`,
                         param,
                       )
                       .then(Response => {
                         console.log('Response', Response.data);
                         if (Response.data.statusCode == '200') {
-                          AsyncStorage.setItem('isUserLogin', 'true');
                           this.props.navigation.navigate(
                             'MobileLoginOTPVerificationScreen',
                             {

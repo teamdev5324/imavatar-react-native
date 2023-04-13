@@ -21,6 +21,7 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {useEffect} from 'react';
 import {useState} from 'react';
+import {partnerBaseUrl} from '../apiService';
 
 const CatalogUpload = props => {
   const navigation = useNavigation();
@@ -58,7 +59,6 @@ const CatalogUpload = props => {
         'Content-Type': 'application/json',
       };
 
-      // http://18.234.206.45:8085/api/v1/partner/product/qc/paging?page=0&rows=5&sortBy=id&asc=false&uploadType=SINGLE
       const isSingle = uploadbtnclick.includes('Single');
       let uploadType = '';
       if (isSingle) {
@@ -70,7 +70,7 @@ const CatalogUpload = props => {
       const pageNo = isSingle ? singlePage : bulkPage;
 
       const res = await axios.get(
-        `http://18.234.206.45:8085/api/v1/partner/product/qc/paging?page=${pageNo}&rows=10&sortBy=id&asc=false&uploadType=${uploadType}`,
+        `${partnerBaseUrl}/partner/product/qc/paging?page=${pageNo}&rows=10&sortBy=id&asc=false&uploadType=${uploadType}`,
         {
           headers,
         },

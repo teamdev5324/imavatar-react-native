@@ -22,6 +22,7 @@ import productInfoData from './ApiData';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import AppTextInput from '../Components/AppTextInput';
+import {partnerBaseUrl} from '../apiService';
 
 const VariationsInfo = () => {
   const navigation = useNavigation();
@@ -43,7 +44,7 @@ const VariationsInfo = () => {
       method: 'get',
       maxBodyLength: Infinity,
       url:
-        'http://18.234.206.45:8085/api/v1/partner/product/qc/product/' +
+        `${partnerBaseUrl}/partner/product/qc/product/` +
         editProductInfo?.item?.id,
       headers: {
         Authorization: 'Bearer ' + token,
@@ -125,7 +126,7 @@ const VariationsInfo = () => {
 
       let config = {
         method: 'post',
-        url: 'http://18.234.206.45:8085/api/v1/partner/product/singleUpload/save',
+        url: `${partnerBaseUrl}/partner/product/singleUpload/save`,
         headers: {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'application/json',

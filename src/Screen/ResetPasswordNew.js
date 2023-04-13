@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import styles from '../Screen/Auth/ResetPassword/resetpasswordstyle';
 import CryptoJS from 'crypto-js';
+import {userBaseUrl} from '../apiService';
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 export class ResetPasswordNew extends Component {
@@ -197,10 +198,7 @@ export class ResetPasswordNew extends Component {
 
                 console.log('params', param);
                 axios
-                  .post(
-                    'http://52.90.60.5:8080/api/user/noAuth/changePassword',
-                    param,
-                  )
+                  .post(`${userBaseUrl}/user/noAuth/changePassword`, param)
                   .then(Response => {
                     console.log('Response', Response.data.statusCode);
                     if (Response.data.statusCode == '200') {

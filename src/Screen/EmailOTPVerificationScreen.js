@@ -12,6 +12,7 @@ import styles from '../Screen/Auth/EmailOTPVerificationScreen/emailotpverificati
 import axios from 'axios';
 import BackgroundTimer from 'react-native-background-timer';
 import Modal from 'react-native-modal';
+import {userBaseUrl} from '../apiService';
 export class EmailOTPVerificationScreen extends Component {
   constructor(props) {
     super(props);
@@ -65,10 +66,7 @@ export class EmailOTPVerificationScreen extends Component {
     };
     console.log('param', param);
     axios
-      .post(
-        'http://52.90.60.5:8080/api/user/MP/noAuth/sendOTP/emailVerification',
-        param,
-      )
+      .post(`${userBaseUrl}/user/MP/noAuth/sendOTP/emailVerification`, param)
       .then(Response => {
         console.log('Response', Response.data);
         //  alert(Response.data.statusMessage);
@@ -88,7 +86,7 @@ export class EmailOTPVerificationScreen extends Component {
       Alert.alert('', 'Please enter OTP');
     } else {
       console.log(
-        `http://52.90.60.5:8080/api/user/userVerification/email/${
+        `${userBaseUrl}/user/userVerification/email/${
           this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4
         }/${this.state.user_id}`,
       );
@@ -97,7 +95,7 @@ export class EmailOTPVerificationScreen extends Component {
         this.state.otp1 + this.state.otp2 + this.state.otp3 + this.state.otp4;
       axios
         .get(
-          `http://52.90.60.5:8080/api/user/userVerification/email/${
+          `${userBaseUrl}/user/userVerification/email/${
             this.state.otp1 +
             this.state.otp2 +
             this.state.otp3 +
@@ -115,10 +113,7 @@ export class EmailOTPVerificationScreen extends Component {
             console.log('param', param);
 
             axios
-              .post(
-                'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
-                param,
-              )
+              .post(`${userBaseUrl}/user/v2/noAuth/updateUser`, param)
               .then(Response => {
                 console.log('Response.data', Response.data);
                 // if (Response.data.statusCode == '200') {
@@ -155,8 +150,7 @@ export class EmailOTPVerificationScreen extends Component {
 
     try {
       const res = await axios.get(
-        'http://52.90.60.5:8080/api/user/MP/noAuth/userExists/' +
-          this.state.newEmail,
+        `${userBaseUrl}/user/MP/noAuth/userExists/` + this.state.newEmail,
       );
 
       if (res.data.status === 'SUCCESS') {
@@ -170,7 +164,7 @@ export class EmailOTPVerificationScreen extends Component {
         const config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: 'http://52.90.60.5:8080/api/user/v2/noAuth/updateUser',
+          url: `${userBaseUrl}/user/v2/noAuth/updateUser`,
           headers: {
             Authorization:
               'Bearer ' +

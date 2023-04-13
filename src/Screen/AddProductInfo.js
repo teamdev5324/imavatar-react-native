@@ -34,6 +34,7 @@ import {
   productInformation,
 } from '../reducers/UserReducer/user_actions';
 import {useEffect} from 'react';
+import {partnerBaseUrl} from '../apiService';
 
 const CatalogAddProductInfo = () => {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const CatalogAddProductInfo = () => {
       method: 'get',
       maxBodyLength: Infinity,
       url:
-        'http://18.234.206.45:8085/api/v1/partner/product/qc/product/' +
+        `${partnerBaseUrl}/partner/product/qc/product/` +
         editProductInfo?.item?.id,
       headers: {
         Authorization: 'Bearer ' + token,
@@ -97,7 +98,7 @@ const CatalogAddProductInfo = () => {
       let config_ = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://18.234.206.45:8085/api/v1/files/upload',
+        url: `${partnerBaseUrl}/files/upload`,
         headers: {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'application/json',
@@ -370,7 +371,7 @@ const CatalogAddProductInfo = () => {
 
       let config = {
         method: 'post',
-        url: 'http://18.234.206.45:8085/api/v1/partner/product/singleUpload/save',
+        url: `${partnerBaseUrl}/partner/product/singleUpload/save`,
         headers: {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'application/json',

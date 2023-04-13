@@ -8,6 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import OnboardingContainer from '../Components/OnboardingContainer/OnboardingContainer';
 import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
 import {getAllData} from './PersonalDetails';
+import {partnerBaseUrl} from '../apiService';
 
 const BankDetails = () => {
   const navigation = useNavigation();
@@ -34,11 +35,10 @@ const BankDetails = () => {
     const res = await getAllData(route.params.token);
     const data = res.data.results.bank;
     console.log('🚀 ~ file: BankDetails.js:31 ~ getData ~ data:', data);
-
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/files/download/' + data.documentId,
+      url: `${partnerBaseUrl}/files/download/` + data.documentId,
       headers: {
         Authorization: 'Bearer ' + route.params.token,
       },
@@ -116,7 +116,7 @@ const BankDetails = () => {
       const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://18.234.206.45:8085/api/v1/files/upload',
+        url: `${partnerBaseUrl}/files/upload`,
         headers: {
           Authorization: 'Bearer ' + route.params.token,
           'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ const BankDetails = () => {
             const config2 = {
               method: 'put',
               maxBodyLength: Infinity,
-              url: 'http://18.234.206.45:8085/api/v1/partner/profile/bank',
+              url: `${partnerBaseUrl}/partner/profile/bank`,
               headers: {
                 Authorization: 'Bearer ' + route.params.token,
                 'Content-Type': 'application/json',

@@ -30,6 +30,7 @@ import moment from 'moment';
 import {useEffect} from 'react';
 import {groupBy} from 'lodash';
 import {editProductInfoAction} from '../reducers/UserReducer/user_actions';
+import {partnerBaseUrl} from '../apiService';
 
 const CorrectError = () => {
   const navigation = useNavigation();
@@ -49,9 +50,7 @@ const CorrectError = () => {
         let config = {
           method: 'get',
           maxBodyLength: Infinity,
-          url:
-            'http://18.234.206.45:8085/api/v1/partner/product/qc/product/' +
-            item?.id,
+          url: `${partnerBaseUrl}/partner/product/qc/product/` + item?.id,
           headers: {
             Authorization: 'Bearer ' + token,
           },

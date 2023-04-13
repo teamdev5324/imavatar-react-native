@@ -5,6 +5,7 @@ import OnboardingInput from '../Components/OnboardingInput/OnboardingInput';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import {getAllData} from './PersonalDetails';
+import {partnerBaseUrl} from '../apiService';
 
 const GSTINDetails = () => {
   const navigation = useNavigation();
@@ -91,7 +92,7 @@ const GSTINDetails = () => {
       };
 
       axios
-        .put('http://18.234.206.45:8085/api/v1/partner/profile/gst', param, {
+        .put(`${partnerBaseUrl}/partner/profile/gst`, param, {
           params: queryParams,
           headers,
         })

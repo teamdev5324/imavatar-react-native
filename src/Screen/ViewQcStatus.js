@@ -28,6 +28,7 @@ import axios from 'axios';
 import moment from 'moment';
 import {useEffect} from 'react';
 import {groupBy} from 'lodash';
+import {partnerBaseUrl} from '../apiService';
 
 const SingleRow = ({label, value, index, navigation, item}) => {
   return (
@@ -127,7 +128,7 @@ const ViewQcStauts = () => {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/partner/product/qc?uploadType=BULK',
+      url: `${partnerBaseUrl}/partner/product/qc?uploadType=BULK`,
       headers: {
         Authorization: 'Bearer ' + token,
       },

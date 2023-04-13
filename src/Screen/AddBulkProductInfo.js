@@ -27,6 +27,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
 import moment from 'moment';
+import {partnerBaseUrl} from '../apiService';
 
 const DownLoadComponent = ({onPress, title, color}) => {
   return (
@@ -127,7 +128,7 @@ const AddBulkProductInfo = () => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'http://18.234.206.45:8085/api/v1/partner/product/bulkUpload',
+      url: `${partnerBaseUrl}/partner/product/bulkUpload`,
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',

@@ -3,7 +3,6 @@
 // export const PartnerDetailsApi = createApi({
 //   reducerPath: 'PartnerDetailsApi',
 //   baseQuery: fetchBaseQuery({
-//     baseUrl: 'http://18.234.206.45:8085/api/v1/',
 //   }),
 //   endpoints: builder => ({
 //     registerUser: builder.mutation({
